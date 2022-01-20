@@ -1,0 +1,52 @@
+swagger: "2.0"
+info:
+  title: Department API Documentation
+  description: Department API Documentation
+  version: 1.0.0
+paths:
+  /apartment:
+    get:
+      tags:
+        - Department
+      summary: 'Get list Department'
+      description: 'Get list Department'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A list of pets.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Department'
+components:
+  schemas:
+    Department:
+      type: object
+      properties:
+        no_department:
+         type: string
+         example: "DPM59"
+        type_department:
+         type: number
+         example: 1
+        status:
+          type: number
+          example: 1
+        description:
+          type: number
+          example: 1
+        square_meters:
+          type: number
+          example: 1
+      xml:
+        name: Department
