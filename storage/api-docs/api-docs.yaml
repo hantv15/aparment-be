@@ -52,6 +52,50 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Login'
+  /register:
+    post:
+      tags:
+        - Register
+      summary: 'Register'
+      description: 'Register new account'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Register new account'.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: 'User Registered'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Register'
+  /logout:
+    post:
+      tags:
+        - Logout
+      summary: 'Logout'
+      description: 'Logout'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Logout'.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: 'Logged out'
 
 components:
   schemas:
@@ -119,3 +163,35 @@ components:
          example: "1|tsRmBoNrTbBE2Z1m9fJTdd6K1O6wY1IfJ8RTFSbd"
       xml:
         name: Login
+    Register:
+      type: object
+      properties:
+        token:
+         type: string
+         example: "7|OZ6J1PNvifzScSlKCCOXL743AF0mSxOEjkTfyVZo"
+        user:
+         type: object
+         properties:
+          user_name:
+            type: string
+            example: "ty5"
+          email:
+            type: string
+            example: "ty5@gmail.com"
+          name:
+            type: string
+            example: "Duc Anh"
+          department_id:
+            type: number
+            example: 1
+          role:
+            type: number
+            example: 1
+          created_at:
+            type: datetime
+            example: "2022-01-20T06:03:10.000000Z"
+          updated_at:
+            type: datetime
+            example: "2022-01-20T06:03:10.000000Z"
+      xml:
+        name: Register
