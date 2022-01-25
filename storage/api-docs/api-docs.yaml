@@ -32,13 +32,24 @@ paths:
     post:
       tags:
         - Login
-      summary: 'Login'
+      summary: 'Login into the system'
       description: 'Login'
       produces:
         - application/json
+      parameters:
+        - name: "email"
+          in: "query"
+          description: "Type your Email"
+          required: true
+          type: "email"
+        - name: "password"
+          in: "query"
+          description: "Type your Password"
+          required: true
+          type: "string"
       responses:
         '200':
-          description: Login.
+          description: Login successfully.
           schema:
             type: object
             properties:
@@ -52,14 +63,34 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Login'
+        '401':
+          description: Login failed
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "Bad creds"
   /register:
     post:
       tags:
         - Register
-      summary: 'Register'
+      summary: 'Register new account'
       description: 'Register new account'
       produces:
         - application/json
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Information new account"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/RequestRegister"
       responses:
         '200':
           description: Register new account'.
@@ -163,6 +194,32 @@ components:
          example: "1|tsRmBoNrTbBE2Z1m9fJTdd6K1O6wY1IfJ8RTFSbd"
       xml:
         name: Login
+    RequestRegister:
+      type: object
+      properties:
+        user_name:
+          type: string
+          example: "ty5"
+        email:
+          type: string
+          example: "ty5@gmail.com"
+        name:
+          type: string
+          example: "Duc Anh"
+        password:
+          type: string
+          example: "123456"
+        password_comfirmation:
+          type: string
+          example: "123456"
+        department_id:
+          type: number
+          example: 1
+        role:
+          type: number
+          example: 1
+      xml:
+        name: RequestRegister
     Register:
       type: object
       properties:
