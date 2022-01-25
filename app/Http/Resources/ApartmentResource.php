@@ -25,3 +25,6 @@ class ApartmentResource extends JsonResource
         ];
     }
 }
+
+
+
