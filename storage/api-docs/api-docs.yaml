@@ -28,6 +28,106 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Department'
+  /login:
+    post:
+      tags:
+        - Login
+      summary: 'Login into the system'
+      description: 'Login'
+      produces:
+        - application/json
+      parameters:
+        - name: "email"
+          in: "query"
+          description: "Type your Email"
+          required: true
+          type: "email"
+        - name: "password"
+          in: "query"
+          description: "Type your Password"
+          required: true
+          type: "string"
+      responses:
+        '200':
+          description: Login successfully.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: 'Login successfully'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Login'
+        '401':
+          description: Login failed
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "Bad creds"
+  /register:
+    post:
+      tags:
+        - Register
+      summary: 'Register new account'
+      description: 'Register new account'
+      produces:
+        - application/json
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Information new account"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/RequestRegister"
+      responses:
+        '200':
+          description: Register new account'.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: 'User Registered'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Register'
+  /logout:
+    post:
+      tags:
+        - Logout
+      summary: 'Logout'
+      description: 'Logout'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Logout'.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: 'Logged out'
+
 components:
   schemas:
     Department:
@@ -50,3 +150,105 @@ components:
           example: 1
       xml:
         name: Department
+    Login:
+      type: object
+      properties:
+        user:
+         type: object
+         properties:
+          id:
+            type: string
+            example: 10
+          user_name:
+            type: string
+            example: "ty4"
+          email:
+            type: string
+            example: "ty4@gmail.com"
+          name:
+            type: string
+            example: "123456"
+          dob:
+            type: date
+            example: "2000-12-31"
+          department_id:
+            type: number
+            example: 1
+          phone:
+            type: string
+            example: "0987654321"
+          role:
+            type: number
+            example: 1
+          avatar:
+            type: string
+            example: "https://img.freepik.com/free-photo/hand-painted-watercolor-background-with-sky-clouds-shape_24972-1095.jpg?size=626&ext=jpg"
+          created_at:
+            type: datetime
+            example: "2022-01-20T06:03:10.000000Z"
+          updated_at:
+            type: datetime
+            example: "2022-01-20T06:03:10.000000Z"
+        token:
+         type: string
+         example: "1|tsRmBoNrTbBE2Z1m9fJTdd6K1O6wY1IfJ8RTFSbd"
+      xml:
+        name: Login
+    RequestRegister:
+      type: object
+      properties:
+        user_name:
+          type: string
+          example: "ty5"
+        email:
+          type: string
+          example: "ty5@gmail.com"
+        name:
+          type: string
+          example: "Duc Anh"
+        password:
+          type: string
+          example: "123456"
+        password_comfirmation:
+          type: string
+          example: "123456"
+        department_id:
+          type: number
+          example: 1
+        role:
+          type: number
+          example: 1
+      xml:
+        name: RequestRegister
+    Register:
+      type: object
+      properties:
+        token:
+         type: string
+         example: "7|OZ6J1PNvifzScSlKCCOXL743AF0mSxOEjkTfyVZo"
+        user:
+         type: object
+         properties:
+          user_name:
+            type: string
+            example: "ty5"
+          email:
+            type: string
+            example: "ty5@gmail.com"
+          name:
+            type: string
+            example: "Duc Anh"
+          department_id:
+            type: number
+            example: 1
+          role:
+            type: number
+            example: 1
+          created_at:
+            type: datetime
+            example: "2022-01-20T06:03:10.000000Z"
+          updated_at:
+            type: datetime
+            example: "2022-01-20T06:03:10.000000Z"
+      xml:
+        name: Register
