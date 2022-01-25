@@ -7,22 +7,23 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Validation\Rules\Password;
+use App\Http\Resources\LoginResource;
+use App\Http\Resources\RegisterResource;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
     public function registerForm(){
         return view('registerForm');
     }
-    public function register(Request $request)
+    public function register(Request $request): JsonResponse
     {
         $request->validate([
             'user_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|confirmed',
         ]);
-        // , Password::defaults()
+        
         $user = User::create([
             'user_name' => $request->user_name,
             'email' => $request->email,
@@ -31,37 +32,23 @@ class AuthController extends Controller
 
         event(new Registered($user));
 
-        $token = $user->createToken('authtoken');
-
-        return response()->json(
-            [
-                'message'=>'User Registered',
-                'data'=> ['token' => $token->plainTextToken, 'user' => $user]
-            ]
-        );
+        $token = $user->createToken('authtoken')->plainTextToken;
+        $result = new RegisterResource($user);
+        return $this->success($result,$token);
+        // return response()->json(
+        //     [
+        //         'message'=>'User Registered',
+        //         'data'=> ['token' => $token->plainTextToken, 'user' => $user]
+        //     ]
+        // );
 
     }
 
     public function loginForm(){
         return view('loginform');
     }
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
-    //     $request->authenticate();
-
-
-    //     $token = $request->user()->createToken('authtoken');
-
-    //    return response()->json(
-    //        [
-    //            'is_success'=>true,
-    //            'message'=>'Login successfully',
-    //            'data'=> [
-    //                'user'=> $request->user(),
-    //                'token'=> $token->plainTextToken
-    //            ]
-    //            ],200
-    //     );
     $fields = $request->validate([
         'email' => 'required|string',
         'password' => 'required|string'
@@ -76,27 +63,16 @@ class AuthController extends Controller
             'message' => 'Bad creds'
         ], 401);
     }
-
+    $result = new LoginResource($user);
+   
     $token = $user->createToken('myapptoken')->plainTextToken;
+    
 
-    $response = [
-        'user' => $user,
-        'token' => $token
-    ];
-
-    return response($response, 201);
+    return $this->success($result,$token,201);
     }
 
     public function logout(Request $request)
     {
-
-        // $request->user()->tokens()->delete();
-
-        // return response()->json(
-        //     [
-        //         'message' => 'Logged out'
-        //     ]
-        // );
         auth()->user()->tokens()->delete();
 
         return [
