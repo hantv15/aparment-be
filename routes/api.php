@@ -14,15 +14,15 @@ use App\Http\Controllers\Api\AuthController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::get('/test', [\App\Http\Controllers\Auth\AuthController::class, 'test']);
-Route::get('/apartment', [ApartmentController::class, 'getApartment'])->name('apartment');
-
 Route::get('login', [AuthController::class, 'loginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
 Route::get('register', [AuthController::class, 'registerForm'])->name('register');
 Route::post('register', [AuthController::class, 'register']);
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/apartment', [ApartmentController::class, 'getApartment'])->name('apartment');
+    Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+});
+
+
+
