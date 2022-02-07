@@ -2,8 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\ApartmentController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ServiceController;
 
 /*
@@ -23,7 +23,7 @@ Route::get('register', [AuthController::class, 'registerForm'])->name('register'
 Route::post('register', [AuthController::class, 'register']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/apartment', [ApartmentController::class, 'getApartment'])->name('apartment');
+    Route::get('/department', [DepartmentController::class, 'getDepartment'])->name('department');
 
     Route::get('/service', [ServiceController::class, 'getService'])->name('service');
     Route::post('/service/add', [ServiceController::class, 'addService']);

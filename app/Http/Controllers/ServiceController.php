@@ -13,7 +13,7 @@ class ServiceController extends Controller
     {
         $services = Service::all();
         $result = ServiceResource::collection($services);
-        return $this->success($result, 'Danh sach dich vu');
+        return $this->success($result);
     }
 
     public function addService(Request $request): JsonResponse
@@ -22,6 +22,6 @@ class ServiceController extends Controller
         $service->fill($request->all());
         $service->save();
         
-        return $this->success($service, 'Them dich vu thanh cong');
+        return $this->success($service);
     }
 }

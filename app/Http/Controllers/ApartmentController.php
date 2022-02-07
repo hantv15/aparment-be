@@ -11,15 +11,12 @@ class ApartmentController extends Controller
 {
     public function getApartment(Request $request): JsonResponse
     {
-        if (!$request->floor){
-            $apartments = Apartment::all();
-            $result = ApartmentResource::collection($apartments);
-            return $this->success($result, 'Danh sach can ho');
+
+        $apartments = Apartment::all();
+        if ($request->filled('floor')) {
+            $apartments = Apartment::where('floor', $request->floor)->get();
         }
-        else {
-            $apartments = Apartment::where('floor', '=', $request->floor)->get();
-            $result = ApartmentResource::collection($apartments);
-            return $this->success($result, 'Danh sach can ho theo tang');
-        }
+        $result = ApartmentResource::collection($apartments);
+        return $this->success($result);
     }
 }
