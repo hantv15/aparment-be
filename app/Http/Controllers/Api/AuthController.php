@@ -35,12 +35,7 @@ class AuthController extends Controller
         $token = $user->createToken('authtoken')->plainTextToken;
         $result = new RegisterResource($user);
         return $this->success($result,$token);
-        // return response()->json(
-        //     [
-        //         'message'=>'User Registered',
-        //         'data'=> ['token' => $token->plainTextToken, 'user' => $user]
-        //     ]
-        // );
+
 
     }
 
@@ -50,17 +45,17 @@ class AuthController extends Controller
     public function login(Request $request): JsonResponse
     {
     $fields = $request->validate([
-        'email' => 'required|string',
+        'user_name' => 'required|string',
         'password' => 'required|string'
     ]);
 
     // Check email
-    $user = User::where('email', $fields['email'])->first();
+    $user = User::where('user_name', $fields['user_name'])->first();
 
     // Check password
     if(!$user || !Hash::check($fields['password'], $user->password)) {
-        return response([
-            'message' => 'Bad creds'
+        return $this->success([
+            'message' => 'User or password incorrect'
         ], 401);
     }
     $result = new LoginResource($user);
