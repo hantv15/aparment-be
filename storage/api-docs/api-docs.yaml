@@ -4,7 +4,7 @@ info:
   description: Department API Documentation
   version: 1.0.0
 paths:
-  /apartment:
+  /department:
     get:
       tags:
         - Department
@@ -14,7 +14,7 @@ paths:
         - application/json
       responses:
         '200':
-          description: A list of pets.
+          description: A list of departments.
           schema:
             type: object
             properties:
@@ -28,6 +28,63 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Department'
+  /service:
+    get:
+      tags:
+        - Service
+      summary: 'Get list Service'
+      description: 'Get list Service'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A list of services.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'
+  /service/add:
+    post:
+      tags:
+        - Service
+      summary: 'Add a new service'
+      description: 'Add a new service'
+      produces:
+        - application/json
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Service object that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/components/schemas/NewService"
+      responses:
+        '200':
+          description: Add a new service.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewService'
+        '405':
+          description: "Invalid input"
   /login:
     post:
       tags:
@@ -133,23 +190,54 @@ components:
     Department:
       type: object
       properties:
-        no_department:
+        department_id:
          type: string
-         example: "DPM59"
-        type_department:
+         example: "P101"
+        floor:
          type: number
          example: 1
         status:
-          type: number
-          example: 1
+         type: number
+         example: 1
         description:
-          type: number
-          example: 1
+         type: string
+         example: "Phong 2 ban cong"
         square_meters:
-          type: number
-          example: 1
+         type: number
+         example: 50
+        type_department:
+         type: number
+         example: 1
       xml:
         name: Department
+    Service:
+      type: object
+      properties:
+        name:
+         type: string
+         example: "Tien dien"
+        price:
+         type: number
+         example: 150000
+        description:
+         type: string
+         example: "Tien dien thang 1/2022"
+      xml:
+        name: Service
+    NewService:
+      type: object
+      properties:
+        name:
+         type: string
+         example: "Tien nuoc"
+        price:
+         type: number
+         example: 50000
+        description:
+         type: string
+         example: "Tien nuoc thang 1/2022"
+      xml:
+        name: Service
     Login:
       type: object
       properties:
