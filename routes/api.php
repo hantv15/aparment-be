@@ -25,7 +25,9 @@ Route::post('register', [AuthController::class, 'register']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/apartment', [ApartmentController::class, 'getApartment'])->name('apartment');
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+    Route::post('/send-notification', [\App\Http\Controllers\ApartmentNotiController::class, 'sendNotification'])->name('save-token');
 });
+Route::get('test', [\App\Http\Controllers\ApartmentNotiController::class, 'test']);
 
 Route::get('/department', [DepartmentController::class, 'getDepartment'])->name('department');
 
