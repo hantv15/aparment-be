@@ -19,6 +19,8 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('register', [AuthController::class, 'registerForm'])->name('register');
 Route::post('register', [AuthController::class, 'register']);
 
+// Route::get('/department', [DepartmentController::class, 'getDepartment'])->name('department');
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/apartment', [ApartmentController::class, 'getApartment'])->name('apartment');
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
