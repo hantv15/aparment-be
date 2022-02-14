@@ -16,14 +16,15 @@ class LoginResource extends JsonResource
     {
         return 
         [
-            'user_name'   => $this->user_name,
-            'email' => $this->email,
-            'name'  => $this->name,
-            'dob' => $this->dob,
-            'phone'  => $this->phone,
-            'department_id'=>$this->department_id,
-            'role'=>$this->role,
-            'avatar'=>$this->avatar,
+            'token' => $this->token,
+            'department_id' => $this->department_id,
+            'floor' => $this->floor,
+            'status' => $this->status,
+            'description' => $this->description,
+            'square_meters' => $this->square_meters,
+            'type_department' => $this->type_department,
+            'tower' => $this->tower,
+            'user_id' => $this->user_id,
         ]
         ;
     }

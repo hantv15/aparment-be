@@ -4,7 +4,7 @@ info:
   description: Department API Documentation
   version: 1.0.0
 paths:
-  /apartment:
+  /department:
     get:
       tags:
         - Department
@@ -14,7 +14,7 @@ paths:
         - application/json
       responses:
         '200':
-          description: A list of pets.
+          description: A list of departments.
           schema:
             type: object
             properties:
@@ -28,6 +28,63 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Department'
+  /service:
+    get:
+      tags:
+        - Service
+      summary: 'Get list Service'
+      description: 'Get list Service'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A list of services.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'
+  /service/add:
+    post:
+      tags:
+        - Service
+      summary: 'Add a new service'
+      description: 'Add a new service'
+      produces:
+        - application/json
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Service object that needs to be added to the system"
+        required: true
+        schema:
+          $ref: "#/components/schemas/NewService"
+      responses:
+        '200':
+          description: Add a new service.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewService'
+        '405':
+          description: "Invalid input"
   /login:
     post:
       tags:
@@ -37,11 +94,11 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: "email"
+        - name: "department_id"
           in: "query"
-          description: "Type your Email"
+          description: "Type your department_id"
           required: true
-          type: "email"
+          type: "string"
         - name: "password"
           in: "query"
           description: "Type your Password"
@@ -58,13 +115,13 @@ paths:
                 example: true
               message:
                 type: string
-                example: 'Login successfully'
+                example: ''
               data:
                 type: array
                 items:
                   $ref: '#/components/schemas/Login'
-        '401':
-          description: Login failed
+        '400':
+          description: "Error: Bad Request"
           schema:
             type: object
             properties:
@@ -73,7 +130,11 @@ paths:
                 example: false
               message:
                 type: string
-                example: "Bad creds"
+                example: ""
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoginFail'
   /register:
     post:
       tags:
@@ -133,67 +194,89 @@ components:
     Department:
       type: object
       properties:
-        no_department:
+        department_id:
          type: string
-         example: "DPM59"
-        type_department:
+         example: "P101"
+        floor:
          type: number
          example: 1
         status:
-          type: number
-          example: 1
+         type: number
+         example: 1
         description:
-          type: number
-          example: 1
+         type: string
+         example: "Phong 2 ban cong"
         square_meters:
-          type: number
-          example: 1
+         type: number
+         example: 50
+        type_department:
+         type: number
+         example: 1
       xml:
         name: Department
+    Service:
+      type: object
+      properties:
+        name:
+         type: string
+         example: "Tien dien"
+        price:
+         type: number
+         example: 150000
+        description:
+         type: string
+         example: "Tien dien thang 1/2022"
+      xml:
+        name: Service
+    NewService:
+      type: object
+      properties:
+        name:
+         type: string
+         example: "Tien nuoc"
+        price:
+         type: number
+         example: 50000
+        description:
+         type: string
+         example: "Tien nuoc thang 1/2022"
+      xml:
+        name: Service
     Login:
       type: object
       properties:
-        user:
-         type: object
-         properties:
-          id:
-            type: string
-            example: 10
-          user_name:
-            type: string
-            example: "ty4"
-          email:
-            type: string
-            example: "ty4@gmail.com"
-          name:
-            type: string
-            example: "123456"
-          dob:
-            type: date
-            example: "2000-12-31"
-          department_id:
-            type: number
-            example: 1
-          phone:
-            type: string
-            example: "0987654321"
-          role:
-            type: number
-            example: 1
-          avatar:
-            type: string
-            example: "https://img.freepik.com/free-photo/hand-painted-watercolor-background-with-sky-clouds-shape_24972-1095.jpg?size=626&ext=jpg"
-          created_at:
-            type: datetime
-            example: "2022-01-20T06:03:10.000000Z"
-          updated_at:
-            type: datetime
-            example: "2022-01-20T06:03:10.000000Z"
         token:
-         type: string
-         example: "1|tsRmBoNrTbBE2Z1m9fJTdd6K1O6wY1IfJ8RTFSbd"
+          type: string
+          example: "28|QgGSL8vv33zKmWDHd07Y6vOur7lfixfEtEzTnWM0"
+        department_id:
+          type: string
+          example: "P300"
+        floor:
+          type: number
+          example: 1
+        status:
+          type: number
+          example: 0
+        description:
+          type: string
+          example: "Phòng rộng"
+        square_meters:
+          type: number
+          example: 60
+        type_department:
+          type: number
+          example: 1
+        tower:
+          type: string
+          expamle: "P"
+        user_id:
+          type: number
+          example: 1
       xml:
         name: Login
+    LoginFail:
+      type: object
+      properties:
     RequestRegister:
       type: object
       properties:

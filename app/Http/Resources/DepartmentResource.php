@@ -2,31 +2,25 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ApartmentResource extends JsonResource
+class DepartmentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param Request $request
-     * @return array
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
     {
         return [
             'department_id'   => $this->department_id,
             'floor'           => $this->floor,
-            'no_department'   => $this->no_department,
-            'type_department' => $this->type_department,
             'status'          => $this->status,
             'description'     => $this->description,
             'square_meters'   => $this->square_meters,
+            'type_department' => $this->type_department,
         ];
     }
 }
-
-
-

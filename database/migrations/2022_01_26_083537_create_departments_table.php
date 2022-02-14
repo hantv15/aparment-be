@@ -20,7 +20,7 @@ class CreateDepartmentsTable extends Migration
             $table->tinyInteger('status')->default(0);
             $table->text('description')->nullable();
             $table->float('square_meters')->nullable();
-            $table->tinyInteger('type_department');
+            $table->tinyInteger('type_department')->default(1);
             $table->timestamps();
         });
     }

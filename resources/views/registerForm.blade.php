@@ -1,8 +1,18 @@
 <form action="" method="POST">
     @csrf
-    <input type="text" name="user_name" id="">
-    <input type="email" name="email" id="">
-    <input type="password" name="password">
-    <input type="password" name="password_confirmation">
-    <button type="submit">ok</button>
+    <div>
+        <label for="">Department ID</label>
+        <input type="text" name="department_id" id="">
+    </div>
+    <div>
+        <label for="">Pass</label>
+        <input type="password" name="password" id="">
+    </div>
+    <div>
+        <label for="">Nhập lại</label>
+        <input type="password" name="password_confirmation" id="">
+    </div>
+    <div>
+        <button type="submit">ok</button>
+    </div>
 </form>

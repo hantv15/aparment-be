@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Http\Resources\LoginResource;
 use App\Http\Resources\RegisterResource;
+use App\Models\Department;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
@@ -16,65 +17,48 @@ class AuthController extends Controller
     public function registerForm(){
         return view('registerForm');
     }
+
     public function register(Request $request): JsonResponse
     {
         $request->validate([
-            'user_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'department_id' => 'required|string|max:10|unique:departments',
             'password' => 'required|string|confirmed',
         ]);
-        
-        $user = User::create([
-            'user_name' => $request->user_name,
-            'email' => $request->email,
+        $department = Department::create([
+            'department_id' => $request->department_id,
             'password' => Hash::make($request->password),
         ]);
-
-        event(new Registered($user));
-
-        $token = $user->createToken('authtoken')->plainTextToken;
-        $result = new RegisterResource($user);
-        return $this->success($result,$token);
-        // return response()->json(
-        //     [
-        //         'message'=>'User Registered',
-        //         'data'=> ['token' => $token->plainTextToken, 'user' => $user]
-        //     ]
-        // );
-
+        event(new Registered($department));
+        $token = $department->createToken('authtoken')->plainTextToken;
+        $result = new RegisterResource($department);
+        return $this->success($result);
     }
 
     public function loginForm(){
         return view('loginform');
     }
+
     public function login(Request $request): JsonResponse
     {
-    $fields = $request->validate([
-        'email' => 'required|string',
-        'password' => 'required|string'
-    ]);
-
-    // Check email
-    $user = User::where('email', $fields['email'])->first();
-
-    // Check password
-    if(!$user || !Hash::check($fields['password'], $user->password)) {
-        return response([
-            'message' => 'Bad creds'
-        ], 401);
-    }
-    $result = new LoginResource($user);
-   
-    $token = $user->createToken('myapptoken')->plainTextToken;
-    
-
-    return $this->success($result,$token,201);
+        $fields = $request->validate([
+            'department_id' => 'required|string|max:10',
+            'password' => 'required|string'
+        ]);
+        // Check department_id
+        $department = Department::where('department_id', $fields['department_id'])->first();
+        // Check password
+        if(!$department || !Hash::check($fields['password'], $department->password)) {
+            return $this->failed();
+        }
+        $result = new LoginResource($department);
+        $token = $department->createToken('myapptoken')->plainTextToken;
+        $result->token = $token;
+        return $this->success($result);
     }
 
     public function logout(Request $request)
     {
         auth()->user()->tokens()->delete();
-
         return [
             'message' => 'Logged out'
         ];
