@@ -37,7 +37,6 @@ class AuthController extends Controller
     public function loginForm(){
         return view('loginform');
     }
-
     public function login(Request $request): JsonResponse
     {
         $fields = $request->validate([

@@ -25,7 +25,8 @@ class User extends Authenticatable
         'dob',
         'department_id',
         'phone',
-        'role'
+        'role',
+        'device_key'
     ];
 
     /**
@@ -46,4 +47,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function routeNotificationFor($channel): string
+    {
+        if($channel === 'PusherPushNotifications'){
+            return 'your.custom.interest.string';
+        }
+
+        $class = str_replace('\\', '.', get_class($this));
+
+        return $class.'.'.$this->getKey();
+    }
 }

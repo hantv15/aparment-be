@@ -23,10 +23,14 @@ Route::get('register', [AuthController::class, 'registerForm'])->name('register'
 Route::post('register', [AuthController::class, 'register']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/department', [DepartmentController::class, 'getDepartment'])->name('department');
-
-    Route::get('/service', [ServiceController::class, 'getService'])->name('service');
-    Route::post('/service/add', [ServiceController::class, 'addService']);
-
+    Route::get('/apartment', [ApartmentController::class, 'getApartment'])->name('apartment');
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+    Route::post('/send-notification', [\App\Http\Controllers\ApartmentNotiController::class, 'sendNotification'])->name('save-token');
 });
+Route::get('test', [\App\Http\Controllers\ApartmentNotiController::class, 'test']);
+
+Route::get('/department', [DepartmentController::class, 'getDepartment'])->name('department');
+
+Route::get('/service', [ServiceController::class, 'getService'])->name('service');
+Route::post('/service/add', [ServiceController::class, 'addService']);
+
