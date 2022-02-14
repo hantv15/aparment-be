@@ -94,11 +94,11 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: "email"
+        - name: "department_id"
           in: "query"
-          description: "Type your Email"
+          description: "Type your department_id"
           required: true
-          type: "email"
+          type: "string"
         - name: "password"
           in: "query"
           description: "Type your Password"
@@ -115,13 +115,13 @@ paths:
                 example: true
               message:
                 type: string
-                example: 'Login successfully'
+                example: ''
               data:
                 type: array
                 items:
                   $ref: '#/components/schemas/Login'
-        '401':
-          description: Login failed
+        '400':
+          description: "Error: Bad Request"
           schema:
             type: object
             properties:
@@ -130,7 +130,11 @@ paths:
                 example: false
               message:
                 type: string
-                example: "Bad creds"
+                example: ""
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoginFail'
   /register:
     post:
       tags:
@@ -241,47 +245,38 @@ components:
     Login:
       type: object
       properties:
-        user:
-         type: object
-         properties:
-          id:
-            type: string
-            example: 10
-          user_name:
-            type: string
-            example: "ty4"
-          email:
-            type: string
-            example: "ty4@gmail.com"
-          name:
-            type: string
-            example: "123456"
-          dob:
-            type: date
-            example: "2000-12-31"
-          department_id:
-            type: number
-            example: 1
-          phone:
-            type: string
-            example: "0987654321"
-          role:
-            type: number
-            example: 1
-          avatar:
-            type: string
-            example: "https://img.freepik.com/free-photo/hand-painted-watercolor-background-with-sky-clouds-shape_24972-1095.jpg?size=626&ext=jpg"
-          created_at:
-            type: datetime
-            example: "2022-01-20T06:03:10.000000Z"
-          updated_at:
-            type: datetime
-            example: "2022-01-20T06:03:10.000000Z"
         token:
-         type: string
-         example: "1|tsRmBoNrTbBE2Z1m9fJTdd6K1O6wY1IfJ8RTFSbd"
+          type: string
+          example: "28|QgGSL8vv33zKmWDHd07Y6vOur7lfixfEtEzTnWM0"
+        department_id:
+          type: string
+          example: "P300"
+        floor:
+          type: number
+          example: 1
+        status:
+          type: number
+          example: 0
+        description:
+          type: string
+          example: "Phòng rộng"
+        square_meters:
+          type: number
+          example: 60
+        type_department:
+          type: number
+          example: 1
+        tower:
+          type: string
+          expamle: "P"
+        user_id:
+          type: number
+          example: 1
       xml:
         name: Login
+    LoginFail:
+      type: object
+      properties:
     RequestRegister:
       type: object
       properties:
