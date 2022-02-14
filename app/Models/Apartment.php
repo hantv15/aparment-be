@@ -9,6 +9,6 @@ class Apartment extends Model
 {
     use HasFactory;
 
-    protected $table = 'apartments';
+    protected $table = 'departments';
     protected $guarded = ['id'];
 }
