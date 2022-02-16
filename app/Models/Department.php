@@ -15,4 +15,14 @@ class Department extends Model
 
     protected $table = 'departments';
     protected $guarded = ['id'];
+
+    public function bills(){
+        return $this->hasMany(Bill::class, 'department_id');
+    }
+    public function user_department(){
+        return $this->hasMany(UserDepartment::class, 'department_id');
+    }
+    public function users(){
+        return $this->belongsToMany(User::class, 'user_department', 'department_id', 'user_id');
+    }
 }
