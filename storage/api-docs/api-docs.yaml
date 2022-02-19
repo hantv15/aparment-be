@@ -61,12 +61,12 @@ paths:
       produces:
         - application/json
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Service object that needs to be added to the system"
-        required: true
-        schema:
-          $ref: "#/components/schemas/NewService"
+        - in: "body"
+          name: "body"
+          description: "Service object that needs to be added to the system"
+          required: true
+          schema:
+            $ref: "#/components/schemas/NewService"
       responses:
         '200':
           description: Add a new service.
@@ -88,7 +88,7 @@ paths:
   /login:
     post:
       tags:
-        - Login
+        - Authenticate
       summary: 'Login into the system'
       description: 'Login'
       produces:
@@ -138,20 +138,20 @@ paths:
   /register:
     post:
       tags:
-        - Register
+        - Authenticate
       summary: 'Register new account'
       description: 'Register new account'
       produces:
         - application/json
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Information new account"
-        required: true
-        schema:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/RequestRegister"
+        - in: "body"
+          name: "body"
+          description: "Information new account"
+          required: true
+          schema:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/RequestRegister"
       responses:
         '200':
           description: Register new account'.
@@ -165,13 +165,13 @@ paths:
                 type: string
                 example: 'User Registered'
               data:
-                type: array
+                type: object
                 items:
                   $ref: '#/components/schemas/Register'
   /logout:
     post:
       tags:
-        - Logout
+        - Authenticate
       summary: 'Logout'
       description: 'Logout'
       produces:
@@ -195,51 +195,51 @@ components:
       type: object
       properties:
         department_id:
-         type: string
-         example: "P101"
+          type: string
+          example: "P101"
         floor:
-         type: number
-         example: 1
+          type: number
+          example: 1
         status:
-         type: number
-         example: 1
+          type: number
+          example: 1
         description:
-         type: string
-         example: "Phong 2 ban cong"
+          type: string
+          example: "Phong 2 ban cong"
         square_meters:
-         type: number
-         example: 50
+          type: number
+          example: 50
         type_department:
-         type: number
-         example: 1
+          type: number
+          example: 1
       xml:
         name: Department
     Service:
       type: object
       properties:
         name:
-         type: string
-         example: "Tien dien"
+          type: string
+          example: "Tien dien"
         price:
-         type: number
-         example: 150000
+          type: number
+          example: 150000
         description:
-         type: string
-         example: "Tien dien thang 1/2022"
+          type: string
+          example: "Tien dien thang 1/2022"
       xml:
         name: Service
     NewService:
       type: object
       properties:
         name:
-         type: string
-         example: "Tien nuoc"
+          type: string
+          example: "Tien nuoc"
         price:
-         type: number
-         example: 50000
+          type: number
+          example: 50000
         description:
-         type: string
-         example: "Tien nuoc thang 1/2022"
+          type: string
+          example: "Tien nuoc thang 1/2022"
       xml:
         name: Service
     Login:
@@ -307,31 +307,31 @@ components:
       type: object
       properties:
         token:
-         type: string
-         example: "7|OZ6J1PNvifzScSlKCCOXL743AF0mSxOEjkTfyVZo"
+          type: string
+          example: "7|OZ6J1PNvifzScSlKCCOXL743AF0mSxOEjkTfyVZo"
         user:
-         type: object
-         properties:
-          user_name:
-            type: string
-            example: "ty5"
-          email:
-            type: string
-            example: "ty5@gmail.com"
-          name:
-            type: string
-            example: "Duc Anh"
-          department_id:
-            type: number
-            example: 1
-          role:
-            type: number
-            example: 1
-          created_at:
-            type: datetime
-            example: "2022-01-20T06:03:10.000000Z"
-          updated_at:
-            type: datetime
-            example: "2022-01-20T06:03:10.000000Z"
+          type: object
+          properties:
+            user_name:
+              type: string
+              example: "ty5"
+            email:
+              type: string
+              example: "ty5@gmail.com"
+            name:
+              type: string
+              example: "Duc Anh"
+            department_id:
+              type: number
+              example: 1
+            role:
+              type: number
+              example: 1
+            created_at:
+              type: datetime
+              example: "2022-01-20T06:03:10.000000Z"
+            updated_at:
+              type: datetime
+              example: "2022-01-20T06:03:10.000000Z"
       xml:
         name: Register

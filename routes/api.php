@@ -35,5 +35,9 @@ Route::get('/department', [DepartmentController::class, 'getDepartment'])->name(
 Route::get('/bill_details', [BillDetailController::class, 'getBillDetail']);
 Route::get('/bill_details/{id}', [BillDetailController::class, 'getBillDetailById']);
 
+Route::post('payment', [\App\Http\Controllers\PaymentController::class, 'payment']);
+Route::get('/service', [ServiceController::class, 'getService'])->name('service');
+Route::post('/service/add', [ServiceController::class, 'addService']);
+
 Route::get('/service', [ServiceController::class, 'getService'])->name('service');
 Route::post('/service/add', [ServiceController::class, 'addService']);
