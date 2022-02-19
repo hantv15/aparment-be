@@ -33,4 +33,3 @@ Route::get('/department', [DepartmentController::class, 'getDepartment'])->name(
 Route::post('payment', [\App\Http\Controllers\PaymentController::class, 'payment']);
 Route::get('/service', [ServiceController::class, 'getService'])->name('service');
 Route::post('/service/add', [ServiceController::class, 'addService']);
-
