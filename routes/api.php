@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\BillDetailController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\ResidentCardController;
 use App\Http\Controllers\ServiceController;
 
 /*
@@ -31,10 +32,19 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::get('test', [\App\Http\Controllers\ApartmentNotiController::class, 'test']);
 
 Route::get('/department', [DepartmentController::class, 'getDepartment'])->name('department');
+<<<<<<< HEAD
 Route::post('payment', [\App\Http\Controllers\PaymentController::class, 'payment']);
+=======
+Route::get('department/{id}', [DepartmentController::class, 'getDepartmentInfo']);
+Route::get('department/{id}/resident-card', [ResidentCardController::class, 'getResidentCardByDepartmentId']);
+>>>>>>> 0e16ea4 (update resident card)
 
 Route::get('/bill_details', [BillDetailController::class, 'getBillDetail']);
 Route::get('/bill_details/{id}', [BillDetailController::class, 'getBillDetailById']);
 
 Route::get('/service', [ServiceController::class, 'getService'])->name('service');
+<<<<<<< HEAD
 Route::post('/service/add', [ServiceController::class, 'addService']);
+=======
+Route::post('/service/add', [ServiceController::class, 'addService']);
+>>>>>>> 0e16ea4 (update resident card)
