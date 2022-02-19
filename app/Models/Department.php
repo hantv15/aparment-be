@@ -16,6 +16,12 @@ class Department extends Model
     protected $table = 'departments';
     protected $guarded = ['id'];
 
+    protected $hidden = [
+        'password',
+        'created_at',
+        'updated_at'
+    ];
+
     public function bills(){
         return $this->hasMany(Bill::class, 'department_id');
     }

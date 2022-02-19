@@ -33,4 +33,13 @@ class DepartmentController extends Controller
         $departments->load('bills', 'users');
         return $this->success($departments);
     }
+
+    public function getDepartmentInfo($id){
+        $department = Department::join('users', 'departments.user_id', '=', 'users.id')
+                                ->select('departments.*', 'users.name', 'users.avatar', 'users.phone_number', 'users.email')
+                                ->where('departments.id', $id)
+                                ->get();
+        $department->load('users');
+        return $this->success($department);
+    }
 }
