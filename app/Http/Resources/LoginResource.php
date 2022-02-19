@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class LoginResource extends JsonResource
@@ -24,7 +25,7 @@ class LoginResource extends JsonResource
             'square_meters' => $this->square_meters,
             'type_department' => $this->type_department,
             'tower' => $this->tower,
-            'user_id' => $this->user_id,
+            'user_id' => User::where('id', $this->user_id)->first(),
         ]
         ;
     }

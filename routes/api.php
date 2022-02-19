@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\BillDetailController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ServiceController;
 
@@ -31,6 +32,8 @@ Route::get('test', [\App\Http\Controllers\ApartmentNotiController::class, 'test'
 
 Route::get('/department', [DepartmentController::class, 'getDepartment'])->name('department');
 
+Route::get('/bill_details', [BillDetailController::class, 'getBillDetail']);
+Route::get('/bill_details/{id}', [BillDetailController::class, 'getBillDetailById']);
+
 Route::get('/service', [ServiceController::class, 'getService'])->name('service');
 Route::post('/service/add', [ServiceController::class, 'addService']);
-
