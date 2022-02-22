@@ -16,6 +16,7 @@ class CreateBillsTable extends Migration
     {
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 255);
             $table->decimal('total', 8, 2);
             $table->tinyInteger('status')->default(0);
             $table->tinyInteger('type_payment')->default(0);
