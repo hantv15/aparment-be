@@ -40,8 +40,8 @@ Route::get('department/{id}/finance/{bill_id}/bill_detail', [DepartmentControlle
 // Thông tin thẻ cư dân của phòng
 Route::get('department/{id}/resident-card', [ResidentCardController::class, 'getResidentCardByDepartmentId']);
 
-Route::get('/bill_details', [BillDetailController::class, 'getBillDetail']);
-Route::get('/bill_details/{id}', [BillDetailController::class, 'getBillDetailById']);
+Route::get('/bill_detail', [BillDetailController::class, 'getBillDetail']);
+Route::get('/bill_detail/{id}', [BillDetailController::class, 'getBillDetailById']);
 
 Route::post('payment', [\App\Http\Controllers\PaymentController::class, 'payment']);
 Route::get('/service', [ServiceController::class, 'getService'])->name('service');
