@@ -43,11 +43,10 @@ Route::get('/apartment/{id}', [ApartmentController::class, 'getApartmentInfo']);
 // Route::get('/apartment/{id}/finance', [ApartmentController::class, 'getBillByApartmentId']);
 // Route::get('/apartment/{id}/finance/{bill_id}/bill_detail', [ApartmentController::class, 'getBillDetailByApartmentId']);
 // Route::get('/apartment/{id}/resident-card', [ResidentCardController::class, 'getResidentCardByApartmentId']);
+Route::get('/bill_detail', [BillDetailController::class, 'getBillDetail']);
+Route::get('/bill_detail/{id}', [BillDetailController::class, 'getBillDetailById']);
 
 Route::get('/service', [ServiceController::class, 'getService'])->name('service');
 Route::post('/service/add', [ServiceController::class, 'addService']);
-
-Route::get('/bill_detail', [BillDetailController::class, 'getBillDetail']);
-Route::get('/bill_detail/{id}', [BillDetailController::class, 'getBillDetailById']);
 
 Route::post('payment', [\App\Http\Controllers\PaymentController::class, 'payment']);
