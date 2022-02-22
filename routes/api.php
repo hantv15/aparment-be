@@ -32,7 +32,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::get('test', [\App\Http\Controllers\ApartmentNotiController::class, 'test']);
 
 Route::get('/department', [DepartmentController::class, 'getDepartment'])->name('department');
+// Thông tin phòng
 Route::get('department/{id}', [DepartmentController::class, 'getDepartmentInfo']);
+// Thông tin tài chính của phòng
+Route::get('department/{id}/finance', [DepartmentController::class, 'getBillByDepartmentId']);
+Route::get('department/{id}/finance/{bill_id}/bill_detail', [DepartmentController::class, 'getBillDetailByDepartmentId']);
+// Thông tin thẻ cư dân của phòng
 Route::get('department/{id}/resident-card', [ResidentCardController::class, 'getResidentCardByDepartmentId']);
 
 Route::get('/bill_details', [BillDetailController::class, 'getBillDetail']);

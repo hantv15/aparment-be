@@ -4,7 +4,7 @@ info:
   description: Department API Documentation
   version: 1.0.0
 paths:
-  /department:
+  /api/department:
     get:
       tags:
         - Department
@@ -28,7 +28,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Department'
-  /service:
+  /api/service:
     get:
       tags:
         - Service
@@ -52,7 +52,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Service'
-  /service/add:
+  /api/service/add:
     post:
       tags:
         - Service
@@ -85,7 +85,7 @@ paths:
                   $ref: '#/components/schemas/NewService'
         '405':
           description: "Invalid input"
-  /login:
+  /api/login:
     post:
       tags:
         - Authenticate
@@ -135,7 +135,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/LoginFail'
-  /register:
+  /api/register:
     post:
       tags:
         - Authenticate
@@ -168,7 +168,7 @@ paths:
                 type: object
                 items:
                   $ref: '#/components/schemas/Register'
-  /logout:
+  /api/logout:
     post:
       tags:
         - Authenticate
