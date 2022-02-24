@@ -1,11 +1,11 @@
 <form action="" method="POST">
     @csrf
     <div>
-        <label for="">Email</label>
-        <input type="email" name="email">
+        <label for="">Nhập SĐT hoặc Email</label>
+        <input type="text" name="username">
     </div>
     <div>
-        <label for="">Pass</label>
+        <label for="">Password</label>
         <input type="password" name="password">
     </div>
     <button type="submit">ok</button>
