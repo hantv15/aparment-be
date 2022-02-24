@@ -16,6 +16,7 @@ class AuthController extends Controller
 {
     public function registerForm(){
         $departments = Department::all();
+        $departments->load('user');
         return view('registerForm', compact('departments'));
     }
 
@@ -23,12 +24,14 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|string|unique:users',
-            'phone_number' => 'required',
+            'phone_number' => 'required|unique:users',
+            'department_id' => 'unique:users',
             'password' => 'required|string|confirmed',
         ]);
         $user = User::create([
             'email' => $request->email,
             'phone_number' => $request->phone_number,
+            'department_id' => $request->department_id,
             'password' => Hash::make($request->password),
         ]);
         event(new Registered($user));
