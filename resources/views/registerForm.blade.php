@@ -1,8 +1,20 @@
 <form action="" method="POST">
     @csrf
     <div>
-        <label for="">Tên phòng</label>
-        <input type="text" name="department_id" id="">
+        <label for="">Email</label>
+        <input type="email" name="email" id="">
+    </div>
+    <div>
+        <label for="">Phone</label>
+        <input type="text" name="phone_number" id="">
+    </div>
+    <div>
+        <label for="">Phòng</label>
+        <select name="department_id" id="">
+        @foreach ($departments as $item)
+            <option value="{{$item->id}}">{{$item->department_id}}</option>
+        @endforeach
+        </select>
     </div>
     <div>
         <label for="">Mật khẩu</label>

@@ -15,22 +15,25 @@ use Illuminate\Http\JsonResponse;
 class AuthController extends Controller
 {
     public function registerForm(){
-        return view('registerForm');
+        $departments = Department::all();
+        return view('registerForm', compact('departments'));
     }
 
     public function register(Request $request): JsonResponse
     {
         $request->validate([
-            'department_id' => 'required|string|max:10|unique:departments',
+            'email' => 'required|string|unique:users',
+            'phone_number' => 'required',
             'password' => 'required|string|confirmed',
         ]);
-        $department = Department::create([
-            'department_id' => $request->department_id,
+        $user = User::create([
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
             'password' => Hash::make($request->password),
         ]);
-        event(new Registered($department));
-        $token = $department->createToken('authtoken')->plainTextToken;
-        $result = new RegisterResource($department);
+        event(new Registered($user));
+        $token = $user->createToken('authtoken')->plainTextToken;
+        $result = new RegisterResource($user);
         return $this->success($result);
     }
 
@@ -40,19 +43,18 @@ class AuthController extends Controller
     public function login(Request $request): JsonResponse
     {
         $fields = $request->validate([
-            'department_id' => 'required|string|max:10',
+            'email' => 'required|string',
             'password' => 'required|string'
         ]);
-        // Check department_id
-        $department = Department::where('department_id', $fields['department_id'])->first();
+        // Check email
+        $user = User::where('email', $fields['email'])->first();
         // Check password
-        if(!$department || !Hash::check($fields['password'], $department->password)) {
+        if(!$user || !Hash::check($fields['password'], $user->password)) {
             return $this->failed();
         }
-        $result = new LoginResource($department);
-        $token = $department->createToken('myapptoken')->plainTextToken;
+        $result = new LoginResource($user);
+        $token = $user->createToken('myapptoken')->plainTextToken;
         $result->token = $token;
-        $result->load('user_department');
         return $this->success($result);
     }
 
