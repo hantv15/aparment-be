@@ -1,8 +1,8 @@
 <form action="" method="POST">
     @csrf
     <div>
-        <label for="">Phòng</label>
-        <input type="text" name="department_id">
+        <label for="">Email</label>
+        <input type="email" name="email">
     </div>
     <div>
         <label for="">Pass</label>

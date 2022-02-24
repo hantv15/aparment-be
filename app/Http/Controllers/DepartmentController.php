@@ -13,8 +13,7 @@ use Illuminate\Http\Request;
 class DepartmentController extends Controller
 {
     public function getDepartment(Request $request): JsonResponse
-    {
-        
+    {        
         $departments = Department::all();
         if ($request->filled('department_id') || $request->filled('keyword')) {
             $departments = Department::join('users', 'departments.user_id', '=', 'users.id')

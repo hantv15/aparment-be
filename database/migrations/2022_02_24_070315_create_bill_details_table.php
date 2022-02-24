@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateResidentCardsTable extends Migration
+class CreateBillDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,23 +13,21 @@ class CreateResidentCardsTable extends Migration
      */
     public function up()
     {
-        Schema::create('resident_cards', function (Blueprint $table) {
+        Schema::create('bill_details', function (Blueprint $table) {
             $table->id();
-            $table->string('card_id', 10);
+            
+            $table->unsignedBigInteger('service_id');
+            $table->foreign('service_id')->references('id')->on('services')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
 
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')
+            $table->unsignedBigInteger('bill_id');
+            $table->foreign('bill_id')->references('id')->on('bills')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
             
-            $table->date('date_of_issue');
-
-            $table->unsignedBigInteger('vehicle_id');
-            $table->foreign('vehicle_id')->references('id')->on('vehicles')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
-            
-            $table->string('plate_number');
+            $table->integer('quantity')->default(0);
+            $table->decimal('total_price', 10, 2);
             $table->timestamps();
         });
     }
@@ -41,6 +39,6 @@ class CreateResidentCardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('resident_cards');
+        Schema::dropIfExists('bill_details');
     }
 }

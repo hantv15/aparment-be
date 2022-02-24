@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,14 +19,15 @@ class LoginResource extends JsonResource
         return 
         [
             'token' => $this->token,
-            'department_id' => $this->department_id,
-            'floor' => $this->floor,
+            'email' => $this->email,
+            'phone_number' => $this->phone_number,
+            'name' => $this->name,
+            'dob' => $this->dob,
+            'number_card' => $this->number_card,
             'status' => $this->status,
-            'description' => $this->description,
-            'square_meters' => $this->square_meters,
-            'type_department' => $this->type_department,
-            'tower' => $this->tower,
-            'user_id' => User::where('id', $this->user_id)->first(),
+            'department_id' => Department::where('id', $this->department_id)->first(),
+            'avatar' => $this->avatar,
+            'role_id' => $this->role_id,
         ]
         ;
     }

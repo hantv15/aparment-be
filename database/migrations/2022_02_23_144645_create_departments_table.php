@@ -21,6 +21,18 @@ class CreateDepartmentsTable extends Migration
             $table->text('description')->nullable();
             $table->float('square_meters')->nullable();
             $table->tinyInteger('type_department')->default(1);
+            $table->string('password', 255);
+
+            $table->unsignedBigInteger('building_id');
+            $table->foreign('building_id')->references('id')->on('buildings')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
+
+            $table->unsignedBigInteger('user_id')->unique();
+            // $table->foreign('user_id')->references('id')->on('users')
+            //         ->onUpdate('cascade')
+            //         ->onDelete('cascade');
+
             $table->timestamps();
         });
     }
