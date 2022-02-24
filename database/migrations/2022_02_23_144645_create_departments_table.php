@@ -28,7 +28,7 @@ class CreateDepartmentsTable extends Migration
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
 
-            $table->unsignedBigInteger('user_id')->unique();
+            $table->unsignedBigInteger('user_id')->unique()->nullable();
             // $table->foreign('user_id')->references('id')->on('users')
             //         ->onUpdate('cascade')
             //         ->onDelete('cascade');

@@ -22,13 +22,8 @@ class Department extends Model
         'updated_at'
     ];
 
-    public function bills(){
-        return $this->hasMany(Bill::class, 'department_id');
+    public function user(){
+        return $this->hasOne(User::class, 'department_id');
     }
-    public function user_department(){
-        return $this->hasMany(UserDepartment::class, 'department_id');
-    }
-    public function users(){
-        return $this->belongsToMany(User::class, 'user_department', 'department_id', 'user_id');
-    }
+    
 }
