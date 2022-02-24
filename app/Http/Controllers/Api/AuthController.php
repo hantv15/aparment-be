@@ -43,19 +43,33 @@ class AuthController extends Controller
     public function login(Request $request): JsonResponse
     {
         $fields = $request->validate([
-            'email' => 'required|string',
+            'username' => 'required',
             'password' => 'required|string'
         ]);
         // Check email
-        $user = User::where('email', $fields['email'])->first();
+        $count_user_by_email = User::where('email', $fields['username'])->count();
+        $count_user_by_phone = User::where('phone_number', $fields['username'])->count();
+        $user_by_email = User::where('email', $fields['username'])->first();
+        $user_by_phone = User::where('phone_number', $fields['username'])->first();
         // Check password
-        if(!$user || !Hash::check($fields['password'], $user->password)) {
-            return $this->failed();
+        if ($count_user_by_email > 0) {
+            if(!$user_by_email || !Hash::check($fields['password'], $user_by_email->password)) {
+                return $this->failed();
+            }
+            $result = new LoginResource($user_by_email);
+            $token = $user_by_email->createToken('myapptoken')->plainTextToken;
+            $result->token = $token;
+            return $this->success($result);
+        } elseif ($count_user_by_phone > 0) {
+            if(!$user_by_phone || !Hash::check($fields['password'], $user_by_phone->password)) {
+                return $this->failed();
+            }
+            $result = new LoginResource($user_by_phone);
+            $token = $user_by_phone->createToken('myapptoken')->plainTextToken;
+            $result->token = $token;
+            return $this->success($result);
         }
-        $result = new LoginResource($user);
-        $token = $user->createToken('myapptoken')->plainTextToken;
-        $result->token = $token;
-        return $this->success($result);
+        
     }
 
     public function logout(Request $request)
