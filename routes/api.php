@@ -38,7 +38,7 @@ Route::get('/apartment', [ApartmentController::class, 'getApartment'])->name('ap
 Route::get('/apartment/add', [ApartmentController::class, 'addForm']);
 Route::post('/apartment/add', [ApartmentController::class, 'saveAdd']);
 Route::get('/apartment/{id}', [ApartmentController::class, 'getApartmentInfo']);
-// Route::get('/apartment/{id}/finance', [ApartmentController::class, 'getBillByApartmentId']);
+ Route::get('/apartment/{id}/finance', [ApartmentController::class, 'getBillByApartmentId']);
 // Route::get('/apartment/{id}/finance/{bill_id}/bill_detail', [ApartmentController::class, 'getBillDetailByApartmentId']);
 // Route::get('/apartment/{id}/resident-card', [ResidentCardController::class, 'getResidentCardByApartmentId']);
 Route::get('/bill_detail', [BillDetailController::class, 'getBillDetail']);

@@ -25,6 +25,7 @@ class ApartmentController extends Controller
             $apartments = Apartment::join('users', 'apartments.id', '=', 'users.apartment_id')
                 ->join('buildings', 'apartments.building_id', '=', 'buildings.id')
                 ->select(
+                    'apartments.id',
                     'apartments.apartment_id',
                     'apartments.floor',
                     'apartments.status',
@@ -53,6 +54,7 @@ class ApartmentController extends Controller
             $apartments = Apartment::join('users', 'apartments.id', '=', 'users.apartment_id')
                 ->join('buildings', 'apartments.building_id', '=', 'buildings.id')
                 ->select(
+                    'apartments.id',
                     'apartments.apartment_id',
                     'apartments.floor',
                     'apartments.status',
@@ -101,13 +103,21 @@ class ApartmentController extends Controller
      */
     public function getApartmentInfo($id): JsonResponse
     {
-        $department = Department::join('users', 'departments.user_id', '=', 'users.id')
-            ->select('departments.*', 'users.name', 'users.avatar', 'users.phone_number', 'users.email')
-            ->where('departments.id', $id)
+        $apartment = Apartment::join('users', 'apartments.id', '=', 'users.apartment_id')
+            ->join('buildings', 'apartments.building_id', '=', 'buildings.id')
+            ->select(
+                'apartments.apartment_id',
+                'users.phone_number',
+                'buildings.name as building_name',
+                'apartments.square_meters',
+                'apartments.status',
+                'users.name',
+                'users.avatar'
+            )
+            ->where('apartments.id', $id)
             ->get();
-        $department->load('users');
 
-        return $this->success($department);
+        return $this->success($apartment);
     }
 
     /**
