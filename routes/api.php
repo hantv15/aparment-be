@@ -46,5 +46,7 @@ Route::get('/bill_detail/{id}', [BillDetailController::class, 'getBillDetailById
 
 Route::get('/service', [ServiceController::class, 'getService'])->name('service');
 Route::post('/service/add', [ServiceController::class, 'addService']);
+Route::get('/service/edit/{id}', [ServiceController::class, 'editService']);
+Route::post('/service/edit/{id}', [ServiceController::class, 'saveEditService']);
 
 Route::post('payment', [\App\Http\Controllers\PaymentController::class, 'payment']);

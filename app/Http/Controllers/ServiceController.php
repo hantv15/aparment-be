@@ -28,7 +28,21 @@ class ServiceController extends Controller
         $service = new Service();
         $service->fill($request->all());
         $service->save();
-
         return $this->success($service);
     }
+    public function editService($id): JsonResponse
+    {
+        $service = Service::find($id);
+        
+        return $this->success($service);
+    }
+    public function saveEditService(Request $request,$id): JsonResponse
+    {
+        $service = Service::find($id);
+        $service->fill($request->all());
+        $service->save();
+        return $this->success($service);
+    }
+    
+    
 }
