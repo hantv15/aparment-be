@@ -22,8 +22,8 @@ class CreateVehiclesTable extends Migration
                     ->onUpdate('cascade')
                     ->onDelete('cascade');    
             
-            $table->unsignedBigInteger('vehicle_card_id');
-            $table->foreign('vehicle_card_id')->references('id')->on('vehicle_cards')
+            $table->unsignedBigInteger('card_id');
+            $table->foreign('card_id')->references('id')->on('cards')
                     ->onUpdate('cascade')
                     ->onDelete('cascade'); 
 

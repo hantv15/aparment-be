@@ -10,9 +10,9 @@
     </div>
     <div>
         <label for="">Phòng</label>
-        <select name="department_id" id="">
-        @foreach ($departments as $item)
-            <option value="{{$item->id}}">{{$item->department_id}}</option>
+        <select name="apartment_id" id="">
+        @foreach ($apartments as $item)
+            <option value="{{$item->id}}">{{$item->apartment_id}}</option>
         @endforeach
         </select>
     </div>
@@ -23,6 +23,18 @@
     <div>
         <label for="">Nhập lại mật khẩu</label>
         <input type="password" name="password_confirmation" id="">
+    </div>
+    <div>
+        <label for="">Tên</label>
+        <input type="text" name="name">
+    </div>
+    <div>
+        <label for="">Ngày sinh</label>
+        <input type="date" name="dob">
+    </div>
+    <div>
+        <label for="">CMND/CCCD</label>
+        <input type="number" name="number_card">
     </div>
     <div>
         <button type="submit">Đăng ký</button>

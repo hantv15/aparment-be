@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterTableUsersAddForeignKeyDepartmentId extends Migration
+class AlterTableUsersAddForeignKeyApartmentId extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AlterTableUsersAddForeignKeyDepartmentId extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreign('department_id')->references('id')->on('departments')
+            $table->foreign('apartment_id')->references('id')->on('apartments')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
         });
@@ -28,7 +28,7 @@ class AlterTableUsersAddForeignKeyDepartmentId extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign('users_department_id_foreign');
+            $table->dropForeign('users_apartment_id_foreign');
         });
     }
 }

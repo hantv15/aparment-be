@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVehicleCardsTable extends Migration
+class CreateCardsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateVehicleCardsTable extends Migration
      */
     public function up()
     {
-        Schema::create('vehicle_cards', function (Blueprint $table) {
+        Schema::create('cards', function (Blueprint $table) {
             $table->id();
             $table->integer('number')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->dateTime('expire_time')->nullable();
 
-            $table->unsignedBigInteger('department_id');
-            $table->foreign('department_id')->references('id')->on('departments')
+            $table->unsignedBigInteger('apartment_id');
+            $table->foreign('apartment_id')->references('id')->on('apartments')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
 
@@ -35,6 +35,6 @@ class CreateVehicleCardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vehicle_cards');
+        Schema::dropIfExists('cards');
     }
 }

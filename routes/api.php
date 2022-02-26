@@ -1,15 +1,12 @@
 <?php
 
-use App\Http\Controllers\ApartmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\BillDetailController;
-use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ResidentCardController;
 use App\Http\Controllers\ServiceController;
-use App\Models\Department;
 
 /*
 |--------------------------------------------------------------------------

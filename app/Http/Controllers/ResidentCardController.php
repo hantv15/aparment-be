@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class ResidentCardController extends Controller
 {
-    public function getResidentCardByDepartmentId($id){
+    public function getResidentCardByApartmentId($id){
         $user_by_department_id = User::join('user_department', 'users.id', '=', 'user_department.user_id')
                                     ->join('departments', 'user_department.department_id', '=', 'departments.id')
                                     ->join('resident_cards', 'users.id', '=', 'resident_cards.user_id')

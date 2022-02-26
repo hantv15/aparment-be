@@ -9,15 +9,15 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Http\Resources\LoginResource;
 use App\Http\Resources\RegisterResource;
+use App\Models\Apartment;
 use App\Models\Department;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
     public function registerForm(){
-        $departments = Department::all();
-        $departments->load('user');
-        return view('registerForm', compact('departments'));
+        $apartments = Apartment::where('user_id', NULL)->get();
+        return view('registerForm', compact('apartments'));
     }
 
     public function register(Request $request): JsonResponse
@@ -25,15 +25,23 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|string|unique:users',
             'phone_number' => 'required|unique:users',
-            'department_id' => 'unique:users',
+            'apartment_id' => 'unique:users',
             'password' => 'required|string|confirmed',
         ]);
         $user = User::create([
             'email' => $request->email,
             'phone_number' => $request->phone_number,
-            'department_id' => $request->department_id,
+            'apartment_id' => $request->apartment_id,
             'password' => Hash::make($request->password),
+            'name' => $request->name,
+            'dob' => $request->dob,
+            'number_card' => $request->number_card,
         ]);
+
+        $apartment = Apartment::where('id', $request->apartment_id)->first();
+        $apartment->user_id = $user->id;
+        $apartment->save();
+
         event(new Registered($user));
         $token = $user->createToken('authtoken')->plainTextToken;
         $result = new RegisterResource($user);

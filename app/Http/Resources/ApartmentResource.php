@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Building;
+use App\Models\User;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -16,15 +18,21 @@ class ApartmentResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'department_id'   => $this->department_id,
+        $apartment_resource = [
+            'apartment_id'    => $this->apartment_id,
             'floor'           => $this->floor,
-            'no_department'   => $this->no_department,
-            'type_department' => $this->type_department,
             'status'          => $this->status,
             'description'     => $this->description,
             'square_meters'   => $this->square_meters,
+            'type_apartment'  => $this->type_apartment,
+            'building_id'     => Building::where('id', $this->building_id)->first()->name,
         ];
+        if ($this->user_id != null){
+            $apartment_resource['email'] = User::where('id', $this->user_id)->first()->email;
+            $apartment_resource['phone_number'] = User::where('id', $this->user_id)->first()->phone_number;
+            $apartment_resource['name'] = User::where('id', $this->user_id)->first()->name;
+        }
+        return $apartment_resource;
     }
 }
 

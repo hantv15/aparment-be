@@ -23,8 +23,8 @@ class CreateBillsTable extends Migration
             $table->string('image', 255)->nullable();
             $table->string('fax');
 
-            $table->unsignedBigInteger('department_id');
-            $table->foreign('department_id')->references('id')->on('departments')
+            $table->unsignedBigInteger('apartment_id');
+            $table->foreign('apartment_id')->references('id')->on('apartments')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
             
