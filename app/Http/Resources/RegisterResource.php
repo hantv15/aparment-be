@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Department;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class RegisterResource extends JsonResource
@@ -18,12 +19,14 @@ class RegisterResource extends JsonResource
         [
             'user_name'   => $this->user_name,
             'email' => $this->email,
-            'name'  => $this->name,
+            'phone_number' => $this->phone_number,
+            'name' => $this->name,
             'dob' => $this->dob,
-            'phone'  => $this->phone,
-            'department_id'=>$this->department_id,
-            'role'=>$this->role,
-            'avatar'=>$this->avatar,
+            'number_card' => $this->number_card,
+            'status' => $this->status,
+            'department_id' => Department::where('id', $this->department_id)->first(),
+            'avatar' => $this->avatar,
+            'role_id' => $this->role_id,
         ];
     }
 }

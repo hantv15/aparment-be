@@ -15,4 +15,15 @@ class Department extends Model
 
     protected $table = 'departments';
     protected $guarded = ['id'];
+
+    protected $hidden = [
+        'password',
+        'created_at',
+        'updated_at'
+    ];
+
+    public function user(){
+        return $this->hasOne(User::class, 'department_id');
+    }
+    
 }

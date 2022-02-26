@@ -1,6 +1,12 @@
 <form action="" method="POST">
     @csrf
-    <input type="email" name="email" id="">
-    <input type="password" name="password">
+    <div>
+        <label for="">Nhập SĐT hoặc Email</label>
+        <input type="text" name="username">
+    </div>
+    <div>
+        <label for="">Password</label>
+        <input type="password" name="password">
+    </div>
     <button type="submit">ok</button>
 </form>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnDeviceTokenToUsersTable extends Migration
+class AlterTableUsersAddForeignKeyApartmentId extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,9 @@ class AddColumnDeviceTokenToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('device_key')->nullable();
+            $table->foreign('apartment_id')->references('id')->on('apartments')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
         });
     }
 
@@ -26,7 +28,7 @@ class AddColumnDeviceTokenToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('device_key');
+            $table->dropForeign('users_apartment_id_foreign');
         });
     }
 }

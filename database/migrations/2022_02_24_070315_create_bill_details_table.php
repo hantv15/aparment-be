@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBillDetailTable extends Migration
+class CreateBillDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateBillDetailTable extends Migration
      */
     public function up()
     {
-        Schema::create('bill_detail', function (Blueprint $table) {
+        Schema::create('bill_details', function (Blueprint $table) {
             $table->id();
             
             $table->unsignedBigInteger('service_id');
@@ -26,6 +26,8 @@ class CreateBillDetailTable extends Migration
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
             
+            $table->integer('quantity')->default(0);
+            $table->decimal('total_price', 10, 2);
             $table->timestamps();
         });
     }
@@ -37,6 +39,6 @@ class CreateBillDetailTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bill_detail');
+        Schema::dropIfExists('bill_details');
     }
 }

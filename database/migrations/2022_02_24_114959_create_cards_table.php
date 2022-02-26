@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserDepartmentTable extends Migration
+class CreateCardsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,17 @@ class CreateUserDepartmentTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_department', function (Blueprint $table) {
+        Schema::create('cards', function (Blueprint $table) {
             $table->id();
+            $table->integer('number')->nullable();
+            $table->tinyInteger('status')->default(0);
+            $table->dateTime('expire_time')->nullable();
 
-            $table->unsignedBigInteger('department_id');
-            $table->foreign('department_id')->references('id')->on('departments')
+            $table->unsignedBigInteger('apartment_id');
+            $table->foreign('apartment_id')->references('id')->on('apartments')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
 
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
- 
             $table->timestamps();
         });
     }
@@ -37,6 +35,6 @@ class CreateUserDepartmentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_department');
+        Schema::dropIfExists('cards');
     }
 }

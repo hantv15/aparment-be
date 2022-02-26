@@ -4,7 +4,7 @@ info:
   description: Department API Documentation
   version: 1.0.0
 paths:
-  /department:
+  /api/department:
     get:
       tags:
         - Department
@@ -28,7 +28,106 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Department'
-  /service:
+  /api/department/{id}:
+    get:
+      tags:
+        - Department
+      summary: 'Get Department by Id'
+      description: 'Get Department by Id'
+      produces:
+        - application/json
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of department"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        '200':
+          description: Department by Id.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: ''
+  /api/department/{id}/finance:
+    get:
+      tags:
+        - Department
+      summary: 'Get finance of department by Id'
+      description: 'Get finance of department by Id'
+      produces:
+        - application/json
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of department"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        '200':
+          description: Finance of department by Id.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: ''
+  /api/department/{id}/finance/{bill_id}/bill_detail:
+    get:
+      tags:
+        - Department
+      summary: 'Get bill detail by Department Id'
+      description: 'Get bill detail by Department Id'
+      produces:
+        - application/json
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of department"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "bill_id"
+        in: "path"
+        description: "ID of Bill"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        '200':
+          description: Bill detail by Department Id.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: ''
+  /api/service:
     get:
       tags:
         - Service
@@ -52,7 +151,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Service'
-  /service/add:
+  /api/service/add:
     post:
       tags:
         - Service
@@ -85,7 +184,62 @@ paths:
                   $ref: '#/components/schemas/NewService'
         '405':
           description: "Invalid input"
-  /login:
+  /api/bill_detail:
+    get:
+      tags:
+        - Bill Detail
+      summary: 'Get list Bill Detail'
+      description: 'Get list Bill Detail'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A list of bill details.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: ''
+  /api/bill_detail/{id}:
+    get:
+      tags:
+        - Bill Detail
+      summary: 'Get Bill Detail by Id'
+      description: 'Get Bill Detail by Id'
+      produces:
+        - application/json
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of Bill Detail"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        '200':
+          description: Bill detail by Id.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: ''
+  /api/login:
     post:
       tags:
         - Authenticate
@@ -135,7 +289,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/LoginFail'
-  /register:
+  /api/register:
     post:
       tags:
         - Authenticate
@@ -168,7 +322,7 @@ paths:
                 type: object
                 items:
                   $ref: '#/components/schemas/Register'
-  /logout:
+  /api/logout:
     post:
       tags:
         - Authenticate
@@ -206,6 +360,29 @@ components:
         description:
           type: string
           example: "Phong 2 ban cong"
+        square_meters:
+          type: number
+          example: 50
+        type_department:
+          type: number
+          example: 1
+      xml:
+        name: Department
+    DepartmentById:
+      type: object
+      properties:
+        department_id:
+          type: string
+          example: "P101"
+        floor:
+          type: number
+          example: 1
+        status:
+          type: number
+          example: 1
+        description:
+          type: string
+          example: "Phong 1 ban cong"
         square_meters:
           type: number
           example: 50

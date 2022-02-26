@@ -9,28 +9,42 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Http\Resources\LoginResource;
 use App\Http\Resources\RegisterResource;
+use App\Models\Apartment;
 use App\Models\Department;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
     public function registerForm(){
-        return view('registerForm');
+        $apartments = Apartment::where('user_id', NULL)->get();
+        return view('registerForm', compact('apartments'));
     }
 
     public function register(Request $request): JsonResponse
     {
         $request->validate([
-            'department_id' => 'required|string|max:10|unique:departments',
+            'email' => 'required|string|unique:users',
+            'phone_number' => 'required|unique:users',
+            'apartment_id' => 'unique:users',
             'password' => 'required|string|confirmed',
         ]);
-        $department = Department::create([
-            'department_id' => $request->department_id,
+        $user = User::create([
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'apartment_id' => $request->apartment_id,
             'password' => Hash::make($request->password),
+            'name' => $request->name,
+            'dob' => $request->dob,
+            'number_card' => $request->number_card,
         ]);
-        event(new Registered($department));
-        $token = $department->createToken('authtoken')->plainTextToken;
-        $result = new RegisterResource($department);
+
+        $apartment = Apartment::where('id', $request->apartment_id)->first();
+        $apartment->user_id = $user->id;
+        $apartment->save();
+
+        event(new Registered($user));
+        $token = $user->createToken('authtoken')->plainTextToken;
+        $result = new RegisterResource($user);
         return $this->success($result);
     }
 
@@ -40,19 +54,33 @@ class AuthController extends Controller
     public function login(Request $request): JsonResponse
     {
         $fields = $request->validate([
-            'department_id' => 'required|string|max:10',
+            'username' => 'required',
             'password' => 'required|string'
         ]);
-        // Check department_id
-        $department = Department::where('department_id', $fields['department_id'])->first();
+        // Check email
+        $count_user_by_email = User::where('email', $fields['username'])->count();
+        $count_user_by_phone = User::where('phone_number', $fields['username'])->count();
+        $user_by_email = User::where('email', $fields['username'])->first();
+        $user_by_phone = User::where('phone_number', $fields['username'])->first();
         // Check password
-        if(!$department || !Hash::check($fields['password'], $department->password)) {
-            return $this->failed();
+        if ($count_user_by_email > 0) {
+            if(!$user_by_email || !Hash::check($fields['password'], $user_by_email->password)) {
+                return $this->failed();
+            }
+            $result = new LoginResource($user_by_email);
+            $token = $user_by_email->createToken('myapptoken')->plainTextToken;
+            $result->token = $token;
+            return $this->success($result);
+        } elseif ($count_user_by_phone > 0) {
+            if(!$user_by_phone || !Hash::check($fields['password'], $user_by_phone->password)) {
+                return $this->failed();
+            }
+            $result = new LoginResource($user_by_phone);
+            $token = $user_by_phone->createToken('myapptoken')->plainTextToken;
+            $result->token = $token;
+            return $this->success($result);
         }
-        $result = new LoginResource($department);
-        $token = $department->createToken('myapptoken')->plainTextToken;
-        $result->token = $token;
-        return $this->success($result);
+        
     }
 
     public function logout(Request $request)
