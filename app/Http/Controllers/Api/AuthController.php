@@ -52,6 +52,7 @@ class AuthController extends Controller
         $result = new LoginResource($department);
         $token = $department->createToken('myapptoken')->plainTextToken;
         $result->token = $token;
+        $result->load('user_department');
         return $this->success($result);
     }
 
