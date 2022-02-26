@@ -1,11 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\ApartmentController;
+use App\Http\Controllers\BuildingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\BillDetailController;
-use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\ResidentCardController;
 use App\Http\Controllers\ServiceController;
 
 /*

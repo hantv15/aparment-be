@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 use Stripe\Charge;
 
@@ -12,7 +14,13 @@ class PaymentController extends Controller
     {
         return view('payment');
     }
-    public function payment(Request $request): \Illuminate\Http\RedirectResponse
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     * @throws ApiErrorException
+     */
+    public function payment(Request $request): RedirectResponse
     {
         $price = 2000;
         Stripe::setApiKey(config('services.stripe.secret'));

@@ -4,11 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ResidentCardController extends Controller
 {
-    public function getResidentCardByApartmentId($id){
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getResidentCardByApartmentId($id): JsonResponse
+    {
         $user_by_department_id = User::join('user_department', 'users.id', '=', 'user_department.user_id')
                                     ->join('departments', 'user_department.department_id', '=', 'departments.id')
                                     ->join('resident_cards', 'users.id', '=', 'resident_cards.user_id')

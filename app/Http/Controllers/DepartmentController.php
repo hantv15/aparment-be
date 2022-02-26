@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function getDepartment(Request $request): JsonResponse
     {
         $departments = DepartmentResource::collection(Department::all());
@@ -75,7 +79,11 @@ class DepartmentController extends Controller
         return view('department.add', compact('buildings'));
     }
 
-    public function saveAdd(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function saveAdd(Request $request): JsonResponse
     {
         $model = new Department();
         $model->fill($request->all());
@@ -83,7 +91,11 @@ class DepartmentController extends Controller
         return $this->success($model);
     }
 
-    public function getDepartmentInfo($id)
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getDepartmentInfo($id): JsonResponse
     {
         $department = Department::join('users', 'departments.user_id', '=', 'users.id')
             ->select('departments.*', 'users.name', 'users.avatar', 'users.phone_number', 'users.email')
@@ -93,7 +105,11 @@ class DepartmentController extends Controller
         return $this->success($department);
     }
 
-    public function getBillByDepartmentId($id)
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getBillByDepartmentId($id): JsonResponse
     {
         $bill_by_department_id = Bill::join('departments', 'bills.department_id', '=', 'departments.id')
             ->join('bill_detail', 'bills.id', '=', 'bill_detail.bill_id')
@@ -105,7 +121,12 @@ class DepartmentController extends Controller
         return $this->success($bill_by_department_id);
     }
 
-    public function getBillDetailByDepartmentId($id, $bill_id)
+    /**
+     * @param $id
+     * @param $bill_id
+     * @return JsonResponse
+     */
+    public function getBillDetailByDepartmentId($id, $bill_id): JsonResponse
     {
         $bill_detail_by_department_id = BillDetail::join('services', 'bill_detail.service_id', '=', 'services.id')
             ->join('bills', 'bill_detail.bill_id', '=', 'bills.id')

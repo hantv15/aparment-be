@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class ApartmentNotiController extends Controller
 {
+    /**
+     * Make notification for app
+     *
+     * @param Request $request
+     * @return void
+     */
     public function sendNotification(Request $request)
     {
         $firebaseToken = User::whereNotNull('device_key')->pluck('device_key')->toArray();

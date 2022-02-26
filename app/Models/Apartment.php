@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -22,7 +24,19 @@ class Apartment extends Model
         'updated_at'
     ];
 
-    public function user(){
+    /**
+     * @return HasOne
+     */
+    public function user(): HasOne
+    {
         return $this->hasOne(User::class, 'apartment_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function buildings(): BelongsTo
+    {
+        return $this->belongsTo(Building::class);
     }
 }

@@ -14,6 +14,10 @@ use Illuminate\Http\Request;
 
 class ApartmentController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function getApartment(Request $request): JsonResponse
     {
         $apartments = ApartmentResource::collection(Apartment::all());
@@ -45,7 +49,7 @@ class ApartmentController extends Controller
                     ['users.name', 'like', '%' . $request->keyword . '%'],
                 ])
                 ->get();
-        } elseif (!$request->filled('building_id') && $request->filled('keyword')) {
+        } else if (! $request->filled('building_id') && $request->filled('keyword')) {
             $apartments = Apartment::join('users', 'apartments.id', '=', 'users.apartment_id')
                 ->join('buildings', 'apartments.building_id', '=', 'buildings.id')
                 ->select(
@@ -64,37 +68,55 @@ class ApartmentController extends Controller
                 ->orWhere('users.email', 'like', '%' . $request->keyword . '%')
                 ->orWhere('users.name', 'like', '%' . $request->keyword . '%')
                 ->get();
-        } elseif ($request->filled('building_id') && !$request->filled('keyword')) {
+        } else if ($request->filled('building_id') && ! $request->filled('keyword')) {
             $apartments = ApartmentResource::collection(Apartment::where('building_id', $request->building_id)->get());
         }
+
         return $this->success($apartments);
     }
 
     public function addForm()
     {
         $buildings = Building::all();
+
         return view('apartment.add', compact('buildings'));
     }
 
-    public function saveAdd(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function saveAdd(Request $request): JsonResponse
     {
         $model = new Apartment();
         $model->fill($request->all());
         $model->save();
+
         return $this->success($model);
     }
 
-    public function getApartmentInfo($id)
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getApartmentInfo($id): JsonResponse
     {
         $department = Department::join('users', 'departments.user_id', '=', 'users.id')
             ->select('departments.*', 'users.name', 'users.avatar', 'users.phone_number', 'users.email')
             ->where('departments.id', $id)
             ->get();
         $department->load('users');
+
         return $this->success($department);
     }
 
-    public function getBillByApartmentId($id)
+    /**
+     * Get bill by apartment id
+     *
+     * @param $id
+     * @return JsonResponse
+     */
+    public function getBillByApartmentId($id): JsonResponse
     {
         $bill_by_department_id = Bill::join('departments', 'bills.department_id', '=', 'departments.id')
             ->join('bill_detail', 'bills.id', '=', 'bill_detail.bill_id')
@@ -103,10 +125,18 @@ class ApartmentController extends Controller
             ->distinct()
             ->where('departments.id', $id)
             ->get();
+
         return $this->success($bill_by_department_id);
     }
 
-    public function getBillDetailByApartmentId($id, $bill_id)
+    /**
+     * Get build detail by apartment ID
+     *
+     * @param $id
+     * @param $bill_id
+     * @return JsonResponse
+     */
+    public function getBillDetailByApartmentId($id, $bill_id): JsonResponse
     {
         $bill_detail_by_department_id = BillDetail::join('services', 'bill_detail.service_id', '=', 'services.id')
             ->join('bills', 'bill_detail.bill_id', '=', 'bills.id')
@@ -115,6 +145,7 @@ class ApartmentController extends Controller
             ->where('bill_detail.bill_id', $bill_id)
             ->where('departments.id', $id)
             ->get();
+
         return $this->success($bill_detail_by_department_id);
     }
 }
