@@ -128,7 +128,7 @@ class ApartmentController extends Controller
      */
     public function getBillByApartmentId($id): JsonResponse
     {
-        $bill_by_department_id = Bill::join('departments', 'bills.department_id', '=', 'departments.id')
+        $bill_by_department_id = Bill::join('departments', 'b ills.department_id', '=', 'departments.id')
             ->join('bill_detail', 'bills.id', '=', 'bill_detail.bill_id')
             ->join('services', 'bill_detail.service_id', '=', 'services.id')
             ->select('bills.id', 'bills.name as ten_hoa_don', 'bills.department_id', 'bills.total', 'bills.status')
