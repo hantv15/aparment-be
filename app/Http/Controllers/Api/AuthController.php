@@ -10,7 +10,6 @@ use Illuminate\Auth\Events\Registered;
 use App\Http\Resources\LoginResource;
 use App\Http\Resources\RegisterResource;
 use App\Models\Apartment;
-use App\Models\Department;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
@@ -80,7 +79,7 @@ class AuthController extends Controller
             $result->token = $token;
             return $this->success($result);
         }
-        
+
     }
 
     public function logout(Request $request)

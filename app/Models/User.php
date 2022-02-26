@@ -27,7 +27,7 @@ class User extends Authenticatable
         'dob',
         'number_card',
         'status',
-        'department_id',
+        'apartment_id',
         'avatar',
         'role_id',
         'device_key'
