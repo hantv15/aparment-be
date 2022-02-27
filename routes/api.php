@@ -48,5 +48,5 @@ Route::get('/service', [ServiceController::class, 'getService'])->name('service'
 Route::post('/service/add', [ServiceController::class, 'addService']);
 Route::get('/service/edit/{id}', [ServiceController::class, 'editService']);
 Route::post('/service/edit/{id}', [ServiceController::class, 'saveEditService']);
-
+Route::get('/service/remove/{id}', [ServiceController::class, 'removeService']);
 Route::post('payment', [\App\Http\Controllers\PaymentController::class, 'payment']);

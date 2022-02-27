@@ -43,6 +43,12 @@ class ServiceController extends Controller
         $service->save();
         return $this->success($service);
     }
-    
+    public function removeService($id)
+    {
+        $service = Service::find($id);
+       
+        $service->delete();
+        return $this->success($service);
+    }
     
 }
