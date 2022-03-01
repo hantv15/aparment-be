@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\ApartmentController;
-use App\Http\Controllers\BuildingController;
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\ApartmentController;
 use App\Http\Controllers\BillDetailController;
-use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\ResidentCardController;
+use App\Http\Controllers\BuildingController;
+use App\Http\Controllers\CardController;
 use App\Http\Controllers\ServiceController;
 
 /*
@@ -38,13 +38,28 @@ Route::get('/apartment', [ApartmentController::class, 'getApartment'])->name('ap
 Route::get('/apartment/add', [ApartmentController::class, 'addForm']);
 Route::post('/apartment/add', [ApartmentController::class, 'saveAdd']);
 Route::get('/apartment/{id}', [ApartmentController::class, 'getApartmentInfo']);
- Route::get('/apartment/{id}/finance', [ApartmentController::class, 'getBillByApartmentId']);
-// Route::get('/apartment/{id}/finance/{bill_id}/bill_detail', [ApartmentController::class, 'getBillDetailByApartmentId']);
-// Route::get('/apartment/{id}/resident-card', [ResidentCardController::class, 'getResidentCardByApartmentId']);
-Route::get('/bill_detail', [BillDetailController::class, 'getBillDetail']);
-Route::get('/bill_detail/{id}', [BillDetailController::class, 'getBillDetailById']);
+Route::get('/apartment/{id}/finance', [ApartmentController::class, 'getBillByApartmentId']);
+Route::get('/apartment/{id}/finance/unpaid', [ApartmentController::class, 'getUnpaidBillByApartmentId']);
+Route::get('/apartment/{id}/finance/paid', [ApartmentController::class, 'getPaidBillByApartmentId']);
+Route::get('/apartment/{id}/finance/{bill_id}/bill_detail', [ApartmentController::class, 'getBillDetailByApartmentId']);
+Route::get('/apartment/{id}/card', [CardController::class, 'getCardByApartmentId']);
+
+Route::get('/bill', [\App\Http\Controllers\BillController::class, 'getBill']);
+Route::get('/bill/add', [\App\Http\Controllers\BillController::class, 'addForm']);
+Route::post('/bill/add', [\App\Http\Controllers\BillController::class, 'saveAdd']);
+Route::get('/bill/edit/{id}', [\App\Http\Controllers\BillController::class, 'editForm']);
+Route::post('/bill/edit/{id}', [\App\Http\Controllers\BillController::class, 'saveEdit']);
+
+Route::get('/bill-detail', [BillDetailController::class, 'getBillDetail']);
+Route::get('/bill-detail/add', [BillDetailController::class, 'addForm']);
+Route::post('/bill-detail/add', [BillDetailController::class, 'saveAdd']);
+Route::get('/bill-detail/{id}', [BillDetailController::class, 'getBillDetailById']);
+
+
+Route::get('/card', [CardController::class, 'getCard']);
 
 Route::get('/service', [ServiceController::class, 'getService'])->name('service');
-Route::post('/service/add', [ServiceController::class, 'addService']);
+Route::get('/service/add', [ServiceController::class, 'addForm']);
+Route::post('/service/add', [ServiceController::class, 'saveAdd']);
 
 Route::post('payment', [\App\Http\Controllers\PaymentController::class, 'payment']);

@@ -11,9 +11,15 @@ class Bill extends Model
 
     protected $table = 'bills';
     protected $fillable = [
-        'total',
+        'name',
+        'amount',
         'status',
         'type_payment',
-        'department_id',
+        'payment_method',
+        'image',
+        'fax',
+        'apartment_id',
+        'notes',
+        'receiver_id'
     ];
 }
