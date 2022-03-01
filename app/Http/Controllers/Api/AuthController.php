@@ -11,6 +11,7 @@ use App\Http\Resources\LoginResource;
 use App\Http\Resources\RegisterResource;
 use App\Models\Apartment;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -69,6 +70,7 @@ class AuthController extends Controller
             $result = new LoginResource($user_by_email);
             $token = $user_by_email->createToken('myapptoken')->plainTextToken;
             $result->token = $token;
+            Auth::attempt(['email' => $request->username, 'password' => $request->password], $request->remember);
             return $this->success($result);
         } elseif ($count_user_by_phone > 0) {
             if(!$user_by_phone || !Hash::check($fields['password'], $user_by_phone->password)) {
@@ -77,6 +79,7 @@ class AuthController extends Controller
             $result = new LoginResource($user_by_phone);
             $token = $user_by_phone->createToken('myapptoken')->plainTextToken;
             $result->token = $token;
+            Auth::attempt(['phone_number' => $request->username, 'password' => $request->password], $request->remember);
             return $this->success($result);
         }
 

@@ -19,11 +19,15 @@ class ServiceController extends Controller
         return $this->success($result);
     }
 
+    public function addForm(){
+        return view('service.add');
+    }
+
     /**
      * @param Request $request
      * @return JsonResponse
      */
-    public function addService(Request $request): JsonResponse
+    public function saveAdd(Request $request): JsonResponse
     {
         $service = new Service();
         $service->fill($request->all());
