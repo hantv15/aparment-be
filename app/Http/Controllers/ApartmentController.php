@@ -215,4 +215,11 @@ class ApartmentController extends Controller
 
         return $this->success($bill_detail_by_apartment_id);
     }
+    public function saveEdit(Request $request,$id):JsonResponse
+    {
+        $model = Apartment::find($id);
+        $model->fill($request->all());
+        $model->save();
+        return $this->success($model);
+    }
 }
