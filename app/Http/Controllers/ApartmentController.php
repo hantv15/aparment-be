@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ApartmentsExport;
 use App\Http\Resources\ApartmentResource;
 use App\Http\Resources\DepartmentResource;
+use App\Imports\ApartmentsImport;
 use App\Models\Apartment;
 use App\Models\Bill;
 use App\Models\BillDetail;
@@ -12,6 +14,7 @@ use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ApartmentController extends Controller
 {
@@ -51,7 +54,7 @@ class ApartmentController extends Controller
                     ['users.name', 'like', '%' . $request->keyword . '%'],
                 ])
                 ->get();
-        } else if (! $request->filled('building_id') && $request->filled('keyword')) {
+        } else if (!$request->filled('building_id') && $request->filled('keyword')) {
             $apartments = Apartment::join('users', 'apartments.id', '=', 'users.apartment_id')
                 ->join('buildings', 'apartments.building_id', '=', 'buildings.id')
                 ->select(
@@ -71,7 +74,7 @@ class ApartmentController extends Controller
                 ->orWhere('users.email', 'like', '%' . $request->keyword . '%')
                 ->orWhere('users.name', 'like', '%' . $request->keyword . '%')
                 ->get();
-        } else if ($request->filled('building_id') && ! $request->filled('keyword')) {
+        } else if ($request->filled('building_id') && !$request->filled('keyword')) {
             $apartments = ApartmentResource::collection(Apartment::where('building_id', $request->building_id)->get());
         }
 
@@ -130,62 +133,62 @@ class ApartmentController extends Controller
     public function getBillByApartmentId($id): JsonResponse
     {
         $bill_by_apartment_id = Bill::join('apartments', 'bills.apartment_id', '=', 'apartments.id')
-                                    ->join('bill_details', 'bills.id', '=', 'bill_details.bill_id')
-                                    ->join('services', 'bill_details.service_id', '=', 'services.id')
-                                    ->join('users', 'apartments.user_id', '=', 'users.id')
-                                    ->select(
-                                        'bills.id',
-                                        'bills.name as ten_hoa_don',
-                                        'users.name as ten_chu_ho',
-                                        'apartments.apartment_id',
-                                        'bills.amount',
-                                        'bills.status'
-                                    )
-                                    ->distinct()
-                                    ->where('apartments.id', $id)
-                                    ->get();
+            ->join('bill_details', 'bills.id', '=', 'bill_details.bill_id')
+            ->join('services', 'bill_details.service_id', '=', 'services.id')
+            ->join('users', 'apartments.user_id', '=', 'users.id')
+            ->select(
+                'bills.id',
+                'bills.name as ten_hoa_don',
+                'users.name as ten_chu_ho',
+                'apartments.apartment_id',
+                'bills.amount',
+                'bills.status'
+            )
+            ->distinct()
+            ->where('apartments.id', $id)
+            ->get();
         return $this->success($bill_by_apartment_id);
     }
 
     public function getUnpaidBillByApartmentId($id): JsonResponse
     {
         $unpaid_bill_by_apartment_id = Bill::join('apartments', 'bills.apartment_id', '=', 'apartments.id')
-                                    ->join('bill_details', 'bills.id', '=', 'bill_details.bill_id')
-                                    ->join('services', 'bill_details.service_id', '=', 'services.id')
-                                    ->join('users', 'apartments.user_id', '=', 'users.id')
-                                    ->select(
-                                        'bills.id',
-                                        'bills.name as ten_hoa_don',
-                                        'users.name as ten_chu_ho',
-                                        'apartments.apartment_id',
-                                        'bills.amount',
-                                        'bills.status'
-                                    )
-                                    ->distinct()
-                                    ->where('apartments.id', $id)
-                                    ->where('bills.status', 0)
-                                    ->get();
+            ->join('bill_details', 'bills.id', '=', 'bill_details.bill_id')
+            ->join('services', 'bill_details.service_id', '=', 'services.id')
+            ->join('users', 'apartments.user_id', '=', 'users.id')
+            ->select(
+                'bills.id',
+                'bills.name as ten_hoa_don',
+                'users.name as ten_chu_ho',
+                'apartments.apartment_id',
+                'bills.amount',
+                'bills.status'
+            )
+            ->distinct()
+            ->where('apartments.id', $id)
+            ->where('bills.status', 0)
+            ->get();
         return $this->success($unpaid_bill_by_apartment_id);
     }
 
     public function getPaidBillByApartmentId($id): JsonResponse
     {
         $paid_bill_by_apartment_id = Bill::join('apartments', 'bills.apartment_id', '=', 'apartments.id')
-                                        ->join('bill_details', 'bills.id', '=', 'bill_details.bill_id')
-                                        ->join('services', 'bill_details.service_id', '=', 'services.id')
-                                        ->join('users', 'apartments.user_id', '=', 'users.id')
-                                        ->select(
-                                            'bills.id',
-                                            'bills.name as ten_hoa_don',
-                                            'users.name as ten_chu_ho',
-                                            'apartments.apartment_id',
-                                            'bills.amount',
-                                            'bills.status'
-                                        )
-                                        ->distinct()
-                                        ->where('apartments.id', $id)
-                                        ->where('bills.status', 1)
-                                        ->get();
+            ->join('bill_details', 'bills.id', '=', 'bill_details.bill_id')
+            ->join('services', 'bill_details.service_id', '=', 'services.id')
+            ->join('users', 'apartments.user_id', '=', 'users.id')
+            ->select(
+                'bills.id',
+                'bills.name as ten_hoa_don',
+                'users.name as ten_chu_ho',
+                'apartments.apartment_id',
+                'bills.amount',
+                'bills.status'
+            )
+            ->distinct()
+            ->where('apartments.id', $id)
+            ->where('bills.status', 1)
+            ->get();
         return $this->success($paid_bill_by_apartment_id);
     }
 
@@ -214,5 +217,16 @@ class ApartmentController extends Controller
             ->get();
 
         return $this->success($bill_detail_by_apartment_id);
+    }
+
+    public function fileImport(Request $request)
+    {
+        Excel::import(new ApartmentsImport, $request->file('file')->store('excelFolder'));
+        return back();
+    }
+
+    public function fileExport()
+    {
+        return Excel::download(new ApartmentsExport, 'apartment-collection.xlsx');
     }
 }

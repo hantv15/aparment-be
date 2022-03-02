@@ -63,3 +63,6 @@ Route::get('/service/add', [ServiceController::class, 'addForm']);
 Route::post('/service/add', [ServiceController::class, 'saveAdd']);
 
 Route::post('payment', [\App\Http\Controllers\PaymentController::class, 'payment']);
+
+Route::post('/apartment-import', [ApartmentController::class, 'fileImport']);
+Route::get('/apartment-export', [ApartmentController::class, 'fileExport']);
