@@ -21,7 +21,8 @@ class BillDetailController extends Controller
         return $this->success($bill_details);
     }
 
-    public function addForm(){
+    public function addForm()
+    {
         $services = Service::all();
         $bills = Bill::all();
         return view('bill-detail.add', compact('services', 'bills'));
@@ -48,7 +49,19 @@ class BillDetailController extends Controller
     public function getBillDetailById($id): JsonResponse
     {
         $bill_detail = BillDetail::find($id);
-        $bill_detail->load('bill');
+
+        return $this->success($bill_detail);
+    }
+    public function editForm($id): JsonResponse
+    {
+        $bill_detail = BillDetail::find($id);
+        return $this->success($bill_detail);
+    }
+    public function saveEdit(Request $request, $id): JsonResponse
+    {
+        $bill_detail = BillDetail::find($id);
+        $bill_detail->fill($request->all());
+        $bill_detail->save();
         return $this->success($bill_detail);
     }
 }
