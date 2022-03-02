@@ -31,51 +31,47 @@ class ServiceController extends Controller
     {
         $request->validate([
             'name' => 'required|string|unique:services',
-            'price' => 'required|integer|min:0',
-            
-            
+            'price' => 'required|min:0',
         ]);
         $service = new Service();
         $service->fill($request->all());
         $service->save();
         return $this->success($service);
     }
-    public function editForm($id): JsonResponse
+    public function editForm($id)
     {
         $service = Service::find($id);
-        
-        return $this->success($service);
-        
+        return view('service.edit', compact('service'));
     }
     public function saveEdit(Request $request,$id): JsonResponse
-    {   
-        
+    {
+
         $service = Service::find($id);
         if($request->name == $service->name){
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string',
-                'price' => 'required|integer|min:0',
+                'price' => 'required|min:0',
             ]);
-            
         }else{
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|unique:services',
-                'price' => 'required|integer|min:0',
+                'price' => 'required|min:0',
             ]);
-            
         }
         if($validator->fails()){
             return $this->failed();
         }
-        
         $service->fill($request->all());
         $service->save();
-        return $this->success($service,'successfully');
+        return $this->success($service);
     }
     public function getServiceById($id):JsonResponse
     {
         $service = Service::find($id);
+        if (!$service) {
+            return $this->failed();
+        }
         return $this->success($service);
     }
-    
+
 }

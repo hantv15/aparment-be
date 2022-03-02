@@ -81,7 +81,6 @@ class ApartmentController extends Controller
     public function addForm()
     {
         $buildings = Building::all();
-
         return view('apartment.add', compact('buildings'));
     }
 
@@ -94,7 +93,20 @@ class ApartmentController extends Controller
         $model = new Apartment();
         $model->fill($request->all());
         $model->save();
+        return $this->success($model);
+    }
 
+    public function editForm($id){
+        $apartment = Apartment::find($id);
+        $buildings = Building::all();
+        return view('apartment.edit', compact('apartment', 'buildings'));
+    }
+
+    public function saveEdit($id, Request $request):JsonResponse
+    {
+        $model = Apartment::find($id);
+        $model->fill($request->all());
+        $model->save();
         return $this->success($model);
     }
 
@@ -102,7 +114,7 @@ class ApartmentController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function getApartmentInfo($id): JsonResponse
+    public function getApartmentById($id): JsonResponse
     {
         $apartment = Apartment::join('users', 'apartments.id', '=', 'users.apartment_id')
             ->join('buildings', 'apartments.building_id', '=', 'buildings.id')
@@ -199,27 +211,19 @@ class ApartmentController extends Controller
     public function getBillDetailByApartmentId($id, $bill_id): JsonResponse
     {
         $bill_detail_by_apartment_id = BillDetail::join('services', 'bill_details.service_id', '=', 'services.id')
-            ->join('bills', 'bill_details.bill_id', '=', 'bills.id')
-            ->join('apartments', 'bills.apartment_id', '=', 'apartments.id')
-            ->select(
-                'bill_details.bill_id',
-                'bills.name as ten_hoa_don',
-                'services.name as ten_dich_vu',
-                'bill_details.quantity',
-                'bill_details.total_price',
-                'bills.apartment_id'
-            )
-            ->where('bill_details.bill_id', $bill_id)
-            ->where('apartments.id', $id)
-            ->get();
-
+                                                ->join('bills', 'bill_details.bill_id', '=', 'bills.id')
+                                                ->join('apartments', 'bills.apartment_id', '=', 'apartments.id')
+                                                ->select(
+                                                    'bill_details.bill_id',
+                                                    'bills.name as ten_hoa_don',
+                                                    'services.name as ten_dich_vu',
+                                                    'bill_details.quantity',
+                                                    'bill_details.total_price',
+                                                    'bills.apartment_id'
+                                                )
+                                                ->where('bill_details.bill_id', $bill_id)
+                                                ->where('apartments.id', $id)
+                                                ->get();
         return $this->success($bill_detail_by_apartment_id);
-    }
-    public function saveEdit(Request $request,$id):JsonResponse
-    {
-        $model = Apartment::find($id);
-        $model->fill($request->all());
-        $model->save();
-        return $this->success($model);
     }
 }

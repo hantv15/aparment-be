@@ -7,8 +7,8 @@
     <div>
         <label for="">Trạng thái</label>
         <select name="status" id="">
-            <option value="0" @if($bill->status==0) selected @endif>Chưa thanh toán</option>
-            <option value="1" @if($bill->status==1) selected @endif>Đã thanh toán</option>
+            <option value="0" @if($bill->status == 0) selected @endif>Chưa thanh toán</option>
+            <option value="1" @if($bill->status == 1) selected @endif>Đã thanh toán</option>
         </select>
     </div>
     <div>
