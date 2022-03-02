@@ -40,9 +40,22 @@ class BillController extends Controller
 
     public function saveEdit($id, Request $request):JsonResponse
     {
-        $bill = Bill::where('id', $id)->first();
+        $bill = Bill::find($id);
+        if (!$bill) {
+            return $this->failed();
+        }
         $bill->fill($request->all());
         $bill->save();
+
+        return $this->success($bill);
+    }
+
+    public function getBillById($id): JsonResponse
+    {
+        $bill = Bill::find($id);
+        if (!$bill) {
+            return $this->failed();
+        }
 
         return $this->success($bill);
     }

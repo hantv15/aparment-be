@@ -27,7 +27,7 @@
     <div>
         <label for="">Loại phòng</label>
         <select name="type_apartment" id="">
-            <option value="">Chọn trạng thái</option>
+            <option value="">Chọn loại phòng</option>
             <option value="0">Không có ban công</option>
             <option value="1">Có ban công</option>
         </select>

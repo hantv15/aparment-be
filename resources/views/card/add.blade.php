@@ -1,6 +1,5 @@
 <form action="" method="POST">
     @csrf
-
     <div>
         <label for="">Number</label>
         <input type="number" name="number">
@@ -10,14 +9,14 @@
         <select name="status" id="">
             <option value="">Chọn trạng thái</option>
             <option value="0">Chưa kich</option>
-            <option value="1">kich</option>
+            <option value="1">Đã kích hoạt</option>
         </select>
     </div>
     <div>
         <label for="">Ngày hết hạn</label>
         <input type="datetime-local" name="expire_time">
     </div>
-   
+
     <div>
         <label for="">Căn hộ</label>
         <select name="apartment_id" id="">
