@@ -1,20 +1,20 @@
 swagger: "2.0"
 info:
-  title: Department API Documentation
-  description: Department API Documentation
+  title: Apartment API Documentation
+  description: Apartment API Documentation
   version: 1.0.0
 paths:
-  /api/department:
+  /api/apartment:
     get:
       tags:
-        - Department
-      summary: 'Get list Department'
-      description: 'Get list Department'
+        - Apartment
+      summary: 'Get list Apartment'
+      description: 'Get list Apartment'
       produces:
         - application/json
       responses:
         '200':
-          description: A list of departments.
+          description: A list of apartments.
           schema:
             type: object
             properties:
@@ -27,25 +27,25 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Department'
-  /api/department/{id}:
+                  $ref: '#/components/schemas/Apartment'
+  /api/apartment/{id}:
     get:
       tags:
-        - Department
-      summary: 'Get Department by Id'
-      description: 'Get Department by Id'
+        - Apartment
+      summary: 'Get Apartment by Id'
+      description: 'Get Apartment by Id'
       produces:
         - application/json
       parameters:
       - name: "id"
         in: "path"
-        description: "ID of department"
+        description: "ID of apartment"
         required: true
         type: "integer"
         format: "int64"
       responses:
         '200':
-          description: Department by Id.
+          description: Apartment by Id.
           schema:
             type: object
             properties:
@@ -59,24 +59,24 @@ paths:
                 type: array
                 items:
                   $ref: ''
-  /api/department/{id}/finance:
+  /api/apartment/{id}/finance:
     get:
       tags:
-        - Department
-      summary: 'Get finance of department by Id'
-      description: 'Get finance of department by Id'
+        - Apartment
+      summary: 'Get finance of apartment by Id'
+      description: 'Get finance of apartment by Id'
       produces:
         - application/json
       parameters:
       - name: "id"
         in: "path"
-        description: "ID of department"
+        description: "ID of apartment"
         required: true
         type: "integer"
         format: "int64"
       responses:
         '200':
-          description: Finance of department by Id.
+          description: Finance of apartment by Id.
           schema:
             type: object
             properties:
@@ -90,18 +90,18 @@ paths:
                 type: array
                 items:
                   $ref: ''
-  /api/department/{id}/finance/{bill_id}/bill_detail:
+  /api/apartment/{id}/finance/{bill_id}/bill_detail:
     get:
       tags:
-        - Department
-      summary: 'Get bill detail by Department Id'
-      description: 'Get bill detail by Department Id'
+        - Apartment
+      summary: 'Get bill detail by Apartment Id'
+      description: 'Get bill detail by Apartment Id'
       produces:
         - application/json
       parameters:
       - name: "id"
         in: "path"
-        description: "ID of department"
+        description: "ID of Apartment"
         required: true
         type: "integer"
         format: "int64"
@@ -113,7 +113,7 @@ paths:
         format: "int64"
       responses:
         '200':
-          description: Bill detail by Department Id.
+          description: Bill detail by Apartment Id.
           schema:
             type: object
             properties:
@@ -248,9 +248,9 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: "department_id"
+        - name: "username"
           in: "query"
-          description: "Type your department_id"
+          description: "Type your username"
           required: true
           type: "string"
         - name: "password"
@@ -345,10 +345,10 @@ paths:
 
 components:
   schemas:
-    Department:
+    Apartment:
       type: object
       properties:
-        department_id:
+        apartment_id:
           type: string
           example: "P101"
         floor:
@@ -363,15 +363,15 @@ components:
         square_meters:
           type: number
           example: 50
-        type_department:
+        type_apartment:
           type: number
           example: 1
       xml:
-        name: Department
-    DepartmentById:
+        name: Apartment
+    ApartmentById:
       type: object
       properties:
-        department_id:
+        apartment_id:
           type: string
           example: "P101"
         floor:
@@ -386,11 +386,11 @@ components:
         square_meters:
           type: number
           example: 50
-        type_department:
+        type_apartment:
           type: number
           example: 1
       xml:
-        name: Department
+        name: Apartment
     Service:
       type: object
       properties:
@@ -425,7 +425,7 @@ components:
         token:
           type: string
           example: "28|QgGSL8vv33zKmWDHd07Y6vOur7lfixfEtEzTnWM0"
-        department_id:
+        apartment_id:
           type: string
           example: "P300"
         floor:
@@ -440,7 +440,7 @@ components:
         square_meters:
           type: number
           example: 60
-        type_department:
+        type_apartment:
           type: number
           example: 1
         tower:
@@ -472,7 +472,7 @@ components:
         password_comfirmation:
           type: string
           example: "123456"
-        department_id:
+        apartment_id:
           type: number
           example: 1
         role:
@@ -498,7 +498,7 @@ components:
             name:
               type: string
               example: "Duc Anh"
-            department_id:
+            apartment_id:
               type: number
               example: 1
             role:

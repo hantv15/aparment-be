@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CardRequest;
 use App\Http\Resources\CardResource;
 use App\Models\Apartment;
 use App\Models\Card;
@@ -29,7 +30,7 @@ class CardController extends Controller
         return view('card.add',compact('apartments'));
     }
 
-    public function saveAdd(Request $request):JsonResponse
+    public function saveAdd(CardRequest $request):JsonResponse
     {
         $card = new Card();
         $card->fill($request->all());
@@ -49,7 +50,7 @@ class CardController extends Controller
         return view('card.edit', compact('card', 'apartments', 'year', 'month', 'day', 'hour', 'minute'));
     }
 
-    public function saveEdit(Request $request,$id):JsonResponse
+    public function saveEdit(CardRequest $request,$id):JsonResponse
     {
         $card =Card::find($id);
         $card->fill($request->all());
