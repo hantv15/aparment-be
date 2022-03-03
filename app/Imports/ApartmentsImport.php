@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Date;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ApartmentsImport implements ToModel, WithHeadingRow
+class ApartmentsImport implements ToModel
 {
     /**
      * @param array $row
@@ -19,15 +19,15 @@ class ApartmentsImport implements ToModel, WithHeadingRow
     {
         // $current_date_time = Carbon::now()->toDateTimeString();
         return new Apartment([
-            'apartment_id' => $row['apartment_id'],
-            'floor' => $row['floor'],
-            'status' => $row['status'],
-            'description' => $row['description'],
-            'square_meters' => $row['square_meters'],
-            'type_apartment' => $row['type_apartment'],
-            'password' => $row['password'],
-            'building_id' => $row['building_id'],
-            'user_id' => $row['user_id'],
+            'id' => $row[0],
+            'apartment_id' => $row[1],
+            'floor' => $row[2],
+            'status' => $row[3],
+            'description' => $row[4],
+            'square_maters' => $row[5],
+            'type_apartment' => $row[6],
+            'building_id' => $row[7],
+            'user_id' => $row[8]
         ]);
     }
 }

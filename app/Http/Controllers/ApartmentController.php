@@ -223,12 +223,12 @@ class ApartmentController extends Controller
 
     public function fileImport(Request $request)
     {
-        Excel::import(new UsersImport, $request->file('file')->store('temp'));
+        Excel::import(new ApartmentsImport, $request->file('file')->store('temp'));
         return back();
     }
 
     public function fileExport()
     {
-        return Excel::download(new UsersExport, 'user-collection.xlsx');
+        return Excel::download(new ApartmentsExport, 'apartment-collection.xlsx');
     }
 }
