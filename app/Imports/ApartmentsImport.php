@@ -19,7 +19,7 @@ class ApartmentsImport implements ToModel
     {
         // $current_date_time = Carbon::now()->toDateTimeString();
         return new Apartment([
-            'id' => $row[0],
+            // 'id' => $row[0],
             'apartment_id' => $row[1],
             'floor' => $row[2],
             'status' => $row[3],
