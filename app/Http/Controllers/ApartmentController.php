@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ApartmentsExport;
+use App\Exports\UsersExport;
 use App\Http\Resources\ApartmentResource;
 use App\Http\Resources\DepartmentResource;
 use App\Imports\ApartmentsImport;
+use App\Imports\UsersImport;
 use App\Models\Apartment;
 use App\Models\Bill;
 use App\Models\BillDetail;
@@ -221,12 +223,12 @@ class ApartmentController extends Controller
 
     public function fileImport(Request $request)
     {
-        Excel::import(new ApartmentsImport, $request->file('file')->store('excelFolder'));
+        Excel::import(new UsersImport, $request->file('file')->store('temp'));
         return back();
     }
 
     public function fileExport()
     {
-        return Excel::download(new ApartmentsExport, 'apartment-collection.xlsx');
+        return Excel::download(new UsersExport, 'user-collection.xlsx');
     }
 }
