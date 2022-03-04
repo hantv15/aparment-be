@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class ServiceRequest extends FormRequest
+class CommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,13 +24,9 @@ class ServiceRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
-                'required', 'string',
-                Rule::unique('services')->ignore($this->id)
-            ],
-            'price' => 'required|integer|min:1',
-            'icon' => 'nullable|image',
-            'description' => 'nullable'
+            'post_id' => 'required',
+            'content' => 'required',
+            'user' => 'required'
         ];
     }
 }
