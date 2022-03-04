@@ -29,7 +29,7 @@ class CardRequest extends FormRequest
                 Rule::unique('cards')->ignore($this->id)
             ],
             'status'=>'required|integer|min:0|max:1',
-            // 'expire_time'=>'required',
+            // 'expire_time'=>'required|date',
             'apartment_id'=>'required',
         ];
         
