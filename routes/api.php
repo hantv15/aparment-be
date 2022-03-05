@@ -45,6 +45,7 @@ Route::prefix('/apartment')->group(function (){
     Route::get('/{id}/finance/paid', [ApartmentController::class, 'getPaidBillByApartmentId']);
     Route::get('/{id}/finance/{bill_id}/bill-detail', [ApartmentController::class, 'getBillDetailByApartmentId']);
     Route::get('/{id}/card', [CardController::class, 'getCardByApartmentId']);
+    Route::post('/upload-excel', [ApartmentController::class, 'uploadApartment'])->name('apartment.upload-excel');
 });
 
 Route::prefix('/bill')->group(function (){
