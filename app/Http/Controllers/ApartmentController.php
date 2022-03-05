@@ -221,6 +221,7 @@ class ApartmentController extends Controller
                                                     'bill_details.bill_id',
                                                     'bills.name as ten_hoa_don',
                                                     'services.name as ten_dich_vu',
+                                                    'services.price as don_gia',
                                                     'bill_details.quantity',
                                                     'bill_details.total_price',
                                                     'bills.apartment_id'
