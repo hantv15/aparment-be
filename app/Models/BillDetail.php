@@ -15,4 +15,8 @@ class BillDetail extends Model
         'quantity',
         'total_price'
     ];
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 }

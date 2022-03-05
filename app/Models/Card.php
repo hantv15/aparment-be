@@ -15,4 +15,8 @@ class Card extends Model
         'expire_time',
         'apartment_id'
     ];
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 }

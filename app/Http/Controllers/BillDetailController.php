@@ -64,9 +64,13 @@ class BillDetailController extends Controller
         $bill_detail->total_price = $request->quantity * Service::where('id', $request->service_id)->first()->price;
         $bill_detail->save();
 
-        $bill = Bill::where('id', $request->bill_id)->first();
-        $bill->amount = $new_amount_by_old_bill_id + $bill_detail->total_price;
-        $bill->save();
+        $bill_from = Bill::where('id', $old_bill_id)->first();
+        $bill_from->amount = $new_amount_by_old_bill_id;
+        $bill_from->save();
+
+        $bill_to = Bill::where('id', $request->bill_id)->first();
+        $bill_to->amount += $bill_detail->total_price;
+        $bill_to->save();
 
         return $this->success($bill_detail);
     }
