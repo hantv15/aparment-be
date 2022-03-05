@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Service extends Model
 {
     use HasFactory;
+    const  WATER_SERVICE = 6;
 
     protected $table = 'services';
     protected $fillable = [
