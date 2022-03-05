@@ -10,4 +10,8 @@ class Building extends Model
     use HasFactory;
     protected $table = 'buildings';
     protected $fillable = ['name'];
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 }

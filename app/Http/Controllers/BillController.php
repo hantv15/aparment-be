@@ -29,8 +29,7 @@ class BillController extends Controller
         $bill = new Bill();
         $bill->fill($request->all());
         $bill->save();
-
-        return $this->success($bill);
+        return $this->success(BillResource::collection(Bill::where('id', $bill->id)->get()));
     }
 
     public function editForm($id){

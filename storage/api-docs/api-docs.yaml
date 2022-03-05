@@ -4,12 +4,101 @@ info:
   description: Apartment API Documentation
   version: 1.0.0
 paths:
+  /api/register:
+    post:
+      tags:
+        - Authenticate
+      summary: 'Register new user'
+      description: 'Register new user'
+      produces:
+        - application/json
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Information new user"
+          required: true
+          schema:
+            type: "array"
+            items:
+              $ref: "#/components/schemas/RequestRegister"
+      responses:
+        '200':
+          description: Register new user'.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: 'User Registered'
+              data:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Register'
+  /api/login:
+    post:
+      tags:
+        - Authenticate
+      summary: 'Login into the system'
+      description: 'Login'
+      produces:
+        - application/json
+      parameters:
+        - name: "username"
+          in: "query"
+          description: "Type your Email or Phone Number"
+          required: true
+          type: "string"
+        - name: "password"
+          in: "query"
+          description: "Type your Password"
+          required: true
+          type: "string"
+      responses:
+        '200':
+          description: Login successfully.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Login'
+  /api/logout:
+    post:
+      tags:
+        - Authenticate
+      summary: 'Logout'
+      description: 'Logout'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Logout'.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: 'Logged out'
+
   /api/apartment:
     get:
       tags:
         - Apartment
-      summary: 'Get list Apartment'
-      description: 'Get list Apartment'
+      summary: 'Get list apartment'
+      description: 'Get list apartment'
       produces:
         - application/json
       responses:
@@ -28,6 +117,103 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Apartment'
+  /api/apartment/add:
+    post:
+      tags:
+        - Apartment
+      summary: 'Add a new apartment'
+      description: 'Add a new apartment'
+      produces:
+        - application/json
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Apartment object that needs to be added to the system"
+          required: true
+          schema:
+            $ref: "#/components/schemas/NewApartment"
+      responses:
+        '200':
+          description:
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewApartment'
+  /api/apartment/edit/{id}:
+    post:
+      tags:
+        - Apartment
+      summary: "Updates an apartment in the system with form data"
+      description: ""
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of apartment that needs to be updated"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "apartment_id"
+          in: "formData"
+          description: "New apartment_id of apartment"
+          required: true
+          type: "string"
+        - name: "floor"
+          in: "formData"
+          description: "New floor of apartment"
+          required: true
+          type: "integer"
+        - name: "status"
+          in: "formData"
+          description: "New status of apartment"
+          required: true
+          type: "integer"
+        - name: "description"
+          in: "formData"
+          description: "New description of apartment"
+          required: false
+          type: string
+        - name: "square_meters"
+          in: "formData"
+          description: "New square_meters of apartment"
+          required: false
+          type: "integer"
+        - name: "type_apartment"
+          in: "formData"
+          description: "New type_apartment of apartment"
+          required: true
+          type: "integer"
+        - name: "building_id"
+          in: "formData"
+          description: "New building_id of apartment"
+          required: true
+          type: "integer"
+      responses:
+        '200':
+          description:
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewApartment'
   /api/apartment/{id}:
     get:
       tags:
@@ -37,12 +223,12 @@ paths:
       produces:
         - application/json
       parameters:
-      - name: "id"
-        in: "path"
-        description: "ID of apartment"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: "id"
+          in: "path"
+          description: "ID of apartment"
+          required: true
+          type: "integer"
+          format: "int64"
       responses:
         '200':
           description: Apartment by Id.
@@ -68,12 +254,12 @@ paths:
       produces:
         - application/json
       parameters:
-      - name: "id"
-        in: "path"
-        description: "ID of apartment"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: "id"
+          in: "path"
+          description: "ID of apartment"
+          required: true
+          type: "integer"
+          format: "int64"
       responses:
         '200':
           description: Finance of apartment by Id.
@@ -90,7 +276,69 @@ paths:
                 type: array
                 items:
                   $ref: ''
-  /api/apartment/{id}/finance/{bill_id}/bill_detail:
+  /api/apartment/{id}/finance/unpaid:
+    get:
+      tags:
+        - Apartment
+      summary: 'Get unpaid bills of apartment by Id'
+      description: 'Get unpaid bills of apartment by Id'
+      produces:
+        - application/json
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of apartment"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        '200':
+          description: Finance of apartment by Id.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: ''
+  /api/apartment/{id}/finance/paid:
+    get:
+      tags:
+        - Apartment
+      summary: 'Get paid bills of apartment by Id'
+      description: 'Get paid bills of apartment by Id'
+      produces:
+        - application/json
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of apartment"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        '200':
+          description: Finance of apartment by Id.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: ''
+  /api/apartment/{id}/finance/{bill_id}/bill-detail:
     get:
       tags:
         - Apartment
@@ -99,18 +347,18 @@ paths:
       produces:
         - application/json
       parameters:
-      - name: "id"
-        in: "path"
-        description: "ID of Apartment"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "bill_id"
-        in: "path"
-        description: "ID of Bill"
-        required: true
-        type: "integer"
-        format: "int64"
+        - name: "id"
+          in: "path"
+          description: "ID of Apartment"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "bill_id"
+          in: "path"
+          description: "ID of Bill"
+          required: true
+          type: "integer"
+          format: "int64"
       responses:
         '200':
           description: Bill detail by Apartment Id.
@@ -126,7 +374,335 @@ paths:
               data:
                 type: array
                 items:
+                  $ref: '#/components/schemas/BillDetailByApatmentId'
+  /api/apartment/{id}/card:
+    get:
+      tags:
+        - Apartment
+      summary: 'Get card of apartment by Id'
+      description: 'Get card of apartment by Id'
+      produces:
+        - application/json
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of apartment"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        '200':
+          description: Finance of apartment by Id.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
                   $ref: ''
+
+  /api/bill:
+    get:
+      tags:
+        - Bill
+      summary: 'Get list bill'
+      description: 'Get list bill'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A list of bills.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bill'
+  /api/bill/add:
+    post:
+      tags:
+        - Bill
+      summary: 'Add a new bill'
+      description: 'Add a new bill'
+      produces:
+        - application/json
+      parameters:
+        - name: "name"
+          in: "query"
+          description: "Name of bill"
+          required: true
+          type: string
+          format: "int64"
+        - name: "apartment_id"
+          in: "query"
+          description: "Apartment of bill"
+          required: true
+          type: number
+          format: "int64"
+        - name: "notes"
+          in: "query"
+          description: "Notes of bill"
+          required: false
+          type: string
+          format: "int64"
+      responses:
+        '200':
+          description:
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewBill'
+  /api/bill/edit/{id}:
+    post:
+      tags:
+        - Bill
+      summary: 'Update a bill in the system with form data'
+      description: 'Update a bill in the system with form data'
+      produces:
+        - application/json
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of bill"
+          required: true
+          type: string
+          format: "int64"
+        - name: "name"
+          in: "query"
+          description: "Name of bill"
+          required: true
+          type: string
+          format: "int64"
+        - name: "status"
+          in: "query"
+          description: "Status of bill"
+          required: true
+          type: number
+          format: "int64"
+        - name: "notes"
+          in: "query"
+          description: "Notes of bill"
+          required: false
+          type: string
+          format: "int64"
+      responses:
+        '200':
+          description:
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewBill'
+  /api/bill/{id}:
+    get:
+      tags:
+        - Bill
+      summary: 'Get Bill by Id'
+      description: 'Get Bill by Id'
+      produces:
+        - application/json
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of bill"
+          required: true
+          type: string
+          format: "int64"
+      responses:
+        '200':
+          description:
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: ''
+
+  /api/bill-detail:
+    get:
+      tags:
+        - Bill Detail
+      summary: 'Get list Bill Detail'
+      description: 'Get list Bill Detail'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: A list of bill details.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: ''
+  /api/bill-detail/add:
+    post:
+      tags:
+        - Bill Detail
+      summary: 'Add a new bill detail'
+      description: 'Add a new bill detail'
+      produces:
+        - application/json
+      parameters:
+        - name: "service_id"
+          in: "query"
+          description: "Service of bill detail"
+          required: true
+          type: string
+          format: "int64"
+        - name: "bill_id"
+          in: "query"
+          description: "Bill of bill detail"
+          required: true
+          type: number
+          format: "int64"
+        - name: "quantity"
+          in: "query"
+          description: "Quantity of service"
+          required: true
+          type: number
+          format: "int64"
+      responses:
+        '200':
+          description:
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewBillDetail'
+  /api/bill-detail/edit/{id}:
+    post:
+      tags:
+        - Bill Detail
+      summary: 'Update a bill detail in the system with form data'
+      description: 'Update a bill detail in the system with form data'
+      produces:
+        - application/json
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of bill detail"
+          required: true
+          type: string
+          format: "int64"
+        - name: "service_id"
+          in: "query"
+          description: "Service of bill detail"
+          required: true
+          type: string
+          format: "int64"
+        - name: "bill_id"
+          in: "query"
+          description: "Bill of bill detail"
+          required: true
+          type: number
+          format: "int64"
+        - name: "quantity"
+          in: "query"
+          description: "Quantity of service"
+          required: true
+          type: number
+          format: "int64"
+      responses:
+        '200':
+          description:
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewBillDetail'
+  /api/bill-detail/{id}:
+    get:
+      tags:
+        - Bill Detail
+      summary: 'Get Bill Detail by Id'
+      description: 'Get Bill Detail by Id'
+      produces:
+        - application/json
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of Bill Detail"
+          required: true
+          type: "integer"
+          format: "int64"
+      responses:
+        '200':
+          description: Bill detail by Id.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: ''
+
   /api/service:
     get:
       tags:
@@ -182,133 +758,30 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/NewService'
-        '405':
-          description: "Invalid input"
-  /api/bill_detail:
-    get:
-      tags:
-        - Bill Detail
-      summary: 'Get list Bill Detail'
-      description: 'Get list Bill Detail'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: A list of bill details.
-          schema:
-            type: object
-            properties:
-              is_success:
-                type: boolean
-                example: true
-              message:
-                type: string
-                example: ''
-              data:
-                type: array
-                items:
-                  $ref: ''
-  /api/bill_detail/{id}:
-    get:
-      tags:
-        - Bill Detail
-      summary: 'Get Bill Detail by Id'
-      description: 'Get Bill Detail by Id'
-      produces:
-        - application/json
-      parameters:
-      - name: "id"
-        in: "path"
-        description: "ID of Bill Detail"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        '200':
-          description: Bill detail by Id.
-          schema:
-            type: object
-            properties:
-              is_success:
-                type: boolean
-                example: true
-              message:
-                type: string
-                example: ''
-              data:
-                type: array
-                items:
-                  $ref: ''
-  /api/login:
+  /api/service/edit/{id}:
     post:
       tags:
-        - Authenticate
-      summary: 'Login into the system'
-      description: 'Login'
+        - Service
+      summary: 'Update a service in the system with form data'
+      description: 'Update a service in the system with form data'
       produces:
         - application/json
       parameters:
-        - name: "username"
-          in: "query"
-          description: "Type your username"
+        - name: "id"
+          in: "path"
+          description: "Id of service"
           required: true
-          type: "string"
-        - name: "password"
-          in: "query"
-          description: "Type your Password"
-          required: true
-          type: "string"
-      responses:
-        '200':
-          description: Login successfully.
-          schema:
-            type: object
-            properties:
-              is_success:
-                type: boolean
-                example: true
-              message:
-                type: string
-                example: ''
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Login'
-        '400':
-          description: "Error: Bad Request"
-          schema:
-            type: object
-            properties:
-              is_success:
-                type: boolean
-                example: false
-              message:
-                type: string
-                example: ""
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/LoginFail'
-  /api/register:
-    post:
-      tags:
-        - Authenticate
-      summary: 'Register new account'
-      description: 'Register new account'
-      produces:
-        - application/json
-      parameters:
+          type: string
+          format: "int64"
         - in: "body"
           name: "body"
-          description: "Information new account"
+          description: "Service object that needs to be added to the system"
           required: true
           schema:
-            type: "array"
-            items:
-              $ref: "#/components/schemas/RequestRegister"
+            $ref: "#/components/schemas/NewService"
       responses:
         '200':
-          description: Register new account'.
+          description: Add a new service.
           schema:
             type: object
             properties:
@@ -317,22 +790,29 @@ paths:
                 example: true
               message:
                 type: string
-                example: 'User Registered'
+                example: ''
               data:
-                type: object
+                type: array
                 items:
-                  $ref: '#/components/schemas/Register'
-  /api/logout:
-    post:
+                  $ref: '#/components/schemas/NewService'
+  /api/service/{id}:
+    get:
       tags:
-        - Authenticate
-      summary: 'Logout'
-      description: 'Logout'
+        - Service
+      summary: 'Get Service by Id'
+      description: 'Get Service by Id'
       produces:
         - application/json
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id of service"
+          required: true
+          type: string
+          format: "int64"
       responses:
         '200':
-          description: Logout'.
+          description: Get Service by Id.
           schema:
             type: object
             properties:
@@ -341,119 +821,14 @@ paths:
                 example: true
               message:
                 type: string
-                example: 'Logged out'
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: ''
 
 components:
   schemas:
-    Apartment:
-      type: object
-      properties:
-        apartment_id:
-          type: string
-          example: "P101"
-        floor:
-          type: number
-          example: 1
-        status:
-          type: number
-          example: 1
-        description:
-          type: string
-          example: "Phong 2 ban cong"
-        square_meters:
-          type: number
-          example: 50
-        type_apartment:
-          type: number
-          example: 1
-      xml:
-        name: Apartment
-    ApartmentById:
-      type: object
-      properties:
-        apartment_id:
-          type: string
-          example: "P101"
-        floor:
-          type: number
-          example: 1
-        status:
-          type: number
-          example: 1
-        description:
-          type: string
-          example: "Phong 1 ban cong"
-        square_meters:
-          type: number
-          example: 50
-        type_apartment:
-          type: number
-          example: 1
-      xml:
-        name: Apartment
-    Service:
-      type: object
-      properties:
-        name:
-          type: string
-          example: "Tien dien"
-        price:
-          type: number
-          example: 150000
-        description:
-          type: string
-          example: "Tien dien thang 1/2022"
-      xml:
-        name: Service
-    NewService:
-      type: object
-      properties:
-        name:
-          type: string
-          example: "Tien nuoc"
-        price:
-          type: number
-          example: 50000
-        description:
-          type: string
-          example: "Tien nuoc thang 1/2022"
-      xml:
-        name: Service
-    Login:
-      type: object
-      properties:
-        token:
-          type: string
-          example: "28|QgGSL8vv33zKmWDHd07Y6vOur7lfixfEtEzTnWM0"
-        apartment_id:
-          type: string
-          example: "P300"
-        floor:
-          type: number
-          example: 1
-        status:
-          type: number
-          example: 0
-        description:
-          type: string
-          example: "Phòng rộng"
-        square_meters:
-          type: number
-          example: 60
-        type_apartment:
-          type: number
-          example: 1
-        tower:
-          type: string
-          expamle: "P"
-        user_id:
-          type: number
-          example: 1
-      xml:
-        name: Login
-    LoginFail:
-      type: object
-      properties:
     RequestRegister:
       type: object
       properties:
@@ -512,3 +887,253 @@ components:
               example: "2022-01-20T06:03:10.000000Z"
       xml:
         name: Register
+    Login:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "28|QgGSL8vv33zKmWDHd07Y6vOur7lfixfEtEzTnWM0"
+        apartment_id:
+          type: string
+          example: "P300"
+        floor:
+          type: number
+          example: 1
+        status:
+          type: number
+          example: 0
+        description:
+          type: string
+          example: "Phòng rộng"
+        square_meters:
+          type: number
+          example: 60
+        type_apartment:
+          type: number
+          example: 1
+        tower:
+          type: string
+          expamle: "P"
+        user_id:
+          type: number
+          example: 1
+      xml:
+        name: Login
+
+    Apartment:
+      type: object
+      properties:
+        apartment_id:
+          type: string
+          example: "P101"
+        floor:
+          type: number
+          example: 1
+        status:
+          type: number
+          example: 1
+        description:
+          type: string
+          example: "Phong 2 ban cong"
+        square_meters:
+          type: number
+          example: 50
+        type_apartment:
+          type: number
+          example: 1
+      xml:
+        name: Apartment
+    NewApartment:
+      type: object
+      properties:
+        apartment_id:
+          type: string
+          required: true
+          example: "P101"
+        floor:
+          type: number
+          example: 1
+        status:
+          type: number
+          example: 0
+        description:
+          type: text
+          example: "Phòng rộng"
+        square_meters:
+          type: number
+          example: 50
+        type_apartment:
+          type: number
+          example: 0
+        building_id:
+          type: number
+          example: 1
+      xml:
+        name: Service
+    ApartmentById:
+      type: object
+      properties:
+        apartment_id:
+          type: string
+          example: "P101"
+        floor:
+          type: number
+          example: 1
+        status:
+          type: number
+          example: 1
+        description:
+          type: string
+          example: "Phong 1 ban cong"
+        square_meters:
+          type: number
+          example: 50
+        type_apartment:
+          type: number
+          example: 1
+      xml:
+        name: Apartment
+    BillDetailByApatmentId:
+      type: object
+      properties:
+        bill_id:
+          type: number
+          example: 4
+        ten_hoa_don:
+          type: string
+          example: "Hóa đơn tháng 1/2022"
+        ten_dich_vu:
+          type: string
+          example: "Xe máy"
+        quantity:
+          type: number
+          example: 3
+        total_price:
+          type: number
+          example: 160000
+        apartment_id:
+          type: number
+          example: 13
+      xml:
+        name: Apartment
+
+    Bill:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Hóa đơn tháng 1/2022"
+        amount:
+          type: number
+          example: 1060000
+        status:
+          type: number
+          example: 0
+        type_payment:
+          type: number
+          example: 0
+        payment_method:
+          type: number
+          example: 0
+        image:
+          type: string
+          example: null
+        fax:
+          type: string
+          example: null
+        apartment_id:
+          type: number
+          example: 13
+        notes:
+          type: string
+          example: "abc"
+        receiver_id:
+          type: string
+          example: null
+      xml:
+        name: Bill
+    NewBill:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Hóa đơn tháng 1/2022"
+        amount:
+          type: number
+          example: 0
+        status:
+          type: number
+          example: 0
+        type_payment:
+          type: number
+          example: 0
+        payment_method:
+          type: number
+          example: 0
+        image:
+          type: string
+          example: null
+        fax:
+          type: string
+          example: null
+        apartment_id:
+          type: number
+          example: 13
+        notes:
+          type: string
+          example: "abc"
+        receiver_id:
+          type: string
+          example: null
+      xml:
+        name: Bill
+
+    NewBillDetail:
+      type: object
+      properties:
+        service_id:
+          type: number
+          example: 7
+        bill_id:
+          type: number
+          example: 6
+        quantity:
+          type: number
+          example: 100
+        total_price:
+          type: number
+          example: 150000
+        id:
+          type: number
+          example: 17
+      xml:
+        name: BillDetail
+
+    Service:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Tien dien"
+        price:
+          type: number
+          example: 150000
+        description:
+          type: string
+          example: "Tien dien thang 1/2022"
+      xml:
+        name: Service
+    NewService:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Tien nuoc"
+        price:
+          type: number
+          example: 50000
+        description:
+          type: string
+          example: "Tien nuoc thang 1/2022"
+      xml:
+        name: Service

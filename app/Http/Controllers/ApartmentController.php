@@ -75,6 +75,10 @@ class ApartmentController extends Controller
             $apartments = ApartmentResource::collection(Apartment::where('building_id', $request->building_id)->get());
         }
 
+        if ($request->filled('page') && $request->filled('page_size')){
+            $apartments = $apartments->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
+        }
+
         return $this->success($apartments);
     }
 
