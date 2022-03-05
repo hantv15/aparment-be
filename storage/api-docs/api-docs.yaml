@@ -826,6 +826,35 @@ paths:
                 type: array
                 items:
                   $ref: ''
+  /api/apartment/upload-excel:
+    post:
+      tags:
+        - Apartment
+      summary: 'Post Excel apartment'
+      description: 'Post Excel apartment'
+      produces:
+        - application/json
+      parameters:
+        - name: "file_upload"
+          in: "formData"
+          description: "File excel upload"
+          required: true
+          type: file
+      responses:
+        '200':
+          description: Get Service by Id.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example:
+              data:
+                type: string
+                example: 'Import data from excel success fully'
 
 components:
   schemas:
