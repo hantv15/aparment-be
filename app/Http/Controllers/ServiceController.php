@@ -27,6 +27,7 @@ class ServiceController extends Controller
     public function addForm(){
         return view('service.add');
     }
+
     public function saveAdd(Request $request): JsonResponse
     {
         $request->validate([
@@ -38,11 +39,13 @@ class ServiceController extends Controller
         $service->save();
         return $this->success($service);
     }
+
     public function editForm($id)
     {
         $service = Service::find($id);
         return view('service.edit', compact('service'));
     }
+
     public function saveEdit(Request $request,$id): JsonResponse
     {
 
