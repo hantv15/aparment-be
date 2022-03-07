@@ -25,10 +25,11 @@ class CardController extends Controller
                     ->select(
                         'cards.id',
                         'cards.number',
+                        'cards.name',
                         'cards.status',
                         'cards.expire_time',
                         'vehicles.plate_number',
-                        'vehicle_types.name'
+                        'vehicle_types.name as loai_phuong_tien'
                     )
                     ->where('apartment_id', $id)->get();
         return $this->success($cards);

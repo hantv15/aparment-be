@@ -16,6 +16,7 @@ class CreateCardsTable extends Migration
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
             $table->string('number', 11)->nullable();
+            $table->string('name', 255)->nullable();
             $table->tinyInteger('status')->default(0);
             $table->dateTime('expire_time')->nullable();
 

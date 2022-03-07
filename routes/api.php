@@ -34,7 +34,7 @@ Route::post('register', [AuthController::class, 'register']);
 
 
 Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
-Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
@@ -65,6 +65,10 @@ Route::prefix('/bill')->group(function (){
     Route::post('/add', [BillController::class, 'saveAdd']);
     Route::get('/edit/{id}', [BillController::class, 'editForm'])->name('bill.edit');
     Route::post('/edit/{id}', [BillController::class, 'saveEdit']);
+    Route::get('/edit/{id}/add-bill-detail', [BillController::class, 'editAddBillDetailForm']);
+    Route::post('/edit/{id}/add-bill-detail', [BillController::class, 'saveEditAddBillDetail']);
+    Route::get('/edit-status/{id}', [BillController::class, 'editStatusForm']);
+    Route::post('/edit-status/{id}', [BillController::class, 'saveEditStatus']);
     Route::get('/{id}', [BillController::class, 'getBillById'])->name('bill.detail');
 });
 
