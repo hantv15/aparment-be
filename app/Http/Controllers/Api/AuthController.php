@@ -12,10 +12,13 @@ use App\Http\Resources\RegisterResource;
 use App\Models\Apartment;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    public function registerForm(){
+    public function registerForm()
+    {
         $apartments = Apartment::where('user_id', NULL)->get();
         return view('registerForm', compact('apartments'));
     }
@@ -48,7 +51,8 @@ class AuthController extends Controller
         return $this->success($result);
     }
 
-    public function loginForm(){
+    public function loginForm()
+    {
         return view('loginform');
     }
     public function login(Request $request): JsonResponse
@@ -64,7 +68,7 @@ class AuthController extends Controller
         $user_by_phone = User::where('phone_number', $fields['username'])->first();
         // Check password
         if ($count_user_by_email > 0) {
-            if(!$user_by_email || !Hash::check($fields['password'], $user_by_email->password)) {
+            if (!$user_by_email || !Hash::check($fields['password'], $user_by_email->password)) {
                 return $this->failed();
             }
             $result = new LoginResource($user_by_email);
@@ -73,7 +77,7 @@ class AuthController extends Controller
             Auth::attempt(['email' => $request->username, 'password' => $request->password], $request->remember);
             return $this->success($result);
         } elseif ($count_user_by_phone > 0) {
-            if(!$user_by_phone || !Hash::check($fields['password'], $user_by_phone->password)) {
+            if (!$user_by_phone || !Hash::check($fields['password'], $user_by_phone->password)) {
                 return $this->failed();
             }
             $result = new LoginResource($user_by_phone);
@@ -82,7 +86,6 @@ class AuthController extends Controller
             Auth::attempt(['phone_number' => $request->username, 'password' => $request->password], $request->remember);
             return $this->success($result);
         }
-
     }
 
     public function logout(Request $request)
@@ -93,4 +96,6 @@ class AuthController extends Controller
         ];
     }
 
+    
+   
 }
