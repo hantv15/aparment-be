@@ -10,10 +10,12 @@ use App\Http\Controllers\BillDetailController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\VehicleTypeController;
-
+use Illuminate\Auth\Notifications\ResetPassword;
+use App\Http\Controllers\ForgotPasswordController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,6 +32,12 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('register', [AuthController::class, 'registerForm'])->name('register');
 Route::post('register', [AuthController::class, 'register']);
 
+
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
     Route::post('/send-notification', [ApartmentNotiController::class, 'sendNotification'])->name('save-token');
@@ -37,6 +45,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 Route::prefix('/apartment')->group(function (){
     Route::get('/', [ApartmentController::class, 'getApartment'])->name('apartment');
+    Route::get('/not-owned', [ApartmentController::class, 'getApartmentNotOwned']);
     Route::get('/add', [ApartmentController::class, 'addForm'])->name('apartment.add');
     Route::post('/add', [ApartmentController::class, 'saveAdd']);
     Route::get('/edit/{id}', [ApartmentController::class, 'editForm'])->name('apartment.edit');

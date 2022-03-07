@@ -83,6 +83,17 @@ class ApartmentController extends Controller
         return $this->success($apartments);
     }
 
+    public function getApartmentNotOwned(Request $request){
+        $apartments = Apartment::where('user_id', NULL)->get();
+        
+
+        if ($request->filled('page') && $request->filled('page_size')){
+            $apartments = $apartments->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
+        }
+        $result = ApartmentResource::collection($apartments);
+        return $this->success($result);
+    }
+
     public function addForm()
     {
         $buildings = Building::all();
