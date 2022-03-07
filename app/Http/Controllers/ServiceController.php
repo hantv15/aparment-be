@@ -13,9 +13,24 @@ class ServiceController extends Controller
     /**
      * @return JsonResponse
      */
-    public function getService(): JsonResponse
+    public function getService(Request $request): JsonResponse
     {
-        $services = Service::all();
+        
+        
+            $services = Service::all();
+           
+        if($request->filled('price') && $request->price == 1){
+            $services= $services->sortByDesc('price');
+        }
+        elseif($request->filled('price') && $request->price == 2){
+            $services= $services->sortBy('price');
+            
+        }
+
+         if ($request->filled('page') && $request->filled('page_size')){
+            $services = $services->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
+        }
+
         $result = ServiceResource::collection($services);
         return $this->success($result);
     }
@@ -37,7 +52,8 @@ class ServiceController extends Controller
         $service = new Service();
         $service->fill($request->all());
         $service->save();
-        return $this->success($service);
+        $result = ServiceResource::collection($service);
+        return $this->success($result);
     }
 
     public function editForm($id)
@@ -66,7 +82,8 @@ class ServiceController extends Controller
         }
         $service->fill($request->all());
         $service->save();
-        return $this->success($service);
+        $result = ServiceResource::collection($service);
+        return $this->success($result);
     }
     public function getServiceById($id):JsonResponse
     {
@@ -74,7 +91,8 @@ class ServiceController extends Controller
         if (!$service) {
             return $this->failed();
         }
-        return $this->success($service);
+        $result = ServiceResource::collection($service);
+        return $this->success($result);
     }
 
 }
