@@ -26,4 +26,12 @@ class Bill extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function apartment(){
+        return $this->belongsTo(Apartment::class, 'apartment_id');
+    }
+
+    public function services(){
+        return $this->belongsToMany(Service::class, 'bill_details', 'bill_id', 'service_id');
+    }
 }
