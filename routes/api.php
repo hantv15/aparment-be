@@ -11,6 +11,8 @@ use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\VehicleTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,3 +98,21 @@ Route::prefix('/service')->group(function (){
 });
 
 Route::post('payment', [PaymentController::class, 'payment']);
+
+Route::prefix('/vehicle')->group(function (){
+    Route::get('/', [VehicleController::class, 'getVehicle'])->name('vehicle');
+    Route::get('/add', [VehicleController::class, 'addForm'])->name('vehicle.add');
+    Route::post('/add', [VehicleController::class, 'saveAdd']);
+    Route::get('/edit/{id}', [VehicleController::class, 'editForm'])->name('vehicle.edit');
+    Route::post('/edit/{id}', [VehicleController::class, 'saveEdit']);
+    Route::get('/{id}', [VehicleController::class, 'getVehicleById'])->name('vehicle.detail');
+});
+
+Route::prefix('/vehicle-type')->group(function (){
+    Route::get('/', [VehicleTypeController::class, 'getVehicleType'])->name('vehicle-type');
+    Route::get('/add', [VehicleTypeController::class, 'addForm'])->name('vehicle-type.add');
+    Route::post('/add', [VehicleTypeController::class, 'saveAdd']);
+    Route::get('/edit/{id}', [VehicleTypeController::class, 'editForm'])->name('vehicle-type.edit');
+    Route::post('/edit/{id}', [VehicleTypeController::class, 'saveEdit']);
+    Route::get('/{id}', [VehicleTypeController::class, 'getVehicleTypeById'])->name('vehicle-type.detail');
+});

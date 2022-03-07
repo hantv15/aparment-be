@@ -20,9 +20,18 @@ class CardController extends Controller
 
     public function getCardByApartmentId($id):JsonResponse
     {
-        $cards = Card::where('apartment_id', $id)->get();
-        $result = CardResource::collection($cards);
-        return $this->success($result);
+        $cards = Card::leftJoin('vehicles', 'cards.id', '=', 'vehicles.card_id')
+                    ->leftJoin('vehicle_types', 'vehicles.vehicle_type_id', '=', 'vehicle_types.id')
+                    ->select(
+                        'cards.id',
+                        'cards.number',
+                        'cards.status',
+                        'cards.expire_time',
+                        'vehicles.plate_number',
+                        'vehicle_types.name'
+                    )
+                    ->where('apartment_id', $id)->get();
+        return $this->success($cards);
     }
 
     public function addForm(){
