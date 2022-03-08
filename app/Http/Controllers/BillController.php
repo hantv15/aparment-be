@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BillRequest;
 use App\Http\Resources\BillResource;
-use App\Http\Resources\ServiceResource;
 use App\Models\Apartment;
 use App\Models\Bill;
 use App\Models\BillDetail;
 use App\Models\Service;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use phpDocumentor\Reflection\Types\False_;
 
 class BillController extends Controller
 {
@@ -26,7 +25,7 @@ class BillController extends Controller
         return view('bill.add', compact('apartments'));
     }
 
-    public function saveAdd(Request $request):JsonResponse
+    public function saveAdd(BillRequest $request):JsonResponse
     {
         $bill = new Bill();
         $bill->fill($request->all());
@@ -43,7 +42,7 @@ class BillController extends Controller
         return view('bill.edit', compact('bill'));
     }
 
-    public function saveEdit($id, Request $request):JsonResponse
+    public function saveEdit($id, BillRequest $request):JsonResponse
     {
         $bill = Bill::find($id);
         if (!$bill) {
@@ -99,13 +98,71 @@ class BillController extends Controller
         return $this->success($bill);
     }
 
+    public function editEditBillDetailForm($id, $bill_detail_id){
+        $bill = Bill::find($id);
+        $services = Service::all();
+        $bill_detail = BillDetail::where('id', $bill_detail_id)
+                                ->where('bill_id', $id)
+                                ->first();
+        if ($bill->status == 1){
+            return $this->failed();
+        }
+        if (!$bill_detail) {
+            return $this->failed();
+        }
+        return view('bill.edit-edit-bill-detail', compact('bill', 'services', 'bill_detail'));
+    }
+
+    public function saveEditEditBillDetail($id, $bill_detail_id, Request $request):JsonResponse
+    {
+        $bill = Bill::find($id);
+        $bill_detail = BillDetail::where('id', $bill_detail_id)
+            ->where('bill_id', $id)
+            ->first();
+        if (!$bill) {
+            return $this->failed();
+        }
+        if ($bill->status == 1){
+            return $this->failed();
+        }
+        if (!$bill_detail) {
+            return $this->failed();
+        }
+
+        $old_service_id = $bill_detail->service_id;
+        $old_quantity = $bill_detail->quantity;
+        $old_total_price_bill_detail = $bill_detail->total_price;
+        $old_amount = $bill->amount;
+        $step_amount = $old_amount - $old_total_price_bill_detail;
+
+        $bill_detail->fill($request->all());
+        $bill_detail->total_price = $request->quantity * Service::where('id', $request->service_id)->first()->price;
+        if ($request->service_id == Service::WATER_SERVICE) {
+            if ($request->quantity <= 10) {
+                $bill_detail->total_price = $request->quantity * 5973;
+            } elseif ($request->quantity <= 20) {
+                $bill_detail->total_price = 10 * 5973 + ($request->quantity - 10) * 7052;
+            } elseif ($request->quantity <= 30) {
+                $bill_detail->total_price = 10 * 5973 + 10 * 7052 + ($request->quantity - 20) * 8669;
+            } elseif ($request->quantity > 30) {
+                $bill_detail->total_price = 10 * 5973 + 10 * 7052 + 10 * 8669 + ($request->quantity - 30) * 15929;
+            }
+        }
+        $bill_detail->save();
+
+        $bill->amount = $step_amount + $bill_detail->total_price;
+        $bill->save();
+
+        return $this->success($bill);
+    }
+
     public function editStatusForm($id){
         $bill = Bill::find($id);
         $bill->load('apartment');
         return view('bill.edit-status', compact('bill'));
     }
 
-    public function saveEditStatus($id, Request $request):JsonResponse
+    public function saveEditStatus($id, BillRequest $request):JsonResponse
     {
         $bill = Bill::find($id);
         if (!$bill) {

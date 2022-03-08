@@ -31,14 +31,13 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('register', [AuthController::class, 'registerForm'])->name('register');
 Route::post('register', [AuthController::class, 'register']);
 
-
 Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
 Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/user', [UserController::class, 'getUserLoginIn']);
+    Route::get('/user', [UserController::class, 'getUserLogin']);
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
     Route::post('/send-notification', [ApartmentNotiController::class, 'sendNotification'])->name('save-token');
 });
@@ -67,6 +66,8 @@ Route::prefix('/bill')->group(function (){
     Route::post('/edit/{id}', [BillController::class, 'saveEdit']);
     Route::get('/edit/{id}/add-bill-detail', [BillController::class, 'editAddBillDetailForm']);
     Route::post('/edit/{id}/add-bill-detail', [BillController::class, 'saveEditAddBillDetail']);
+    Route::get('/edit/{id}/edit-bill-detail/{bill_detail_id}', [BillController::class, 'editEditBillDetailForm']);
+    Route::post('/edit/{id}/edit-bill-detail/{bill_detail_id}', [BillController::class, 'saveEditEditBillDetail']);
     Route::get('/edit-status/{id}', [BillController::class, 'editStatusForm']);
     Route::post('/edit-status/{id}', [BillController::class, 'saveEditStatus']);
     Route::get('/{id}', [BillController::class, 'getBillById'])->name('bill.detail');
@@ -97,7 +98,6 @@ Route::prefix('/card')->group(function (){
     Route::post('/add', [CardController::class, 'saveAdd']);
     Route::get('/edit/{id}', [CardController::class, 'editForm'])->name('card.edit');
     Route::post('/edit/{id}', [CardController::class, 'saveEdit']);
-    Route::post('/remove/{id}', [CardController::class, 'remove'])->name('card.remove');
     Route::get('/{id}', [CardController::class, 'getCardById'])->name('card.detail');
 });
 
