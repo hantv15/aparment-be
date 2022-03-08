@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ApartmentRequest;
 use App\Http\Resources\ApartmentResource;
 use App\Imports\BaseImport;
 use App\Models\Apartment;
@@ -85,7 +86,7 @@ class ApartmentController extends Controller
 
     public function getApartmentNotOwned(Request $request){
         $apartments = Apartment::where('user_id', NULL)->get();
-        
+
 
         if ($request->filled('page') && $request->filled('page_size')){
             $apartments = $apartments->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
@@ -104,7 +105,7 @@ class ApartmentController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function saveAdd(Request $request): JsonResponse
+    public function saveAdd(ApartmentRequest $request): JsonResponse
     {
         $model = new Apartment();
         $model->fill($request->all());
@@ -118,7 +119,7 @@ class ApartmentController extends Controller
         return view('apartment.edit', compact('apartment', 'buildings'));
     }
 
-    public function saveEdit($id, Request $request):JsonResponse
+    public function saveEdit($id, ApartmentRequest $request):JsonResponse
     {
         $model = Apartment::find($id);
         $model->fill($request->all());
@@ -132,7 +133,7 @@ class ApartmentController extends Controller
      */
     public function getApartmentById($id): JsonResponse
     {
-        $apartment = Apartment::join('users', 'apartments.id', '=', 'users.apartment_id')
+        $apartment = Apartment::leftJoin('users', 'apartments.id', '=', 'users.apartment_id')
             ->join('buildings', 'apartments.building_id', '=', 'buildings.id')
             ->select(
                 'apartments.apartment_id',

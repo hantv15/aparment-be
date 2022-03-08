@@ -9,13 +9,12 @@ use App\Http\Controllers\BillController;
 use App\Http\Controllers\BillDetailController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\VehicleTypeController;
-use Illuminate\Auth\Notifications\ResetPassword;
-use App\Http\Controllers\ForgotPasswordController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -39,6 +38,7 @@ Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showRese
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/user', [UserController::class, 'getUserLoginIn']);
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
     Route::post('/send-notification', [ApartmentNotiController::class, 'sendNotification'])->name('save-token');
 });

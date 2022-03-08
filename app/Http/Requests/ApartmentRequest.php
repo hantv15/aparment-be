@@ -14,7 +14,7 @@ class ApartmentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -30,14 +30,11 @@ class ApartmentRequest extends FormRequest
                 Rule::unique('apartments')->ignore($this->id)
             ],
             'floor' => 'required|integer|min:1',
-            'status' => 'required',
-            'description' => 'nullable',
-            'square_meters' => 'nullable',
-            'type_apartment' => 'required|integer|min:0',
-            'password' => 'required',
-            'building_id' => 'required',
-            'user_id' => 'nullable',
-
+            'status' => 'required|integer|min:0|max:1',
+            'square_meters' => 'nullable|numeric|min:0',
+            'type_apartment' => 'required|integer|min:0|max:1',
+            'building_id' => 'required|integer|min:1',
+            'user_id' => 'nullable|integer|min:1'
         ];
     }
 }
