@@ -23,7 +23,7 @@ class ApartmentController extends Controller
      */
     public function getApartment(Request $request): JsonResponse
     {
-        $apartments = ApartmentResource::collection(Apartment::all());
+        $apartments = Apartment::all();
         if ($request->filled('building_id') && $request->filled('keyword')) {
             $apartments = Apartment::join('users', 'apartments.id', '=', 'users.apartment_id')
                 ->join('buildings', 'apartments.building_id', '=', 'buildings.id')
@@ -74,14 +74,14 @@ class ApartmentController extends Controller
                 ->orWhere('users.name', 'like', '%' . $request->keyword . '%')
                 ->get();
         } else if ($request->filled('building_id') && ! $request->filled('keyword')) {
-            $apartments = ApartmentResource::collection(Apartment::where('building_id', $request->building_id)->get());
+            $apartments = Apartment::where('building_id', $request->building_id)->get();
         }
 
         if ($request->filled('page') && $request->filled('page_size')){
             $apartments = $apartments->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
         }
-
-        return $this->success($apartments);
+        $result = ApartmentResource::collection($apartments);
+        return $this->success($result);
     }
 
     public function getApartmentNotOwned(Request $request){
@@ -159,8 +159,8 @@ class ApartmentController extends Controller
     public function getBillByApartmentId($id): JsonResponse
     {
         $bill_by_apartment_id = Bill::join('apartments', 'bills.apartment_id', '=', 'apartments.id')
-            ->join('bill_details', 'bills.id', '=', 'bill_details.bill_id')
-            ->join('services', 'bill_details.service_id', '=', 'services.id')
+            ->leftJoin('bill_details', 'bills.id', '=', 'bill_details.bill_id')
+            ->leftJoin('services', 'bill_details.service_id', '=', 'services.id')
             ->join('users', 'apartments.user_id', '=', 'users.id')
             ->select(
                 'bills.id',
