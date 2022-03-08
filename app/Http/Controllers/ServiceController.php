@@ -45,6 +45,7 @@ class ServiceController extends Controller
         $request->validate([
             'name' => 'required|string|unique:services',
             'price' => 'required|min:0',
+            'status'=>'required'
         ]);
         $service = new Service();
         $service->fill($request->all());
@@ -67,11 +68,13 @@ class ServiceController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string',
                 'price' => 'required|min:0',
+                'status'=>'required'
             ]);
         }else{
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|unique:services',
                 'price' => 'required|min:0',
+                'status'=> 'required'
             ]);
         }
         if($validator->fails()){
