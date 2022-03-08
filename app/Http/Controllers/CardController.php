@@ -67,11 +67,4 @@ class CardController extends Controller
         $card->save();
         return $this->success($card);
     }
-
-    public function remove($id):JsonResponse
-    {
-        $card =Card::find($id);
-        $card->delete();
-        return $this->success($card);
-    }
 }

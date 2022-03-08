@@ -4,7 +4,7 @@
         <label for="">Chọn dịch vụ</label>
         <select name="service_id" id="">
             @foreach ($services as $item)
-                <option value="{{$item->id}}">{{$item->name}}</option>
+                <option value="{{$item->id}}">{{$item->name . ' - ' . number_format($item->price, 0, ',', '.') . 'VNĐ'}}</option>
             @endforeach
         </select>
     </div>

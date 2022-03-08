@@ -10,10 +10,8 @@
     </div>
     <div>
         <label for="">Chọn hóa đơn</label>
-        <select name="bill_id" id="">
-            @foreach ($bills as $item)
-                <option value="{{$item->id}}" @if($bill_detail->bill_id == $item->id) selected @endif>{{$item->name}}</option>
-            @endforeach
+        <select name="bill_id" id="" disabled>
+            <option value="{{$bill->id}}" @if($bill_detail->bill_id == $item->id) selected @endif>{{$bill->name}}</option>
         </select>
     </div>
     <div>

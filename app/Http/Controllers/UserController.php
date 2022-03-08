@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function getUserLoginIn(Request $request){
+    public function getUserLogin(Request $request){
         $user = User::join('apartments', 'users.apartment_id', '=', 'apartments.id')
                     ->join('buildings', 'apartments.building_id', '=', 'buildings.id')
                     ->select(
