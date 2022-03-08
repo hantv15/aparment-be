@@ -16,11 +16,13 @@ class ServiceController extends Controller
     public function getService(Request $request): JsonResponse
     {
         $services = Service::all();
-
-        if($request->filled('price') && $request->price == 1){
+        if($request->filled('keyword')){
+            $services = Service::where('name','like','%' . $request->keyword . '%')->get();
+        }
+        if( $request->filled('price') && $request->price == 1){
             $services= $services->sortByDesc('price');
         }
-        elseif($request->filled('price') && $request->price == 2){
+        elseif(  $request->filled('price') && $request->price == 2){
             $services= $services->sortBy('price');
         }
         if ($request->filled('page') && $request->filled('page_size')){
