@@ -118,6 +118,8 @@ class AuthController extends Controller
             $result->token = $token;
             Auth::attempt(['apartment_id' => $request->username, 'password' => $request->password], $request->remember);
             return $this->success($result);
+        } else {
+            return $this->failed();
         }
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BillDetailRequest;
 use App\Http\Requests\BillRequest;
 use App\Http\Resources\BillResource;
 use App\Models\Apartment;
@@ -66,7 +67,7 @@ class BillController extends Controller
         return view('bill.edit-add-bill-detail', compact('bill', 'services'));
     }
 
-    public function saveEditAddBillDetail($id, Request $request){
+    public function saveEditAddBillDetail($id, BillDetailRequest $request){
         $bill = Bill::find($id);
         if (!$bill) {
             return $this->failed();
@@ -113,7 +114,7 @@ class BillController extends Controller
         return view('bill.edit-edit-bill-detail', compact('bill', 'services', 'bill_detail'));
     }
 
-    public function saveEditEditBillDetail($id, $bill_detail_id, Request $request):JsonResponse
+    public function saveEditEditBillDetail($id, $bill_detail_id, BillDetailRequest $request):JsonResponse
     {
         $bill = Bill::find($id);
         $bill_detail = BillDetail::where('id', $bill_detail_id)
