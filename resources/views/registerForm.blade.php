@@ -33,10 +33,6 @@
         <input type="date" name="dob">
     </div>
     <div>
-        <label for="">CMND/CCCD</label>
-        <input type="number" name="number_card">
-    </div>
-    <div>
         <button type="submit">Đăng ký</button>
     </div>
 </form>

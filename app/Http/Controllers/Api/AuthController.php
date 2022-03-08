@@ -28,7 +28,7 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'required|string|unique:users',
             'phone_number' => 'required|unique:users',
-            'apartment_id' => 'unique:users',
+            'apartment_id' => 'required|unique:users',
             'password' => 'required|string|confirmed',
         ]);
         $user = User::create([
@@ -38,7 +38,6 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'name' => $request->name,
             'dob' => $request->dob,
-            'number_card' => $request->number_card,
         ]);
 
         $apartment = Apartment::where('id', $request->apartment_id)->first();
@@ -62,10 +61,35 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]);
         // Check email
+        $count_user_by_apartment_id = Apartment::where('apartment_id', $fields['username'])->count();
         $count_user_by_email = User::where('email', $fields['username'])->count();
         $count_user_by_phone = User::where('phone_number', $fields['username'])->count();
+        $user_by_apartment_id = User::join('apartments', 'users.apartment_id', '=', 'apartments.id')
+                                    ->select(
+                                        'users.id',
+                                        'users.email',
+                                        'users.phone_number',
+                                        'users.password',
+                                        'users.name',
+                                        'users.dob',
+                                        'users.number_card',
+                                        'users.status',
+                                        'users.apartment_id',
+                                        'users.avatar',
+                                        'users.role_id',
+                                        'apartments.apartment_id as apartment_name',
+                                        'apartments.floor',
+                                        'apartments.description',
+                                        'apartments.square_meters',
+                                        'apartments.type_apartment',
+                                        'apartments.building_id',
+                                        'apartments.user_id'
+                                    )
+                                    ->where('apartments.apartment_id', $fields['username'])
+                                    ->first();
         $user_by_email = User::where('email', $fields['username'])->first();
         $user_by_phone = User::where('phone_number', $fields['username'])->first();
+//        dd($user_by_apartment_id);
         // Check password
         if ($count_user_by_email > 0) {
             if (!$user_by_email || !Hash::check($fields['password'], $user_by_email->password)) {
@@ -85,6 +109,15 @@ class AuthController extends Controller
             $result->token = $token;
             Auth::attempt(['phone_number' => $request->username, 'password' => $request->password], $request->remember);
             return $this->success($result);
+        } elseif ($count_user_by_apartment_id > 0) {
+            if (!$user_by_apartment_id || !Hash::check($fields['password'], $user_by_apartment_id->password)) {
+                return $this->failed();
+            }
+            $result = new LoginResource($user_by_apartment_id);
+            $token = $user_by_apartment_id->createToken('myapptoken')->plainTextToken;
+            $result->token = $token;
+            Auth::attempt(['apartment_id' => $request->username, 'password' => $request->password], $request->remember);
+            return $this->success($result);
         }
     }
 
@@ -96,6 +129,6 @@ class AuthController extends Controller
         ];
     }
 
-    
-   
+
+
 }

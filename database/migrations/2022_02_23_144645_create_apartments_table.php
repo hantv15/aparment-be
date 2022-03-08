@@ -15,13 +15,12 @@ class CreateApartmentsTable extends Migration
     {
         Schema::create('apartments', function (Blueprint $table) {
             $table->id();
-            $table->string('apartment_id', 10);
+            $table->string('apartment_id', 10)->unique();
             $table->integer('floor')->default(1);
             $table->tinyInteger('status')->default(0);
             $table->text('description')->nullable();
             $table->float('square_meters')->nullable();
             $table->tinyInteger('type_apartment')->default(1);
-            $table->string('password', 255)->nullable();
 
             $table->unsignedBigInteger('building_id');
             $table->foreign('building_id')->references('id')->on('buildings')
@@ -29,9 +28,6 @@ class CreateApartmentsTable extends Migration
                     ->onDelete('cascade');
 
             $table->unsignedBigInteger('user_id')->unique()->nullable();
-            // $table->foreign('user_id')->references('id')->on('users')
-            //         ->onUpdate('cascade')
-            //         ->onDelete('cascade');
 
             $table->timestamps();
         });
