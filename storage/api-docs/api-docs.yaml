@@ -736,78 +736,31 @@ paths:
       description: 'Get list Service'
       produces:
         - application/json
-      responses:
-        '200':
-          description: A list of services.
-          schema:
-            type: object
-            properties:
-              is_success:
-                type: boolean
-                example: true
-              message:
-                type: string
-                example: ''
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Service'
-  /api/service?price=1:
-    get:
-      tags:
-        - Service
-      summary: 'Get list Service'
-      description: 'Get list Service'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: A list of services.
-          schema:
-            type: object
-            properties:
-              is_success:
-                type: boolean
-                example: true
-              message:
-                type: string
-                example: ''
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Service'
-  /api/service?page_size=2&page=1:
-    get:
-      tags:
-        - Service
-      summary: 'Get list Service'
-      description: 'Get list Service'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: A list of services.
-          schema:
-            type: object
-            properties:
-              is_success:
-                type: boolean
-                example: true
-              message:
-                type: string
-                example: ''
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Service'
-  /api/service?price=2&page_size=2&page=2:
-    get:
-      tags:
-        - Service
-      summary: 'Get list Service'
-      description: 'Get list Service'
-      produces:
-        - application/json
+      parameters:
+        - name: "keyword"
+          in: "query"
+          description: "Sắp xếp theo giá"
+          required: false
+          type: string
+          format: "int64"
+        - name: "sort"
+          in: "query"
+          description: "Sắp xếp theo giá"
+          required: false
+          type: integer
+          format: "int64"
+        - name: "page"
+          in: "query"
+          description: "page "
+          required: false
+          type: integer
+          format: "int64"
+        - name: "page_size"
+          in: "query"
+          description: "page "
+          required: false
+          type: integer
+          format: "int64"
       responses:
         '200':
           description: A list of services.
