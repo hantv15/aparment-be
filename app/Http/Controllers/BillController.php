@@ -75,6 +75,12 @@ class BillController extends Controller
         if ($bill->status == 1){
             return $this->failed();
         }
+        $count_service_in_bill = BillDetail::where('bill_id', $id)
+                                        ->where('service_id', $request->service_id)
+                                        ->count();
+        if ($count_service_in_bill > 0) {
+            return $this->failed();
+        }
         $bill_detail = new BillDetail();
         $bill_detail->fill($request->all());
         $bill_detail->bill_id = $bill->id;
@@ -118,8 +124,8 @@ class BillController extends Controller
     {
         $bill = Bill::find($id);
         $bill_detail = BillDetail::where('id', $bill_detail_id)
-            ->where('bill_id', $id)
-            ->first();
+                            ->where('bill_id', $id)
+                            ->first();
         if (!$bill) {
             return $this->failed();
         }
@@ -129,7 +135,13 @@ class BillController extends Controller
         if (!$bill_detail) {
             return $this->failed();
         }
-
+        $count_service_in_bill = BillDetail::where('bill_id', $id)
+                                        ->where('service_id', $request->service_id)
+                                        ->whereNotIn('service_id', [$bill_detail->service_id])
+                                        ->count();
+        if ($count_service_in_bill > 0) {
+            return $this->failed();
+        }
         $old_service_id = $bill_detail->service_id;
         $old_quantity = $bill_detail->quantity;
         $old_total_price_bill_detail = $bill_detail->total_price;
