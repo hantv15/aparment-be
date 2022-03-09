@@ -98,6 +98,7 @@ Route::prefix('/card')->group(function (){
     Route::post('/add', [CardController::class, 'saveAdd']);
     Route::get('/edit/{id}', [CardController::class, 'editForm'])->name('card.edit');
     Route::post('/edit/{id}', [CardController::class, 'saveEdit']);
+    Route::post('/remove/{id}', [CardController::class, 'remove']);
     Route::get('/{id}', [CardController::class, 'getCardById'])->name('card.detail');
 });
 

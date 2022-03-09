@@ -11,9 +11,21 @@ use Illuminate\Http\Request;
 
 class CardController extends Controller
 {
-    public function getCard():JsonResponse
+    public function getCard(Request $request):JsonResponse
     {
         $cards = Card::all();
+        if($request->filled('keyword')){
+            $cards = Card::where('name','like','%' . $request->keyword . '%')->get();
+        }
+        if( $request->filled('sort') && $request->sort == 1){
+            $cards= $cards->sortByDesc('name');
+        }
+        elseif(  $request->filled('sort') && $request->sort == 2){
+            $cards= $cards->sortBy('name');
+        }
+        if ($request->filled('page') && $request->filled('page_size')){
+            $cards = $cards->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
+        }
         $result = CardResource::collection($cards);
         return $this->success($result);
     }
@@ -45,7 +57,8 @@ class CardController extends Controller
         $card = new Card();
         $card->fill($request->all());
         $card->save();
-        return $this->success($card);
+        $result = CardResource::collection($card);
+        return $this->success($result);
     }
 
     public function editForm($id)
@@ -65,6 +78,15 @@ class CardController extends Controller
         $card =Card::find($id);
         $card->fill($request->all());
         $card->save();
-        return $this->success($card);
+        $result = CardResource::collection($card);
+        return $this->success($result);
+    }
+    public function getCardById($id){
+        $card =Card::where('id',$id)->get();
+        if (!$card) {
+            return $this->failed();
+        }
+        $result = CardResource::collection($card);
+        return $this->success($result);
     }
 }

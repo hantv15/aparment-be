@@ -17,13 +17,17 @@ class ServiceController extends Controller
     {
         $services = Service::all();
         if($request->filled('keyword')){
-            $services = Service::where('name','like','%' . $request->keyword . '%')->get();
+            $services = Service::where('name','like','%' . $request->keyword . '%')
+                                ->orWhere('price',  $request->keyword)
+                                ->get();
         }
         if( $request->filled('sort') && $request->sort == 1){
             $services= $services->sortByDesc('price');
         }
         elseif(  $request->filled('sort') && $request->sort == 2){
             $services= $services->sortBy('price');
+        }elseif(  $request->filled('sort') && $request->sort == 3){
+            $services= $services->sortBy('name');
         }
         if ($request->filled('page') && $request->filled('page_size')){
             $services = $services->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
