@@ -35,7 +35,9 @@ class ApartmentController extends Controller
                     'apartments.description',
                     'apartments.square_meters',
                     'apartments.type_apartment',
-                    'buildings.name as building_id',
+                    'apartments.building_id',
+                    'apartments.user_id',
+                    'buildings.name as building_name',
                     'users.email',
                     'users.phone_number',
                     'users.name'
@@ -64,7 +66,9 @@ class ApartmentController extends Controller
                     'apartments.description',
                     'apartments.square_meters',
                     'apartments.type_apartment',
-                    'buildings.name as building_id',
+                    'apartments.building_id',
+                    'apartments.user_id',
+                    'buildings.name as building_name',
                     'users.email',
                     'users.phone_number',
                     'users.name'

@@ -23,13 +23,19 @@ class BillDetailController extends Controller
     public function addForm()
     {
         $services = Service::all();
-        $bills = Bill::all();
+        $bills = Bill::where('status', 0)->get();
         return view('bill-detail.add', compact('services', 'bills'));
     }
 
     public function saveAdd(Request $request): JsonResponse
     {
         $bill_detail = new BillDetail();
+        $count_service_in_bill = BillDetail::where('bill_id', $request->bill_id)
+                                    ->where('service_id', $request->service_id)
+                                    ->count();
+        if ($count_service_in_bill > 0) {
+            return $this->failed();
+        }
         $bill_detail->fill($request->all());
         $bill_detail->total_price = $request->quantity * Service::where('id', $request->service_id)->first()->price;
         if ($request->service_id == Service::WATER_SERVICE) {
@@ -68,6 +74,14 @@ class BillDetailController extends Controller
         if (Bill::find($request->bill_id)->status != 0){
             return $this->failed();
         }
+        $count_service_in_bill = BillDetail::where('bill_id', $request->bill_id)
+                                        ->where('service_id', $request->service_id)
+                                        ->whereNotIn('service_id', [$bill_detail->service_id])
+                                        ->count();
+        if ($count_service_in_bill > 0) {
+            return $this->failed();
+        }
+
         $old_service_id = $bill_detail->service_id;
         $old_bill_id = $bill_detail->bill_id;
         $old_quantity = $bill_detail->quantity;
