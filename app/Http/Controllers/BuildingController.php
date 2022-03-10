@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BuildingRequest;
 use App\Http\Resources\BuildingResource;
 use App\Models\Building;
 use Illuminate\Contracts\Foundation\Application;
@@ -35,19 +36,21 @@ class BuildingController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function saveAdd(Request $request): JsonResponse
+    public function saveAdd(BuildingRequest $request): JsonResponse
     {
         $building = new Building();
         $building->fill($request->all());
         $building->save();
         return $this->success($building);
     }
+
     public function editForm($id)
     {
         $building = Building::find($id);
         return view('building.edit', compact('building'));
     }
-    public function saveEdit($id, Request $request): JsonResponse
+
+    public function saveEdit($id, BuildingRequest $request): JsonResponse
     {
         $building = Building::find($id);
         $building->fill($request->all());
@@ -83,5 +86,4 @@ class BuildingController extends Controller
                             ->get();
         return $this->success($buildings);
     }
-
 }

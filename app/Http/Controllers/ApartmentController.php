@@ -140,6 +140,7 @@ class ApartmentController extends Controller
         $apartment = Apartment::leftJoin('users', 'apartments.id', '=', 'users.apartment_id')
             ->join('buildings', 'apartments.building_id', '=', 'buildings.id')
             ->select(
+                'apartments.id',
                 'apartments.apartment_id',
                 'users.phone_number',
                 'buildings.name as building_name',

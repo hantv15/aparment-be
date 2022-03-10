@@ -12,8 +12,6 @@ use App\Http\Resources\RegisterResource;
 use App\Models\Apartment;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -54,13 +52,14 @@ class AuthController extends Controller
     {
         return view('loginform');
     }
+
     public function login(Request $request): JsonResponse
     {
         $fields = $request->validate([
             'username' => 'required',
             'password' => 'required|string'
         ]);
-        // Check email
+        // Check apartment_id, email or phone number
         $count_user_by_apartment_id = Apartment::where('apartment_id', $fields['username'])->count();
         $count_user_by_email = User::where('email', $fields['username'])->count();
         $count_user_by_phone = User::where('phone_number', $fields['username'])->count();
@@ -89,7 +88,6 @@ class AuthController extends Controller
                                     ->first();
         $user_by_email = User::where('email', $fields['username'])->first();
         $user_by_phone = User::where('phone_number', $fields['username'])->first();
-//        dd($user_by_apartment_id);
         // Check password
         if ($count_user_by_email > 0) {
             if (!$user_by_email || !Hash::check($fields['password'], $user_by_email->password)) {
@@ -126,11 +124,6 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         auth()->user()->tokens()->delete();
-        return [
-            'message' => 'Logged out'
-        ];
+        return $this->success('', 'Logged out');
     }
-
-
-
 }

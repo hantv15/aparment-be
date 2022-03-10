@@ -8,57 +8,80 @@ paths:
     post:
       tags:
         - Authenticate
-      summary: 'Register new user'
-      description: 'Register new user'
+      summary: 'Đăng ký User mới'
+      description: 'Đăng ký User mới'
       produces:
         - application/json
       parameters:
-        - in: "body"
-          name: "body"
-          description: "Information new user"
-          required: true
-          schema:
-            type: "array"
-            items:
-              $ref: "#/components/schemas/RequestRegister"
-      responses:
-        '200':
-          description: Register new user'.
-          schema:
-            type: object
-            properties:
-              is_success:
-                type: boolean
-                example: true
-              message:
-                type: string
-                example: 'User Registered'
-              data:
-                type: object
-                items:
-                  $ref: '#/components/schemas/Register'
-  /api/login:
-    post:
-      tags:
-        - Authenticate
-      summary: 'Login into the system'
-      description: 'Login'
-      produces:
-        - application/json
-      parameters:
-        - name: "username"
+        - name: "email"
           in: "query"
-          description: "Type your Email or Phone Number"
+          description: "Email"
           required: true
-          type: "string"
+          type: string
+          format: "int64"
+        - name: "phone_number"
+          in: "query"
+          description: "Số điện thoại"
+          required: true
+          type: string
+          format: "int64"
+        - name: "apartment_id"
+          in: "query"
+          description: "Phòng"
+          required: true
+          type: number
+          format: "int64"
         - name: "password"
           in: "query"
-          description: "Type your Password"
+          description: "Mật khẩu"
           required: true
-          type: "string"
+          type: string
+          format: "int64"
+        - name: "password_confirmation"
+          in: "query"
+          description: "Nhập lại mật khẩu"
+          required: true
+          type: string
+          format: "int64"
+        - name: "name"
+          in: "query"
+          description: "Tên"
+          required: false
+          type: string
+          format: "int64"
+        - name: "dob"
+          in: "query"
+          description: "Ngày sinh"
+          required: false
+          type: string
+          format: "int64"
+        - name: "number_card"
+          in: "query"
+          description: "CMND/CCCD"
+          required: false
+          type: string
+          format: "int64"
+        - name: "status"
+          in: "query"
+          description: "Trạng thái"
+          required: false
+          type: number
+          format: "int64"
+        - name: "avatar"
+          in: "formData"
+          description: "Ảnh cá nhân"
+          required: false
+          type: file
+          format: "int64"
+        - name: "role_id"
+          in: "query"
+          description: "Vai trò"
+          required: false
+          type: number
+          format: "int64"
       responses:
         '200':
-          description: Login successfully.
+          description: 'Đăng ký thành công'
           schema:
             type: object
             properties:
@@ -71,18 +94,53 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Login'
+                  $ref: '#/components/schemas/ApiRegister'
+  /api/login:
+    post:
+      tags:
+        - Authenticate
+      summary: 'Đăng nhập'
+      description: 'Đăng nhập'
+      produces:
+        - application/json
+      parameters:
+        - name: "username"
+          in: "query"
+          description: "Nhập số điện thoại, email hoặc tên phòng"
+          required: true
+          type: string
+        - name: "password"
+          in: "query"
+          description: "Nhập mật khẩu"
+          required: true
+          type: string
+      responses:
+        '200':
+          description: "Đăng nhập thành công"
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiLogin'
   /api/logout:
     post:
       tags:
         - Authenticate
-      summary: 'Logout'
-      description: 'Logout'
+      summary: 'Đăng xuất'
+      description: 'Đăng xuất'
       produces:
         - application/json
       responses:
         '200':
-          description: Logout'.
+          description: "Đăng xuất thành công"
           schema:
             type: object
             properties:
@@ -92,18 +150,46 @@ paths:
               message:
                 type: string
                 example: 'Logged out'
+              data:
+                type: array
+                example: ''
 
   /api/apartment:
     get:
       tags:
         - Apartment
-      summary: 'Get list apartment'
-      description: 'Get list apartment'
+      summary: 'Danh sách căn hộ'
+      description: 'Lấy ra danh sách các căn hộ'
       produces:
         - application/json
+      parameters:
+        - name: "building_id"
+          in: "query"
+          description: "Tìm kiếm căn hộ theo tòa nhà"
+          required: false
+          type: number
+          format: "int64"
+        - name: "keyword"
+          in: "query"
+          description: "Tìm kiếm căn hộ theo từ khóa"
+          required: false
+          type: string
+          format: "int64"
+        - name: "page"
+          in: "query"
+          description: "Số thứ tự trang"
+          required: false
+          type: integer
+          format: "int64"
+        - name: "page_size"
+          in: "query"
+          description: "Kích cỡ trang"
+          required: false
+          type: integer
+          format: "int64"
       responses:
         '200':
-          description: A list of apartments.
+          description: "Lấy ra danh sách căn hộ thành công"
           schema:
             type: object
             properties:
@@ -116,18 +202,18 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Apartment'
+                  $ref: '#/components/schemas/ApiApartment'
   /api/apartment/not-owned:
     get:
       tags:
         - Apartment
-      summary: 'Get list apartment'
-      description: 'Get list apartment'
+      summary: 'Danh sách căn hộ chưa đăng ký User'
+      description: 'Lấy ra danh sách các căn hộ chưa đăng ký User'
       produces:
         - application/json
       responses:
         '200':
-          description: A list of apartments.
+          description: "Lấy ra danh sách căn hộ chưa đăng ký User thành công"
           schema:
             type: object
             properties:
@@ -140,26 +226,54 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Apartment'
-  
+                  $ref: '#/components/schemas/ApiApartmentNotOwned'
   /api/apartment/add:
     post:
       tags:
         - Apartment
-      summary: 'Add a new apartment'
-      description: 'Add a new apartment'
+      summary: 'Tạo mới căn hộ'
+      description: 'Tạo mới căn hộ'
       produces:
         - application/json
       parameters:
-        - in: "body"
-          name: "body"
-          description: "Apartment object that needs to be added to the system"
+        - name: "apartment_id"
+          in: "query"
+          description: "Tên phòng"
           required: true
-          schema:
-            $ref: "#/components/schemas/NewApartment"
+          type: string
+        - name: "floor"
+          in: "query"
+          description: "Tầng"
+          required: true
+          type: number
+        - name: "status"
+          in: "query"
+          description: "Trạng thái"
+          required: true
+          type: number
+        - name: "description"
+          in: "query"
+          description: "Mô tả"
+          required: false
+          type: string
+        - name: "square_meters"
+          in: "query"
+          description: "Diện tích"
+          required: false
+          type: string
+        - name: "type_apartment"
+          in: "query"
+          description: "Loại phòng"
+          required: true
+          type: number
+        - name: "building_id"
+          in: "query"
+          description: "Tóa nhà"
+          required: true
+          type: number
       responses:
         '200':
-          description:
+          description: "Tạo mới căn hộ thành công"
           schema:
             type: object
             properties:
@@ -172,60 +286,60 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/NewApartment'
+                  $ref: '#/components/schemas/ApiApartmentAdd'
   /api/apartment/edit/{id}:
     post:
       tags:
         - Apartment
-      summary: "Updates an apartment in the system with form data"
-      description: ""
+      summary: "Cập nhật căn hộ"
+      description: "Cập nhật 1 căn hộ có trong hệ thống"
       produces:
         - "application/json"
       parameters:
         - name: "id"
           in: "path"
-          description: "Id of apartment that needs to be updated"
+          description: "Id của căn hộ"
           required: true
           type: "integer"
           format: "int64"
         - name: "apartment_id"
           in: "formData"
-          description: "New apartment_id of apartment"
+          description: "Tên phòng"
           required: true
           type: "string"
         - name: "floor"
           in: "formData"
-          description: "New floor of apartment"
+          description: "Tầng"
           required: true
           type: "integer"
         - name: "status"
           in: "formData"
-          description: "New status of apartment"
+          description: "Trạng thái"
           required: true
           type: "integer"
         - name: "description"
           in: "formData"
-          description: "New description of apartment"
+          description: "Mô tả"
           required: false
           type: string
         - name: "square_meters"
           in: "formData"
-          description: "New square_meters of apartment"
+          description: "Diện tích"
           required: false
           type: "integer"
         - name: "type_apartment"
           in: "formData"
-          description: "New type_apartment of apartment"
+          description: "Loại phòng"
           required: true
           type: "integer"
         - name: "building_id"
           in: "formData"
-          description: "New building_id of apartment"
+          description: "Tòa nhà"
           required: true
           type: "integer"
       responses:
         '200':
-          description:
+          description: "Cập nhật căn hộ thành công"
           schema:
             type: object
             properties:
@@ -238,25 +352,25 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/NewApartment'
+                  $ref: '#/components/schemas/ApiApartmentEdit'
   /api/apartment/{id}:
     get:
       tags:
         - Apartment
-      summary: 'Get Apartment by Id'
-      description: 'Get Apartment by Id'
+      summary: 'Chi tiết căn hộ'
+      description: 'Lấy thông tin chi tiết căn hộ theo Id'
       produces:
         - application/json
       parameters:
         - name: "id"
           in: "path"
-          description: "ID of apartment"
+          description: "Id của căn hộ"
           required: true
           type: "integer"
           format: "int64"
       responses:
         '200':
-          description: Apartment by Id.
+          description: "Lấy ra chi tiết căn hộ thành công"
           schema:
             type: object
             properties:
@@ -269,7 +383,7 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: ''
+                  $ref: '#/components/schemas/ApiApartmentDetail'
   /api/apartment/{id}/finance:
     get:
       tags:
@@ -908,100 +1022,113 @@ paths:
 
 components:
   schemas:
-    RequestRegister:
+    ApiRegister:
       type: object
       properties:
-        user_name:
-          type: string
-          example: "ty5"
+        id:
+          type: number
+          example: 25
         email:
           type: string
-          example: "ty5@gmail.com"
+          example: "abcabc@gmail.com"
+        phone_number:
+          type: string
+          example: "0844445555"
         name:
           type: string
-          example: "Duc Anh"
-        password:
+          example: "Abc Abc"
+        dob:
+          type: date
+          example: "2000-04-04"
+        number_card:
           type: string
-          example: "123456"
-        password_comfirmation:
-          type: string
-          example: "123456"
-        apartment_id:
-          type: number
-          example: 1
-        role:
-          type: number
-          example: 1
-      xml:
-        name: RequestRegister
-    Register:
-      type: object
-      properties:
-        token:
-          type: string
-          example: "7|OZ6J1PNvifzScSlKCCOXL743AF0mSxOEjkTfyVZo"
-        user:
-          type: object
-          properties:
-            user_name:
-              type: string
-              example: "ty5"
-            email:
-              type: string
-              example: "ty5@gmail.com"
-            name:
-              type: string
-              example: "Duc Anh"
-            apartment_id:
-              type: number
-              example: 1
-            role:
-              type: number
-              example: 1
-            created_at:
-              type: datetime
-              example: "2022-01-20T06:03:10.000000Z"
-            updated_at:
-              type: datetime
-              example: "2022-01-20T06:03:10.000000Z"
-      xml:
-        name: Register
-    Login:
-      type: object
-      properties:
-        token:
-          type: string
-          example: "28|QgGSL8vv33zKmWDHd07Y6vOur7lfixfEtEzTnWM0"
-        apartment_id:
-          type: string
-          example: "P300"
-        floor:
-          type: number
-          example: 1
+          example: null
         status:
           type: number
-          example: 0
-        description:
+          example: null
+        apartment_id:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 30
+            apartment_id:
+              type: string
+              example: "P209"
+            floor:
+              type: number
+              example: 2
+            status:
+              type: number
+              example: 1
+            description:
+              type: string
+              example: "123"
+            square_meters:
+              type: number
+              example: 290
+            type_apartment:
+              type: number
+              example: 1
+            building_id:
+              type: number
+              example: 2
+            user_id:
+              type: number
+              example: 25
+        avatar:
           type: string
-          example: "Phòng rộng"
-        square_meters:
+          example: null
+        role_id:
           type: number
-          example: 60
-        type_apartment:
+          example: null
+      xml:
+        name: Register
+    ApiLogin:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "590|0Gxx4c8AunoRjPdHK9LkeGVzchj2wtN8TvgA00rK"
+        email:
+          type: string
+          example: "td.nguyen.1997@gmail.com"
+        phone_number:
+          type: string
+          example: "0399089824"
+        name:
+          type: string
+          example: "Tài Duy"
+        dob:
+          type: date
+          example: "2022-03-10"
+        number_card:
+          type: string
+          example: null
+        status:
           type: number
           example: 1
-        tower:
+        avatar:
           type: string
-          expamle: "P"
-        user_id:
+          example: null
+        role_id:
           type: number
           example: 1
+        apartment_id:
+          type: string
+          example: "P101"
+        building_id:
+          type: string
+          example: "VP1"
       xml:
         name: Login
 
-    Apartment:
+    ApiApartment:
       type: object
       properties:
+        id:
+          type: number
+          example: 13
         apartment_id:
           type: string
           example: "P101"
@@ -1020,21 +1147,61 @@ components:
         type_apartment:
           type: number
           example: 1
+        building_id:
+          type: string
+          example: "VP1"
+        email:
+          type: string
+          example: "td.nguyen.1997@gmail.com"
+        phone_number:
+          type: string
+          example: "0399089824"
+        name:
+          type: string
+          example: "Tài Duy"
       xml:
         name: Apartment
-    NewApartment:
+    ApiApartmentNotOwned:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 31
+        apartment_id:
+          type: string
+          example: "P777"
+        floor:
+          type: number
+          example: 7
+        status:
+          type: number
+          example: 1
+        description:
+          type: string
+          example: "Phong 2 ban cong"
+        square_meters:
+          type: number
+          example: 50
+        type_apartment:
+          type: number
+          example: 1
+        building_id:
+          type: string
+          example: "VP3"
+      xml:
+        name: ApartmentNotOwned
+    ApiApartmentAdd:
       type: object
       properties:
         apartment_id:
           type: string
-          required: true
-          example: "P101"
+          example: "P888"
         floor:
           type: number
-          example: 1
+          example: 8
         status:
           type: number
-          example: 0
+          example: 1
         description:
           type: text
           example: "Phòng rộng"
@@ -1047,8 +1214,69 @@ components:
         building_id:
           type: number
           example: 1
+        id:
+          type: number
+          example: 32
       xml:
-        name: Service
+        name: ApartmentAdd
+    ApiApartmentEdit:
+      type: object
+      properties:
+        apartment_id:
+          type: string
+          example: "P888"
+        floor:
+          type: number
+          example: 8
+        status:
+          type: number
+          example: 1
+        description:
+          type: text
+          example: "Phòng rộng"
+        square_meters:
+          type: number
+          example: 50
+        type_apartment:
+          type: number
+          example: 0
+        building_id:
+          type: number
+          example: 1
+        id:
+          type: number
+          example: 32
+      xml:
+        name: ApartmentEdit
+    ApiApartmentDetail:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 13
+        apartment_id:
+          type: string
+          example: "P101"
+        phone_number:
+          type: string
+          example: "0399089824"
+        building_name:
+          type: string
+          example: "VP1"
+        square_meters:
+          type: number
+          example: 120
+        status:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: "Tài Duy"
+        avatar:
+          type: string
+          example: null
+      xml:
+        name: ApartmentDetail
     ApartmentById:
       type: object
       properties:

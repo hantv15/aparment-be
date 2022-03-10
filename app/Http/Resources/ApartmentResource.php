@@ -20,13 +20,13 @@ class ApartmentResource extends JsonResource
     {
         $apartment_resource = [
             'id' => $this->id,
-            'apartment_id'   => $this->apartment_id,
-            'floor'          => $this->floor,
-            'status'         => $this->status,
-            'description'    => $this->description,
-            'square_meters'  => $this->square_meters,
+            'apartment_id' => $this->apartment_id,
+            'floor' => $this->floor,
+            'status' => $this->status,
+            'description' => $this->description,
+            'square_meters' => $this->square_meters,
             'type_apartment' => $this->type_apartment,
-            'building_id'    => Building::where('id', $this->building_id)->first()->name,
+            'building_id' => Building::where('id', $this->building_id)->first()->name,
         ];
         if ($this->user_id != null) {
             $apartment_resource['email'] = User::where('id', $this->user_id)->first()->email;

@@ -15,6 +15,7 @@ class BillResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'amount' => $this->amount,
             'status' => $this->status,
