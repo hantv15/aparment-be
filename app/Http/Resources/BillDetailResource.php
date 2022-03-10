@@ -2,10 +2,9 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Apartment;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CardResource extends JsonResource
+class BillDetailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,11 +16,10 @@ class CardResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'number' => $this->number,
-            'name' => $this->name,
-            'status' => $this->status,
-            'expire_time' => $this->expire_time,
-            'apartment_id' => Apartment::where('id', $this->apartment_id)->first()->apartment_id,
+            'service_id' => $this->service_id,
+            'bill_id' => $this->bill_id,
+            'quantity' => $this->quantity,
+            'total_price' => $this->total_price,
         ];
     }
 }
