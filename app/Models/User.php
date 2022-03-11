@@ -28,7 +28,6 @@ class User extends Authenticatable
         'number_card',
         'status',
         'apartment_id',
-        'avatar',
         'role_id',
         'device_key'
     ];
