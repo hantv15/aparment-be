@@ -63,7 +63,6 @@ class UserController extends Controller
         $apartment = Apartment::where('id', $request->apartment_id)->first();
         $apartment->user_id = $user->id;
         $apartment->save();
-
         event(new Registered($user));
         $token = $user->createToken('authtoken')->plainTextToken;
         $result = new RegisterResource($user);
@@ -104,29 +103,23 @@ class UserController extends Controller
         }
         $user->fill($request->all());
         $user->save();
-
         $apartment = Apartment::where('id', $request->apartment_id)->first();
         $apartment->user_id = $user->id;
         $apartment->save();
-
         return $this->success($user);
     }
-
     public function removeUser($id)
     {
-
         $user = User::find($id);
         if(!$user){
             return $this->failed();
         }
         $apartment = Apartment::where('user_id', $user->id)->first();
-
         $apartment->user_id = null;
         $apartment->save();
         $user->delete();
         return $this->success('');
     }
-
     public function getUserInfomationById($id)
     {
         $user = User::join('apartments', 'users.id', '=', 'apartments.user_id')
