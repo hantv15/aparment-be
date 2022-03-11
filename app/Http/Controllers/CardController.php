@@ -72,7 +72,7 @@ class CardController extends Controller
         return view('card.edit', compact('card', 'apartments', 'year', 'month', 'day', 'hour', 'minute'));
     }
 
-    public function saveEdit(CardRequest $request,$id):JsonResponse
+    public function saveEdit(CardRequest $request, $id):JsonResponse
     {
         $card =Card::find($id);
         $card->fill($request->all());
@@ -84,7 +84,6 @@ class CardController extends Controller
         if (!$card) {
             return $this->failed();
         }
-        $result = CardResource::collection($card);
-        return $this->success($result);
+        return $this->success($card);
     }
 }
