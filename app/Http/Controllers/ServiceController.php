@@ -49,13 +49,14 @@ class ServiceController extends Controller
         $request->validate([
             'name' => 'required|string|unique:services',
             'price' => 'required|min:0',
-            'status'=>'required'
+           
         ]);
         $service = new Service();
+        $service->status = 0;
         $service->fill($request->all());
         $service->save();
-        $result = ServiceResource::collection($service);
-        return $this->success($result);
+        
+        return $this->success($service);
     }
 
     public function editForm($id)
