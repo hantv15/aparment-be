@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Bill extends Model
 {
@@ -20,18 +23,34 @@ class Bill extends Model
         'fax',
         'apartment_id',
         'notes',
-        'receiver_id'
+        'receiver_id',
     ];
     protected $hidden = [
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
-    public function apartment(){
+    /**
+     * @return BelongsTo
+     */
+    public function apartment(): BelongsTo
+    {
         return $this->belongsTo(Apartment::class, 'apartment_id');
     }
 
-    public function services(){
+    /**
+     * @return BelongsToMany
+     */
+    public function services(): BelongsToMany
+    {
         return $this->belongsToMany(Service::class, 'bill_details', 'bill_id', 'service_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function billDetail(): HasMany
+    {
+        return $this->hasMany(Bill::class);
     }
 }
