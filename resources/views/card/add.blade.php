@@ -5,6 +5,10 @@
         <input type="number" name="number">
     </div>
     <div>
+        <label for="">Tên</label>
+        <input type="text" name="name">
+    </div>
+    <div>
         <label for="">Trạng thái</label>
         <select name="status" id="">
             <option value="">Chọn trạng thái</option>

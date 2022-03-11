@@ -11,6 +11,7 @@ class Card extends Model
     protected $table = 'cards';
     protected $fillable = [
         'number',
+        'name',
         'status',
         'expire_time',
         'apartment_id'

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Http\Resources\RegisterResource;
 use App\Models\Apartment;
 use App\Models\User;
@@ -36,18 +37,19 @@ class UserController extends Controller
             ->get();
         return $this->success($user);
     }
-    public function registerForm(): JsonResponse
+
+    public function registerForm()
     {
         $apartments = Apartment::where('user_id', NULL)->get();
-        return $this->success($apartments);
+        return view('user.add', compact('apartments'));
     }
-    public function saveUser(Request $request): JsonResponse
+
+    public function saveUser(UserRequest $request): JsonResponse
     {
         $request->validate([
             'email' => 'required|string|unique:users',
             'phone_number' => 'required|unique:users',
             'apartment_id' => 'required|unique:users',
-
         ]);
         $user = new User();
         $user->password = Hash::make('12345678');
@@ -67,7 +69,60 @@ class UserController extends Controller
         $result = new RegisterResource($user);
         return $this->success($result);
     }
-    public function listUserById($id)
+
+    public function formEditUser($id)
+    {
+        $user = User::find($id);
+        $year = substr($user->dob, 0, 4);
+        $month = substr($user->dob, 5, 2);
+        $day = substr($user->dob, 8, 2);
+        if (!$user) {
+            return $this->failed();
+        }
+        $apartments = Apartment::where('user_id', NULL)
+                            ->orWhere('user_id', $id)
+                            ->get();
+        return view('user.edit', compact('user', 'apartments', 'year', 'month', 'day'));
+    }
+
+    public function saveEditUser(UserRequest $request, $id)
+    {
+        $user = User::find($id);
+        if($request->has('apartment_id')){
+            $apartment_old = Apartment::where('user_id',$user->id)->first();
+            $apartment_old->user_id=null;
+            $apartment_old->save();
+        }
+        if($request->hasFile('avatar')){
+            Storage::delete($user->avatar);
+            $imgPath = $request->file('avatar')->store('user');
+            $imgPath = str_replace('public/', '', $imgPath);
+            $user->avatar = $imgPath;
+        }
+        $user->fill($request->all());
+        $user->save();
+
+        $apartment = Apartment::where('id', $request->apartment_id)->first();
+        $apartment->user_id = $user->id;
+        $apartment->save();
+
+        return $this->success($user);
+    }
+
+    public function removeUser($id)
+    {
+
+        $user = User::find($id);
+
+        $apartment = Apartment::where('user_id', $user->id)->first();
+
+        $apartment->user_id = null;
+        $apartment->save();
+        $user->delete();
+        return $this->success('');
+    }
+
+    public function getUserInfomationById($id)
     {
         $user = User::join('apartments', 'users.id', '=', 'apartments.user_id')
             ->select(
@@ -85,53 +140,5 @@ class UserController extends Controller
             ->get();
 
         return $this->success($user);
-    }
-    public function formEditUser()
-    {
-        $apartments = Apartment::where('user_id', NULL)->get();
-        return view('user.edit',compact('apartments'));
-    }
-    public function saveEditUser(Request $request, $id)
-    {
-        $request->validate([
-            'email' => 'required|string|unique:users',
-            'phone_number' => 'required|unique:users',
-            'apartment_id' => 'required|unique:users',
-        ]);
-        if ($request->has('password')) {
-            return $this->failed();
-        }
-        $user = User::find($id);
-        if($request->has('apartment_id')){
-            $apartment_old = Apartment::where('user_id',$user->id)->first();
-            $apartment_old->user_id=null;
-            $apartment_old->save();
-        }
-        if($request->hasFile('avatar')){
-            Storage::delete($user->avatar);
-            $imgPath = $request->file('avatar')->store('user');
-            $imgPath = str_replace('public/', '', $imgPath);
-            $user->avatar = $imgPath;
-        }
-        $user->fill($request->all());
-        $user->save();
-        
-        $apartment = Apartment::where('id', $request->apartment_id)->first();
-        $apartment->user_id = $user->id;
-        $apartment->save();
-       
-        return $this->success($user);
-    }
-    public function removeUser($id)
-    {
-        
-        $user = User::find($id);
-        
-        $apartment = Apartment::where('user_id', $user->id)->first();
-       
-        $apartment->user_id = null;
-        $apartment->save();
-        $user->delete();
-        return $this->success('');
     }
 }
