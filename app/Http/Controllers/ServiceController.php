@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ServiceRequest;
 use App\Http\Resources\ServiceResource;
 use App\Models\Service;
 use Illuminate\Http\JsonResponse;
@@ -46,16 +47,10 @@ class ServiceController extends Controller
 
     public function saveAdd(Request $request): JsonResponse
     {
-        $request->validate([
-            'name' => 'required|string|unique:services',
-            'price' => 'required|min:0',
-            'status'=>'required'
-        ]);
         $service = new Service();
         $service->fill($request->all());
         $service->save();
-        $result = ServiceResource::collection($service);
-        return $this->success($result);
+        return $this->success($service);
     }
 
     public function editForm($id)
@@ -64,30 +59,16 @@ class ServiceController extends Controller
         return view('service.edit', compact('service'));
     }
 
-    public function saveEdit(Request $request,$id): JsonResponse
+    public function saveEdit(ServiceRequest $request,$id): JsonResponse
     {
 
         $service = Service::find($id);
-        if($request->name == $service->name){
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|string',
-                'price' => 'required|min:0',
-                'status'=>'required'
-            ]);
-        }else{
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|string|unique:services',
-                'price' => 'required|min:0',
-                'status'=> 'required'
-            ]);
-        }
-        if($validator->fails()){
+        if (!$service) {
             return $this->failed();
         }
         $service->fill($request->all());
         $service->save();
-        $result = ServiceResource::collection($service);
-        return $this->success($result);
+        return $this->success($service);
     }
     public function getServiceById($id):JsonResponse
     {

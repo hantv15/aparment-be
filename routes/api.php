@@ -40,7 +40,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/user', [UserController::class, 'getUserLogin']);
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
     Route::post('/send-notification', [ApartmentNotiController::class, 'sendNotification'])->name('save-token');
-
 });
 
 Route::get('/user/add', [UserController::class, 'registerForm']);
@@ -49,7 +48,6 @@ Route::get('/user/edit/{id}', [UserController::class, 'formEditUser']);
 Route::post('/user/edit/{id}', [UserController::class, 'saveEditUser']);
 Route::get('/user/remove/{id}', [UserController::class, 'removeUser']);
 Route::get('/user/{id}', [UserController::class, 'listUserById']);
-
 
 Route::prefix('/apartment')->group(function (){
     Route::get('/', [ApartmentController::class, 'getApartment'])->name('apartment');
@@ -139,4 +137,5 @@ Route::prefix('/vehicle-type')->group(function (){
     Route::post('/edit/{id}', [VehicleTypeController::class, 'saveEdit']);
     Route::get('/{id}', [VehicleTypeController::class, 'getVehicleTypeById'])->name('vehicle-type.detail');
 });
+
 Route::post('fire_notification', [\App\Http\Controllers\FireNotificationController::class, 'createFireNotification'])->name('fire_notification');
