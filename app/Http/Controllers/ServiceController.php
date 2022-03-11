@@ -73,13 +73,13 @@ class ServiceController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string',
                 'price' => 'required|min:0',
-                'status'=>'required'
+                
             ]);
         }else{
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|unique:services',
                 'price' => 'required|min:0',
-                'status'=> 'required'
+                
             ]);
         }
         if($validator->fails()){
