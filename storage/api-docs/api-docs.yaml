@@ -1019,7 +1019,52 @@ paths:
               data:
                 type: string
                 example: 'Import data from excel success fully'
-
+  
+    /api/bill/add:
+    post:
+      tags:
+        - Bill
+      summary: 'Add a new bill'
+      description: 'Add a new bill'
+      produces:
+        - application/json
+      parameters:
+        - name: "name"
+          in: "query"
+          description: "Name of bill"
+          required: true
+          type: string
+          format: "int64"
+        - name: "apartment_id"
+          in: "query"
+          description: "Apartment of bill"
+          required: true
+          type: number
+          format: "int64"
+        - name: "notes"
+          in: "query"
+          description: "Notes of bill"
+          required: false
+          type: string
+          format: "int64"
+      responses:
+        '200':
+          description:
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewBill'
+      
+  
 components:
   schemas:
     ApiRegister:

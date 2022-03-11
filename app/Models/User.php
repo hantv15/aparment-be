@@ -19,6 +19,7 @@ class User extends Authenticatable
      */
     protected $table = 'users';
     protected $fillable = [
+        
         'name',
         'email',
         'phone_number',
@@ -28,7 +29,6 @@ class User extends Authenticatable
         'number_card',
         'status',
         'apartment_id',
-        'avatar',
         'role_id',
         'device_key'
     ];
