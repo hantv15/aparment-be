@@ -45,7 +45,7 @@ class ServiceController extends Controller
         return view('service.add');
     }
 
-    public function saveAdd(Request $request): JsonResponse
+    public function saveAdd(ServiceRequest $request): JsonResponse
     {
         $service = new Service();
         $service->fill($request->all());
@@ -56,10 +56,13 @@ class ServiceController extends Controller
     public function editForm($id)
     {
         $service = Service::find($id);
+        if (!$service) {
+            return $this->failed();
+        }
         return view('service.edit', compact('service'));
     }
 
-    public function saveEdit(ServiceRequest $request,$id): JsonResponse
+    public function saveEdit(ServiceRequest $request, $id): JsonResponse
     {
 
         $service = Service::find($id);
