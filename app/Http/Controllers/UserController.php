@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\RegisterResource;
+use App\Http\Resources\UserResource;
 use App\Models\Apartment;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -52,7 +53,9 @@ class UserController extends Controller
         if ($request->filled('page') && $request->filled('page_size')){
             $user = $user->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
         }
-        return $this->success($user);
+
+         $result = UserResource::collection($user);
+        return $this->success($result);
     }
 
     public function registerForm()
