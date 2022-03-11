@@ -61,4 +61,7 @@ class User extends Authenticatable
 
         return $class.'.'.$this->getKey();
     }
+    public function apartment(){
+        return $this->hasOne(Apartment::class, 'apartment_id');
+    }
 }

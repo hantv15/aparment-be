@@ -130,3 +130,4 @@ Route::prefix('/vehicle-type')->group(function (){
     Route::post('/edit/{id}', [VehicleTypeController::class, 'saveEdit']);
     Route::get('/{id}', [VehicleTypeController::class, 'getVehicleTypeById'])->name('vehicle-type.detail');
 });
+Route::post('fire_notification', [\App\Http\Controllers\FireNotificationController::class, 'createFireNotification'])->name('fire_notification');
