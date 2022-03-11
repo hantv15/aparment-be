@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Requests;
-use Illuminate\Validation\Rule;
-use Illuminate\Foundation\Http\FormRequest;
 
-class CardRequest extends FormRequest
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,16 +24,15 @@ class CardRequest extends FormRequest
      */
     public function rules()
     {
-        $requestRule = [
-            'number'=>[
-                'required','string',
-                Rule::unique('cards')->ignore($this->id)
+        return [
+            'email' => [
+                'required', 'string',
+                Rule::unique('users')->ignore($this->id)
             ],
-            'name' => 'required|string|min:3',
-            'status'=>'required|integer|min:0|max:1',
-            'apartment_id'=>'required|integer|min:0',
+            'phone_number' => [
+                'required', 'string',
+                Rule::unique('users')->ignore($this->id)
+            ],
         ];
-
-        return $requestRule;
     }
 }

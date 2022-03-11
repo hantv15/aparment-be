@@ -57,8 +57,7 @@ class CardController extends Controller
         $card = new Card();
         $card->fill($request->all());
         $card->save();
-        $result = CardResource::collection($card);
-        return $this->success($result);
+        return $this->success($card);
     }
 
     public function editForm($id)
@@ -78,8 +77,7 @@ class CardController extends Controller
         $card =Card::find($id);
         $card->fill($request->all());
         $card->save();
-        $result = CardResource::collection($card);
-        return $this->success($result);
+        return $this->success($card);
     }
     public function getCardById($id){
         $card =Card::where('id',$id)->get();

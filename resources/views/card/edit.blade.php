@@ -5,6 +5,10 @@
         <input type="number" name="number" value="{{$card->number}}">
     </div>
     <div>
+        <label for="">Tên</label>
+        <input type="text" name="name" value="{{$card->name}}">
+    </div>
+    <div>
         <label for="">Trạng thái</label>
         <select name="status" id="">
             <option value="0" @if($card->status == 0) selected @endif>Chưa kích hoạt</option>

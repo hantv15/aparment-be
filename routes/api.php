@@ -47,7 +47,7 @@ Route::post('/user/add', [UserController::class, 'saveUser']);
 Route::get('/user/edit/{id}', [UserController::class, 'formEditUser']);
 Route::post('/user/edit/{id}', [UserController::class, 'saveEditUser']);
 Route::get('/user/remove/{id}', [UserController::class, 'removeUser']);
-Route::get('/user/{id}', [UserController::class, 'listUserById']);
+Route::get('/user/{id}', [UserController::class, 'getUserInfomationById']);
 
 Route::prefix('/apartment')->group(function (){
     Route::get('/', [ApartmentController::class, 'getApartment'])->name('apartment');
