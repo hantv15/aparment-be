@@ -37,6 +37,23 @@ class UserController extends Controller
             ->get();
         return $this->success($user);
     }
+    public function getUser(Request $request): JsonResponse
+    {
+        $user =User::all();
+        if($request->filled('keyword')){
+            $user = User::where('name','like','%' . $request->keyword . '%')->get();
+        }
+        if( $request->filled('sort') && $request->sort == 1){
+            $user= $user->sortByDesc('name');
+        }
+        elseif(  $request->filled('sort') && $request->sort == 2){
+            $user= $user->sortBy('name');
+        }
+        if ($request->filled('page') && $request->filled('page_size')){
+            $user = $user->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
+        }
+        return $this->success($user);
+    }
 
     public function registerForm()
     {
@@ -44,7 +61,7 @@ class UserController extends Controller
         return view('user.add', compact('apartments'));
     }
 
-    public function saveUser(UserRequest $request): JsonResponse
+    public function saveUser(UserRequest $request)
     {
         $request->validate([
             'email' => 'required|string|unique:users',
@@ -84,7 +101,7 @@ class UserController extends Controller
         return view('user.edit', compact('user', 'apartments', 'year', 'month', 'day'));
     }
 
-    public function saveEditUser(UserRequest $request, $id)
+    public function saveEditUser(UserRequest $request, $id): JsonResponse
     {
         $user = User::find($id);
         if(!$user){
