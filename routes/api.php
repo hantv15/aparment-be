@@ -40,12 +40,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/user', [UserController::class, 'getUserLogin']);
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
     Route::post('/send-notification', [ApartmentNotiController::class, 'sendNotification'])->name('save-token');
+
 });
 
 Route::get('/user/add', [UserController::class, 'registerForm']);
 Route::post('/user/add', [UserController::class, 'saveUser']);
+Route::get('/user/edit/{id}', [UserController::class, 'formEditUser']);
 Route::post('/user/edit/{id}', [UserController::class, 'saveEditUser']);
-Route::post('/user/remove/{id}', [UserController::class, 'removeUser']);
+Route::get('/user/remove/{id}', [UserController::class, 'removeUser']);
 Route::get('/user/{id}', [UserController::class, 'listUserById']);
 
 

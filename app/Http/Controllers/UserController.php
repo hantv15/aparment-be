@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 use Ramsey\Collection\Collection as CollectionCollection;
 
 class UserController extends Controller
@@ -70,19 +71,25 @@ class UserController extends Controller
     {
         $user = User::join('apartments', 'users.id', '=', 'apartments.user_id')
             ->select(
-                'users.id',
+                'users.id as user_id',
                 'users.name as user_name',
                 'users.email',
                 'users.phone_number',
                 'users.dob',
                 'users.number_card',
                 'users.status',
+                'apartments.id',
                 'apartments.apartment_id'
             )
             ->where('users.id', $id)
             ->get();
 
         return $this->success($user);
+    }
+    public function formEditUser()
+    {
+        $apartments = Apartment::where('user_id', NULL)->get();
+        return view('user.edit',compact('apartments'));
     }
     public function saveEditUser(Request $request, $id)
     {
@@ -94,11 +101,34 @@ class UserController extends Controller
         if ($request->has('password')) {
             return $this->failed();
         }
+        $user = User::find($id);
+        if($request->has('apartment_id')){
+            $apartment_old = Apartment::where('user_id',$user->id)->first();
+            $apartment_old->user_id=null;
+            $apartment_old->save();
+        }
+        if($request->hasFile('avatar')){
+            Storage::delete($user->avatar);
+            $imgPath = $request->file('avatar')->store('user');
+            $imgPath = str_replace('public/', '', $imgPath);
+            $user->avatar = $imgPath;
+        }
+        $user->fill($request->all());
+        $user->save();
+        
+        $apartment = Apartment::where('id', $request->apartment_id)->first();
+        $apartment->user_id = $user->id;
+        $apartment->save();
+       
+        return $this->success($user);
     }
     public function removeUser($id)
     {
+        
         $user = User::find($id);
-        $apartment = Apartment::where('user_id', $user->id);
+        
+        $apartment = Apartment::where('user_id', $user->id)->first();
+       
         $apartment->user_id = null;
         $apartment->save();
         $user->delete();
