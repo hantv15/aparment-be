@@ -79,8 +79,8 @@ class ServiceController extends Controller
         if (!$service) {
             return $this->failed();
         }
-        $result = ServiceResource::collection($service);
-        return $this->success($result);
+        
+        return $this->success($service);
     }
 
 }
