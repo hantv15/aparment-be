@@ -143,6 +143,7 @@ class ApartmentController extends Controller
                 'apartments.id',
                 'apartments.apartment_id',
                 'users.phone_number',
+                'buildings.id as building_id',
                 'buildings.name as building_name',
                 'apartments.square_meters',
                 'apartments.status',
