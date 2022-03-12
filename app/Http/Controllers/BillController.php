@@ -211,4 +211,20 @@ class BillController extends Controller
 
         return $this->success($bill);
     }
+
+    public function getBillDetailByBillId($id){
+        $bill_details_by_bill_id = BillDetail::join('services', 'bill_details.service_id', '=', 'services.id')
+                                            ->select(
+                                                'bill_details.id',
+                                                'services.name',
+                                                'services.price',
+                                                'bill_details.bill_id',
+                                                'bill_details.quantity',
+                                                'bill_details.total_price'
+                                            )
+                                            ->where('bill_details.bill_id', $id)
+                                            ->get();
+
+        return $this->success($bill_details_by_bill_id);
+    }
 }
