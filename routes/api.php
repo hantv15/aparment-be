@@ -86,7 +86,7 @@ Route::prefix('/bill-detail')->group(function (){
     Route::get('/add', [BillDetailController::class, 'addForm'])->name('bill-detail.add');
     Route::post('/add', [BillDetailController::class, 'saveAdd']);
     Route::get('/edit/{id}', [BillDetailController::class, 'editForm'])->name('bill-detail.edit');
-    Route::post('/edit/{id}', [BillDetailController::class, 'saveEdit']);
+    Route::put('/edit/{id}', [BillDetailController::class, 'saveEdit']);
     Route::get('/{id}', [BillDetailController::class, 'getBillDetailById'])->name('bill-detail.detail');
 });
 

@@ -1,5 +1,6 @@
 <form action="" method="POST">
     @csrf
+    <input type="hidden" name="_method" value="put" />
     <div>
         <label for="">Chọn dịch vụ</label>
         <select name="service_id" id="">
