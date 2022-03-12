@@ -197,11 +197,11 @@ class BillController extends Controller
                 'bills.amount',
                 'bills.status',
                 'bills.apartment_id',
+                'bill_details.id as bill_detail_id',
                 'bill_details.quantity',
                 'services.price',
                 'bill_details.total_price',
                 'services.name as ten_dich_vu'
-
             )
             ->where('bills.id', $id)
             ->get();
