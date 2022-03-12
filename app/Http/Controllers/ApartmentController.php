@@ -236,6 +236,7 @@ class ApartmentController extends Controller
                                                 ->join('bills', 'bill_details.bill_id', '=', 'bills.id')
                                                 ->join('apartments', 'bills.apartment_id', '=', 'apartments.id')
                                                 ->select(
+                                                    'bill_details.id',
                                                     'bill_details.bill_id',
                                                     'bills.name as ten_hoa_don',
                                                     'services.name as ten_dich_vu',
