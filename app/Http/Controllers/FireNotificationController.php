@@ -20,7 +20,7 @@ class FireNotificationController extends Controller
     {
         try {
             $account_sid = 'AC9c74cd63bd797ebde76dd392b43a701b';
-            $auth_token = '7bbfdf8bf7021de7416cf7971aeb69d6';
+            $auth_token = '27cbd95575192c3a551d5b370fe1b854';
             $twilio_number = "+16812461465";
 
             $client = new Client($account_sid, $auth_token);
@@ -32,14 +32,14 @@ class FireNotificationController extends Controller
             $data = $request->all();
             $status = $notification->fill($data)->save();
             if ($status){
-                $receivers = User::where('status', Notification::ACTIVE_USER)->get();
-                foreach ($receivers->chunk(10) as $receiver) {
-                    $phoneNumber = substr($receiver->phone, 1);
+                $receivers = User::where('status', Notification::ACTIVE_USER)->whereNotNull('phone_number')->get();
+                foreach ($receivers as $receiver) {
+                    $phoneNumber = substr($receiver->phone_number, 1);
                     $receiverNumber = '+84' . $phoneNumber;
                     $client->messages->create($receiverNumber, [
                         'from' => $twilio_number,
                         'body' => [
-                            'BÁO CHÁY: ' . $notification->content . '.',
+                            'Fire notification:'. $notification->title . '.' . $notification->content . '.',
                         ]]);
                 }
             }
