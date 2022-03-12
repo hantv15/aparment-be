@@ -67,7 +67,6 @@ class BillDetailController extends Controller
 
     public function saveEdit($id, Request $request):JsonResponse
     {
-//        dd($request->all());
         $bill_detail = BillDetail::find($id);
         if (Bill::find($bill_detail->bill_id)->status != 0){
             return $this->failed();
