@@ -39,6 +39,7 @@ Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPass
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/user', [UserController::class, 'getUserLogin']);
+    Route::post('change-password', [UserController::class, 'changePassword']);
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
     Route::post('/send-notification', [ApartmentNotiController::class, 'sendNotification'])->name('save-token');
 });

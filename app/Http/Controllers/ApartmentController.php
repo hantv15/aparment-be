@@ -195,7 +195,8 @@ class ApartmentController extends Controller
                 'users.name as ten_chu_ho',
                 'apartments.apartment_id',
                 'bills.amount',
-                'bills.status'
+                'bills.status',
+                'bills.created_at'
             )
             ->distinct()
             ->where('apartments.id', $id)
@@ -216,7 +217,9 @@ class ApartmentController extends Controller
                 'users.name as ten_chu_ho',
                 'apartments.apartment_id',
                 'bills.amount',
-                'bills.status'
+                'bills.status',
+                'bills.created_at',
+                'bills.updated_at'
             )
             ->distinct()
             ->where('apartments.id', $id)
