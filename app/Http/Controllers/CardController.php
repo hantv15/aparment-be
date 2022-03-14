@@ -17,10 +17,10 @@ class CardController extends Controller
         if($request->filled('keyword')){
             $cards = Card::where('name','like','%' . $request->keyword . '%')->get();
         }
-        if( $request->filled('sort') && $request->sort == 1){
+        if($request->filled('sort') && $request->sort == 1){
             $cards= $cards->sortByDesc('name');
         }
-        elseif(  $request->filled('sort') && $request->sort == 2){
+        elseif($request->filled('sort') && $request->sort == 2){
             $cards= $cards->sortBy('name');
         }
         if ($request->filled('page') && $request->filled('page_size')){

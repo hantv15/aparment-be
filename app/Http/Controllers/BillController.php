@@ -21,12 +21,13 @@ class BillController extends Controller
         return $this->success($result);
     }
 
-    public function addForm(){
+    public function addForm()
+    {
         $apartments = Apartment::all();
         return view('bill.add', compact('apartments'));
     }
 
-    public function saveAdd(BillRequest $request):JsonResponse
+    public function saveAdd(BillRequest $request): JsonResponse
     {
         $bill = new Bill();
         $bill->fill($request->all());
@@ -34,7 +35,8 @@ class BillController extends Controller
         return $this->success(BillResource::collection(Bill::where('id', $bill->id)->get()));
     }
 
-    public function editForm($id){
+    public function editForm($id)
+    {
         $bill = Bill::find($id);
         if ($bill->status == 1){
             return $this->failed();
@@ -43,7 +45,7 @@ class BillController extends Controller
         return view('bill.edit', compact('bill'));
     }
 
-    public function saveEdit($id, BillRequest $request):JsonResponse
+    public function saveEdit($id, BillRequest $request): JsonResponse
     {
         $bill = Bill::find($id);
         if (!$bill) {
@@ -58,7 +60,8 @@ class BillController extends Controller
         return $this->success($bill);
     }
 
-    public function editAddBillDetailForm($id){
+    public function editAddBillDetailForm($id)
+    {
         $bill = Bill::find($id);
         $services = Service::all();
         if ($bill->status == 1){
@@ -67,7 +70,8 @@ class BillController extends Controller
         return view('bill.edit-add-bill-detail', compact('bill', 'services'));
     }
 
-    public function saveEditAddBillDetail($id, BillDetailRequest $request){
+    public function saveEditAddBillDetail($id, BillDetailRequest $request)
+    {
         $bill = Bill::find($id);
         if (!$bill) {
             return $this->failed();
@@ -105,7 +109,8 @@ class BillController extends Controller
         return $this->success($bill);
     }
 
-    public function editEditBillDetailForm($id, $bill_detail_id){
+    public function editEditBillDetailForm($id, $bill_detail_id)
+    {
         $bill = Bill::find($id);
         $services = Service::all();
         $bill_detail = BillDetail::where('id', $bill_detail_id)
@@ -120,7 +125,7 @@ class BillController extends Controller
         return view('bill.edit-edit-bill-detail', compact('bill', 'services', 'bill_detail'));
     }
 
-    public function saveEditEditBillDetail($id, $bill_detail_id, BillDetailRequest $request):JsonResponse
+    public function saveEditEditBillDetail($id, $bill_detail_id, BillDetailRequest $request): JsonResponse
     {
         $bill = Bill::find($id);
         $bill_detail = BillDetail::where('id', $bill_detail_id)
@@ -169,13 +174,14 @@ class BillController extends Controller
         return $this->success($bill);
     }
 
-    public function editStatusForm($id){
+    public function editStatusForm($id)
+    {
         $bill = Bill::find($id);
         $bill->load('apartment');
         return view('bill.edit-status', compact('bill'));
     }
 
-    public function saveEditStatus($id, BillRequest $request):JsonResponse
+    public function saveEditStatus($id, Request $request): JsonResponse
     {
         $bill = Bill::find($id);
         if (!$bill) {
@@ -212,7 +218,8 @@ class BillController extends Controller
         return $this->success($bill);
     }
 
-    public function getBillDetailByBillId($id){
+    public function getBillDetailByBillId($id)
+    {
         $bill_details_by_bill_id = BillDetail::join('services', 'bill_details.service_id', '=', 'services.id')
                                             ->select(
                                                 'bill_details.id',

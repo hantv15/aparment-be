@@ -9,6 +9,7 @@ use App\Http\Controllers\BillController;
 use App\Http\Controllers\BillDetailController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\FireNotificationController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ServiceController;
@@ -41,13 +42,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
     Route::post('/send-notification', [ApartmentNotiController::class, 'sendNotification'])->name('save-token');
 });
-Route::get('/userAll', [UserController::class, 'getUser']);
-Route::get('/user/add', [UserController::class, 'registerForm']);
-Route::post('/user/add', [UserController::class, 'saveUser']);
-Route::get('/user/edit/{id}', [UserController::class, 'formEditUser']);
-Route::post('/user/edit/{id}', [UserController::class, 'saveEditUser']);
-Route::get('/user/remove/{id}', [UserController::class, 'removeUser']);
-Route::get('/user/{id}', [UserController::class, 'getUserInfomationById']);
+
+Route::prefix('/user')->group(function (){
+    Route::get('/list', [UserController::class, 'getUser']);
+    Route::get('/add', [UserController::class, 'registerForm']);
+    Route::post('/add', [UserController::class, 'saveUser']);
+    Route::get('/edit/{id}', [UserController::class, 'formEditUser']);
+    Route::post('/edit/{id}', [UserController::class, 'saveEditUser']);
+    Route::get('/remove/{id}', [UserController::class, 'removeUser']);
+    Route::get('/{id}', [UserController::class, 'getUserInfomationById']);
+});
 
 Route::prefix('/apartment')->group(function (){
     Route::get('/', [ApartmentController::class, 'getApartment'])->name('apartment');
@@ -62,6 +66,8 @@ Route::prefix('/apartment')->group(function (){
     Route::get('/{id}/finance/paid', [ApartmentController::class, 'getPaidBillByApartmentId']);
     Route::get('/{id}/finance/{bill_id}/bill-detail', [ApartmentController::class, 'getBillDetailByApartmentId']);
     Route::get('/{id}/card', [CardController::class, 'getCardByApartmentId']);
+    Route::get('/{id}/add-card', [ApartmentController::class, 'addCardForm']);
+    Route::post('/{id}/add-card', [ApartmentController::class, 'saveAddCard']);
     Route::post('/upload-excel', [ApartmentController::class, 'uploadApartment'])->name('apartment.upload-excel');
 });
 
@@ -139,4 +145,5 @@ Route::prefix('/vehicle-type')->group(function (){
     Route::get('/{id}', [VehicleTypeController::class, 'getVehicleTypeById'])->name('vehicle-type.detail');
 });
 
-Route::post('fire_notification', [\App\Http\Controllers\FireNotificationController::class, 'createFireNotification'])->name('fire_notification');
+Route::get('fire_notification', [FireNotificationController::class, 'formFireNotification']);
+Route::post('fire_notification', [FireNotificationController::class, 'createFireNotification'])->name('fire_notification');

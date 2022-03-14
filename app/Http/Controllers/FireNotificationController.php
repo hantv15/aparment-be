@@ -13,6 +13,10 @@ use Twilio\Rest\Client;
 
 class FireNotificationController extends Controller
 {
+    public function formFireNotification(){
+        return view('notification.form');
+    }
+
     /**
      * @throws ConfigurationException
      */
