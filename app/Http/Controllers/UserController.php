@@ -13,11 +13,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Js;
 use Ramsey\Collection\Collection as CollectionCollection;
 
 class UserController extends Controller
 {
-    public function getUserLogin(Request $request)
+    public function getUserLogin(Request $request): JsonResponse
     {
         $user = User::join('apartments', 'users.apartment_id', '=', 'apartments.id')
             ->join('buildings', 'apartments.building_id', '=', 'buildings.id')
@@ -38,6 +39,19 @@ class UserController extends Controller
             ->get();
         return $this->success($user);
     }
+
+    public function changePassword(Request $request)
+    {
+        $user = User::find($request->user()->id);
+        $request->validate([
+            'password' => 'required|string|confirmed',
+        ]);
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return $this->success($user);
+    }
+
     public function getUser(Request $request): JsonResponse
     {
         $user =User::all();
