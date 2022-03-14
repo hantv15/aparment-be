@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Building;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,13 +13,14 @@ use App\Http\Resources\RegisterResource;
 use App\Models\Apartment;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
     public function registerForm()
     {
         $apartments = Apartment::where('user_id', NULL)->get();
-        return view('registerForm', compact('apartments'));
+        return view('auth.register', compact('apartments'));
     }
 
     public function register(Request $request): JsonResponse
@@ -42,15 +44,30 @@ class AuthController extends Controller
         $apartment->user_id = $user->id;
         $apartment->save();
 
+        $building = Building::where('id', $apartment->building_id)->first();
+
         event(new Registered($user));
         $token = $user->createToken('authtoken')->plainTextToken;
+
+        Mail::send('email.form-register-success', [
+            'name' => $request->name,
+            'apartment_id' => $apartment->apartment_id,
+            'building_name' => $building->name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'password' => $request->password
+        ], function ($message) use ($request) {
+            $message->to($request->email);
+            $message->subject('chúc mừng tạo tài khoản thành công!');
+        });
+
         $result = new RegisterResource($user);
         return $this->success($result);
     }
 
     public function loginForm()
     {
-        return view('loginform');
+        return view('auth.login');
     }
 
     public function login(Request $request): JsonResponse

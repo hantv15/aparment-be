@@ -9,6 +9,7 @@ use App\Models\Apartment;
 use App\Models\Bill;
 use App\Models\BillDetail;
 use App\Models\Building;
+use App\Models\Card;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -250,6 +251,19 @@ class ApartmentController extends Controller
                                                 ->where('apartments.id', $id)
                                                 ->get();
         return $this->success($bill_detail_by_apartment_id);
+    }
+
+    public function addCardForm($id) {
+        return view('apartment.add-card');
+    }
+
+    public function saveAddCard($id, Request $request): JsonResponse
+    {
+        $card = new Card();
+        $card->fill($request->all());
+        $card->apartment_id = $id;
+        $card->save();
+        return $this->success($card);
     }
 
     /**
