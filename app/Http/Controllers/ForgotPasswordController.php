@@ -36,7 +36,7 @@ class ForgotPasswordController extends Controller
             'email' => 'required|email|exists:users',
         ]);
 
-        $token = Str::random(64);
+        $token = Str::random(6);
 
         DB::table('password_resets')->insert([
             'email' => $request->email,
@@ -49,16 +49,17 @@ class ForgotPasswordController extends Controller
             $message->subject('Reset Password');
         });
 
-        return back()->with('message', 'We have e-mailed your password reset link!');
+        return $this->success('');
     }
     /**
      * Write code on Method
      *
      * @return response()
      */
-    public function showResetPasswordForm($token)
+    public function showResetPasswordForm()
     {
-        return view('auth.forgetPasswordLink', ['token' => $token]);
+        return view('auth.forgetPasswordLink');
+        // , ['token' => $token]);
     }
 
     /**
@@ -71,7 +72,9 @@ class ForgotPasswordController extends Controller
         $request->validate([
             'email' => 'required|email|exists:users',
             'password' => 'required|string|min:6|confirmed',
-            'password_confirmation' => 'required'
+            'password_confirmation' => 'required',
+            'token'=>'required'
+
         ]);
 
         $updatePassword = DB::table('password_resets')
@@ -89,6 +92,8 @@ class ForgotPasswordController extends Controller
 
         DB::table('password_resets')->where(['email' => $request->email])->delete();
 
-        return redirect('/api/login')->with('message', 'Your password has been changed!');
+        return $this->success('');
+
+        // return redirect('/api/login')->with('message', 'Your password has been changed!');
     }
 }

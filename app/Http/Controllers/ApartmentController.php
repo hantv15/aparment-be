@@ -99,11 +99,11 @@ class ApartmentController extends Controller
         return $this->success($result);
     }
 
-    public function getApartmentNotOwnedAndId($id, Request $request): JsonResponse
+    public function getApartmentNotOwnedAndId(Request $request,$id): JsonResponse
     {
-        $apartments = Apartment::where('user_id', NULL)
-            ->orWhere('user_id', $id)
-            ->get();
+        $apartments = Apartment::where('user_id', $id)
+                                ->orwhere('user_id', NULL)
+                                ->get();
         if ($request->filled('page') && $request->filled('page_size')) {
             $apartments = $apartments->skip(($request->page - 1) * $request->page_size)->take($request->page_size);
         }
