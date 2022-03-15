@@ -93,6 +93,7 @@ class AuthController extends Controller
                                         'users.apartment_id',
                                         'users.avatar',
                                         'users.role_id',
+                                        'apartments.id as ma_can_ho',
                                         'apartments.apartment_id as apartment_name',
                                         'apartments.floor',
                                         'apartments.description',
