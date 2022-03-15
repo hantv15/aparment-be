@@ -80,6 +80,7 @@ class AuthController extends Controller
         $count_user_by_apartment_id = Apartment::where('apartment_id', $fields['username'])->count();
         $count_user_by_email = User::where('email', $fields['username'])->count();
         $count_user_by_phone = User::where('phone_number', $fields['username'])->count();
+
         $user_by_apartment_id = User::join('apartments', 'users.apartment_id', '=', 'apartments.id')
                                     ->select(
                                         'users.id',
@@ -93,7 +94,6 @@ class AuthController extends Controller
                                         'users.apartment_id',
                                         'users.avatar',
                                         'users.role_id',
-                                        'apartments.id as ma_can_ho',
                                         'apartments.apartment_id as apartment_name',
                                         'apartments.floor',
                                         'apartments.description',
@@ -104,8 +104,52 @@ class AuthController extends Controller
                                     )
                                     ->where('apartments.apartment_id', $fields['username'])
                                     ->first();
-        $user_by_email = User::where('email', $fields['username'])->first();
-        $user_by_phone = User::where('phone_number', $fields['username'])->first();
+        $user_by_email = User::join('apartments', 'users.apartment_id', '=', 'apartments.id')
+                            ->select(
+                                'users.id',
+                                'users.email',
+                                'users.phone_number',
+                                'users.password',
+                                'users.name',
+                                'users.dob',
+                                'users.number_card',
+                                'users.status',
+                                'users.apartment_id',
+                                'users.avatar',
+                                'users.role_id',
+                                'apartments.apartment_id as apartment_name',
+                                'apartments.floor',
+                                'apartments.description',
+                                'apartments.square_meters',
+                                'apartments.type_apartment',
+                                'apartments.building_id',
+                                'apartments.user_id'
+                            )
+                            ->where('email', $fields['username'])
+                            ->first();
+        $user_by_phone = User::join('apartments', 'users.apartment_id', '=', 'apartments.id')
+                            ->select(
+                                'users.id',
+                                'users.email',
+                                'users.phone_number',
+                                'users.password',
+                                'users.name',
+                                'users.dob',
+                                'users.number_card',
+                                'users.status',
+                                'users.apartment_id',
+                                'users.avatar',
+                                'users.role_id',
+                                'apartments.apartment_id as apartment_name',
+                                'apartments.floor',
+                                'apartments.description',
+                                'apartments.square_meters',
+                                'apartments.type_apartment',
+                                'apartments.building_id',
+                                'apartments.user_id'
+                            )
+                            ->where('phone_number', $fields['username'])
+                            ->first();
         // Check password
         if ($count_user_by_email > 0) {
             if (!$user_by_email || !Hash::check($fields['password'], $user_by_email->password)) {

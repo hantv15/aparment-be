@@ -28,9 +28,10 @@ class LoginResource extends JsonResource
             'status' => $this->status,
             'avatar' => $this->avatar,
             'role_id' => $this->role_id,
+            'apartment_id' => $this->apartment_id,
+            'apartment_name' => Apartment::where('id', $this->apartment_id)->first()->apartment_id,
         ];
         if ($this->id != null) {
-            $login_resource['apartment_id'] = Apartment::where('id', $this->apartment_id)->first()->apartment_id;
             $login_resource['building_id'] = Building::where('id', Apartment::where('id', $this->apartment_id)->first()->building_id)->first()->name;
         }
         return $login_resource;
