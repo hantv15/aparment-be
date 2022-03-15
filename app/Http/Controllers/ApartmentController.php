@@ -56,7 +56,7 @@ class ApartmentController extends Controller
                     ['users.name', 'like', '%' . $request->keyword . '%'],
                 ])
                 ->get();
-        } else if (! $request->filled('building_id') && $request->filled('keyword')) {
+        } else if (!$request->filled('building_id') && $request->filled('keyword')) {
             $apartments = Apartment::join('users', 'apartments.id', '=', 'users.apartment_id')
                 ->join('buildings', 'apartments.building_id', '=', 'buildings.id')
                 ->select(
@@ -78,23 +78,34 @@ class ApartmentController extends Controller
                 ->orWhere('users.email', 'like', '%' . $request->keyword . '%')
                 ->orWhere('users.name', 'like', '%' . $request->keyword . '%')
                 ->get();
-        } else if ($request->filled('building_id') && ! $request->filled('keyword')) {
+        } else if ($request->filled('building_id') && !$request->filled('keyword')) {
             $apartments = Apartment::where('building_id', $request->building_id)->get();
         }
 
-        if ($request->filled('page') && $request->filled('page_size')){
-            $apartments = $apartments->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
+        if ($request->filled('page') && $request->filled('page_size')) {
+            $apartments = $apartments->skip(($request->page - 1) * $request->page_size)->take($request->page_size);
         }
         $result = ApartmentResource::collection($apartments);
         return $this->success($result);
     }
 
-    public function getApartmentNotOwned(Request $request){
+    public function getApartmentNotOwned(Request $request): JsonResponse
+    {
         $apartments = Apartment::where('user_id', NULL)->get();
+        if ($request->filled('page') && $request->filled('page_size')) {
+            $apartments = $apartments->skip(($request->page - 1) * $request->page_size)->take($request->page_size);
+        }
+        $result = ApartmentResource::collection($apartments);
+        return $this->success($result);
+    }
 
-
-        if ($request->filled('page') && $request->filled('page_size')){
-            $apartments = $apartments->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
+    public function getApartmentNotOwnedAndId($id, Request $request): JsonResponse
+    {
+        $apartments = Apartment::where('user_id', NULL)
+            ->orWhere('user_id', $id)
+            ->get();
+        if ($request->filled('page') && $request->filled('page_size')) {
+            $apartments = $apartments->skip(($request->page - 1) * $request->page_size)->take($request->page_size);
         }
         $result = ApartmentResource::collection($apartments);
         return $this->success($result);
@@ -118,13 +129,14 @@ class ApartmentController extends Controller
         return $this->success($model);
     }
 
-    public function editForm($id){
+    public function editForm($id)
+    {
         $apartment = Apartment::find($id);
         $buildings = Building::all();
         return view('apartment.edit', compact('apartment', 'buildings'));
     }
 
-    public function saveEdit($id, ApartmentRequest $request):JsonResponse
+    public function saveEdit($id, ApartmentRequest $request): JsonResponse
     {
         $model = Apartment::find($id);
         $model->fill($request->all());
@@ -238,25 +250,26 @@ class ApartmentController extends Controller
     public function getBillDetailByApartmentId($id, $bill_id): JsonResponse
     {
         $bill_detail_by_apartment_id = BillDetail::join('services', 'bill_details.service_id', '=', 'services.id')
-                                                ->join('bills', 'bill_details.bill_id', '=', 'bills.id')
-                                                ->join('apartments', 'bills.apartment_id', '=', 'apartments.id')
-                                                ->select(
-                                                    'bill_details.id',
-                                                    'bill_details.bill_id',
-                                                    'bills.name as ten_hoa_don',
-                                                    'services.name as ten_dich_vu',
-                                                    'services.price as don_gia',
-                                                    'bill_details.quantity',
-                                                    'bill_details.total_price',
-                                                    'bills.apartment_id'
-                                                )
-                                                ->where('bill_details.bill_id', $bill_id)
-                                                ->where('apartments.id', $id)
-                                                ->get();
+            ->join('bills', 'bill_details.bill_id', '=', 'bills.id')
+            ->join('apartments', 'bills.apartment_id', '=', 'apartments.id')
+            ->select(
+                'bill_details.id',
+                'bill_details.bill_id',
+                'bills.name as ten_hoa_don',
+                'services.name as ten_dich_vu',
+                'services.price as don_gia',
+                'bill_details.quantity',
+                'bill_details.total_price',
+                'bills.apartment_id'
+            )
+            ->where('bill_details.bill_id', $bill_id)
+            ->where('apartments.id', $id)
+            ->get();
         return $this->success($bill_detail_by_apartment_id);
     }
 
-    public function addCardForm($id) {
+    public function addCardForm($id)
+    {
         return view('apartment.add-card');
     }
 
@@ -284,8 +297,7 @@ class ApartmentController extends Controller
                     $isValidData = false;
                 }
             }
-            if ($isValidData)
-            {
+            if ($isValidData) {
                 Excel::import(new BaseImport(), $fileUpload);
                 return $this->success(__('string.success'));
             }
