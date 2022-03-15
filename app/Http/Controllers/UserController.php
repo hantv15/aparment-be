@@ -67,7 +67,6 @@ class UserController extends Controller
         if ($request->filled('page') && $request->filled('page_size')){
             $user = $user->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
         }
-
          $result = UserResource::collection($user);
         return $this->success($result);
     }
@@ -106,16 +105,13 @@ class UserController extends Controller
     public function formEditUser($id)
     {
         $user = User::find($id);
-        $year = substr($user->dob, 0, 4);
-        $month = substr($user->dob, 5, 2);
-        $day = substr($user->dob, 8, 2);
         if (!$user) {
             return $this->failed();
         }
         $apartments = Apartment::where('user_id', NULL)
                             ->orWhere('user_id', $id)
                             ->get();
-        return view('user.edit', compact('user', 'apartments', 'year', 'month', 'day'));
+        return view('user.edit', compact('user', 'apartments'));
     }
 
     public function saveEditUser(UserRequest $request, $id): JsonResponse

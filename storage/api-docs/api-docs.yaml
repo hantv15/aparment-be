@@ -3,6 +3,12 @@ info:
   title: Apartment API Documentation
   description: Apartment API Documentation
   version: 1.0.0
+securityDefinitions:
+  bearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+    description: "Nhập Bearer vào trước Token như sau: Bearer 708|yZkrafp2Uxz3lehtpmtw8SOGOqawpDeipxiyS5UA"
 paths:
   /api/register:
     post:
@@ -153,6 +159,45 @@ paths:
               data:
                 type: array
                 example: ''
+      security:
+        - bearerAuth: []
+  /api/change-password:
+    post:
+      tags:
+        - Authenticate
+      summary: 'Đổi mật khẩu'
+      description: 'Đổi mật khẩu'
+      produces:
+        - application/json
+      parameters:
+        - name: "password"
+          in: "query"
+          description: "Nhập mật khẩu mới"
+          required: true
+          type: string
+        - name: "password_confirmation"
+          in: "query"
+          description: "Nhập lại mật khẩu mới"
+          required: true
+          type: string
+      responses:
+        '200':
+          description: "Đăng nhập thành công"
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: ''
+      security:
+        - bearerAuth: []
 
   /api/apartment:
     get:
@@ -203,6 +248,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ApiApartment'
+
   /api/apartment/not-owned:
     get:
       tags:
@@ -1020,6 +1066,32 @@ paths:
                 type: string
                 example: 'Import data from excel success fully'
 
+  /api/user:
+    get:
+      tags:
+        - User
+      summary: 'Lấy thông tin User đang đăng nhập'
+      description: 'Lấy thông tin User đang đăng nhập'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: "Lấy thông tin thành công"
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: ''
+      security:
+        - bearerAuth: []
 
 components:
   schemas:

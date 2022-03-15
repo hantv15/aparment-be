@@ -11,6 +11,7 @@
     <div>
         <label for="">Phòng</label>
         <select name="apartment_id" id="">
+            <option value="">Chọn căn hộ</option>
             @foreach ($apartments as $item)
                 <option value="{{$item->id}}">{{$item->apartment_id}}</option>
             @endforeach

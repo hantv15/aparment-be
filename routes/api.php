@@ -40,23 +40,14 @@ Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPass
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/user', [UserController::class, 'getUserLogin']);
     Route::post('change-password', [UserController::class, 'changePassword']);
-    Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+    Route::post('logout', [AuthController::class, 'logout']);
     Route::post('/send-notification', [ApartmentNotiController::class, 'sendNotification'])->name('save-token');
-});
-
-Route::prefix('/user')->group(function (){
-    Route::get('/list', [UserController::class, 'getUser']);
-    Route::get('/add', [UserController::class, 'registerForm']);
-    Route::post('/add', [UserController::class, 'saveUser']);
-    Route::get('/edit/{id}', [UserController::class, 'formEditUser']);
-    Route::post('/edit/{id}', [UserController::class, 'saveEditUser']);
-    Route::get('/remove/{id}', [UserController::class, 'removeUser']);
-    Route::get('/{id}', [UserController::class, 'getUserInfomationById']);
 });
 
 Route::prefix('/apartment')->group(function (){
     Route::get('/', [ApartmentController::class, 'getApartment'])->name('apartment');
     Route::get('/not-owned', [ApartmentController::class, 'getApartmentNotOwned']);
+    Route::get('/not-owned/{id}', [ApartmentController::class, 'getApartmentNotOwnedAndId']);
     Route::get('/add', [ApartmentController::class, 'addForm'])->name('apartment.add');
     Route::post('/add', [ApartmentController::class, 'saveAdd']);
     Route::get('/edit/{id}', [ApartmentController::class, 'editForm'])->name('apartment.edit');
@@ -117,6 +108,11 @@ Route::prefix('/card')->group(function (){
     Route::get('/{id}', [CardController::class, 'getCardById'])->name('card.detail');
 });
 
+Route::get('fire_notification', [FireNotificationController::class, 'formFireNotification']);
+Route::post('fire_notification', [FireNotificationController::class, 'createFireNotification'])->name('fire_notification');
+
+Route::post('payment', [PaymentController::class, 'payment']);
+
 Route::prefix('/service')->group(function (){
     Route::get('/', [ServiceController::class, 'getService'])->name('service');
     Route::get('/add', [ServiceController::class, 'addForm'])->name('service.add');
@@ -125,8 +121,6 @@ Route::prefix('/service')->group(function (){
     Route::post('/edit/{id}', [ServiceController::class, 'saveEdit']);
     Route::get('/{id}', [ServiceController::class, 'getServiceById'])->name('service.detail');
 });
-
-Route::post('payment', [PaymentController::class, 'payment']);
 
 Route::prefix('/vehicle')->group(function (){
     Route::get('/', [VehicleController::class, 'getVehicle'])->name('vehicle');
@@ -137,6 +131,16 @@ Route::prefix('/vehicle')->group(function (){
     Route::get('/{id}', [VehicleController::class, 'getVehicleById'])->name('vehicle.detail');
 });
 
+Route::prefix('/user')->group(function (){
+    Route::get('/list', [UserController::class, 'getUser']);
+    Route::get('/add', [UserController::class, 'registerForm']);
+    Route::post('/add', [UserController::class, 'saveUser']);
+    Route::get('/edit/{id}', [UserController::class, 'formEditUser']);
+    Route::post('/edit/{id}', [UserController::class, 'saveEditUser']);
+    Route::get('/remove/{id}', [UserController::class, 'removeUser']);
+    Route::get('/{id}', [UserController::class, 'getUserInfomationById']);
+});
+
 Route::prefix('/vehicle-type')->group(function (){
     Route::get('/', [VehicleTypeController::class, 'getVehicleType'])->name('vehicle-type');
     Route::get('/add', [VehicleTypeController::class, 'addForm'])->name('vehicle-type.add');
@@ -145,6 +149,3 @@ Route::prefix('/vehicle-type')->group(function (){
     Route::post('/edit/{id}', [VehicleTypeController::class, 'saveEdit']);
     Route::get('/{id}', [VehicleTypeController::class, 'getVehicleTypeById'])->name('vehicle-type.detail');
 });
-
-Route::get('fire_notification', [FireNotificationController::class, 'formFireNotification']);
-Route::post('fire_notification', [FireNotificationController::class, 'createFireNotification'])->name('fire_notification');

@@ -27,7 +27,7 @@
     </div>
     <div>
         <label for="">Ngày sinh</label>
-        <input type="date" name="dob">
+        <input type="date" name="dob" value="{{$user->dob}}">
     </div>
     <div>
         <button type="submit">Sửa</button>
