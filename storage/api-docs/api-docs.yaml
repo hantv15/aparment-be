@@ -182,7 +182,7 @@ paths:
           type: string
       responses:
         '200':
-          description: "Đăng nhập thành công"
+          description: "Đổi mật khẩu thành công"
           schema:
             type: object
             properties:
@@ -195,7 +195,7 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: ''
+                  $ref: '#/components/schemas/ApiChangePassword'
       security:
         - bearerAuth: []
 
@@ -621,6 +621,35 @@ paths:
                 type: array
                 items:
                   $ref: ''
+  /api/apartment/upload-excel:
+    post:
+      tags:
+        - Apartment
+      summary: 'Post Excel apartment'
+      description: 'Post Excel apartment'
+      produces:
+        - application/json
+      parameters:
+        - name: "file_upload"
+          in: "formData"
+          description: "File excel upload"
+          required: true
+          type: file
+      responses:
+        '200':
+          description: Get Service by Id.
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example:
+              data:
+                type: string
+                example: 'Import data from excel success fully'
 
   /api/bill:
     get:
@@ -1066,35 +1095,7 @@ paths:
                 type: array
                 items:
                   $ref: ''
-  /api/apartment/upload-excel:
-    post:
-      tags:
-        - Apartment
-      summary: 'Post Excel apartment'
-      description: 'Post Excel apartment'
-      produces:
-        - application/json
-      parameters:
-        - name: "file_upload"
-          in: "formData"
-          description: "File excel upload"
-          required: true
-          type: file
-      responses:
-        '200':
-          description: Get Service by Id.
-          schema:
-            type: object
-            properties:
-              is_success:
-                type: boolean
-                example: true
-              message:
-                type: string
-                example:
-              data:
-                type: string
-                example: 'Import data from excel success fully'
+
 
   /api/user:
     get:
@@ -1218,6 +1219,9 @@ components:
           type: number
           example: 1
         apartment_id:
+          type: number
+          example: 42
+        apartment_name:
           type: string
           example: "P101"
         building_id:
@@ -1225,6 +1229,51 @@ components:
           example: "VP1"
       xml:
         name: Login
+    ApiChangePassword:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 41
+        email:
+          type: string
+          example: "td.nguyen.1997@gmail.com"
+        phone_number:
+          type: string
+          example: "0399089824"
+        name:
+          type: string
+          example: "Tài Duy"
+        dob:
+          type: date
+          example: "2022-03-10"
+        number_card:
+          type: string
+          example: null
+        status:
+          type: number
+          example: 1
+        apartment_id:
+          type: number
+          example: 42
+        avatar:
+          type: string
+          example: null
+        role_id:
+          type: number
+          example: 1
+        created_at:
+          type: string
+          example: "2022-03-14T12:08:39.000000Z"
+        updated_at:
+          type: string
+          example: "2022-03-16T12:20:28.000000Z"
+        device_key:
+          type: string
+          example: null
+      xml:
+        name: ChangePassword
+
 
     ApiApartment:
       type: object

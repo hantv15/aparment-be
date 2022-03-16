@@ -24,13 +24,8 @@ class CardRequest extends FormRequest
     public function rules()
     {
         $requestRule = [
-            'number'=>[
-                'required','string',
-                Rule::unique('cards')->ignore($this->id)
-            ],
             'name' => 'required|string|min:3',
             'status'=>'required|integer|min:0|max:1',
-            'apartment_id'=>'required|integer|min:0',
         ];
 
         return $requestRule;

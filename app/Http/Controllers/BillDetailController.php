@@ -68,12 +68,6 @@ class BillDetailController extends Controller
     public function saveEdit($id, Request $request):JsonResponse
     {
         $bill_detail = BillDetail::find($id);
-//        if (Bill::where('id', $bill_detail->bill_id)->first()->status != 0){
-//            return $this->failed();
-//        }
-//        if (Bill::where('id', $request->bill_id)->first()->status != 0){
-//            return $this->failed();
-//        }
         $count_service_in_bill = BillDetail::where('bill_id', $request->bill_id)
                                         ->where('service_id', $request->service_id)
                                         ->whereNotIn('service_id', [$bill_detail->service_id])
@@ -82,13 +76,10 @@ class BillDetailController extends Controller
             return $this->failed();
         }
 
-        $old_service_id = $bill_detail->service_id;
-        $old_bill_id = $bill_detail->bill_id;
-        $old_quantity = $bill_detail->quantity;
         $old_total_price = $bill_detail->total_price;
 
-        $old_amount_by_old_bill_id = Bill::where('id', $old_bill_id)->first()->amount;
-        $new_amount_by_old_bill_id = $old_amount_by_old_bill_id - $old_total_price;
+        $old_amount = Bill::where('id', $bill_detail->bill_id)->first()->amount;
+        $new_amount = $old_amount - $old_total_price;
 
         $bill_detail->fill($request->all());
         $bill_detail->total_price = $request->quantity * Service::where('id', $request->service_id)->first()->price;
@@ -105,16 +96,8 @@ class BillDetailController extends Controller
         }
         $bill_detail->save();
 
-//        $bill_from = Bill::where('id', $old_bill_id)->first();
-//        $bill_from->amount = $new_amount_by_old_bill_id;
-//        $bill_from->save();
-//
-//        $bill_to = Bill::where('id', $request->bill_id)->first();
-//        $bill_to->amount += $bill_detail->total_price;
-//        $bill_to->save();
-
         $bill = Bill::where('id', $bill_detail->bill_id)->first();
-        $bill->amount = $new_amount_by_old_bill_id + $bill_detail->total_price;
+        $bill->amount = $new_amount + $bill_detail->total_price;
         $bill->save();
 
         return $this->success($bill_detail);
