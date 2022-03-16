@@ -8,14 +8,14 @@
             @endforeach
         </select>
     </div>
-    <div>
-        <label for="">Chọn hóa đơn</label>
-        <select name="bill_id" id="">
-            @foreach ($bills as $item)
-                <option value="{{$item->id}}" @if($bill_detail->bill_id == $item->id) selected @endif>{{$item->name}}</option>
-            @endforeach
-        </select>
-    </div>
+{{--    <div>--}}
+{{--        <label for="">Chọn hóa đơn</label>--}}
+{{--        <select name="bill_id" id="">--}}
+{{--            @foreach ($bills as $item)--}}
+{{--                <option value="{{$item->id}}" @if($bill_detail->bill_id == $item->id) selected @endif>{{$item->name}}</option>--}}
+{{--            @endforeach--}}
+{{--        </select>--}}
+{{--    </div>--}}
     <div>
         <label for="">Số lượng</label>
         <input type="number" name="quantity" value="{{$bill_detail->quantity}}">
