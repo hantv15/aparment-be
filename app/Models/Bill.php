@@ -47,6 +47,6 @@ class Bill extends Model
      */
     public function billDetail(): HasMany
     {
-        return $this->hasMany(Bill::class);
+        return $this->hasMany(BillDetail::class);
     }
 }
