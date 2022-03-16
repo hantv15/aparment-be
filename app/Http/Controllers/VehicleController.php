@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VehicleEditRequest;
 use App\Http\Resources\VehicleResource;
 use App\Models\Card;
 use App\Models\Vehicle;
 use App\Models\VehicleType;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-
+use Illuminate\Validation\Rule;
 class VehicleController extends Controller
 {
     public function getVehicle():JsonResponse
@@ -32,6 +33,18 @@ class VehicleController extends Controller
             'card_id' => 'required'
         ]);
         $vehicle = new Vehicle();
+        $vehicle->fill($request->all());
+        $vehicle->save();
+        return $this->success($vehicle);
+    }
+    public function editForm($id)
+    {
+        $vehicle = Vehicle::find($id);
+        return view('vehicle.edit', compact('vehicle'));
+    }
+    public function saveEdit(VehicleEditRequest $request, $id):JsonResponse
+    {       
+        $vehicle = Vehicle::find($id);
         $vehicle->fill($request->all());
         $vehicle->save();
         return $this->success($vehicle);

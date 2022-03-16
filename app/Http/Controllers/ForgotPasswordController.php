@@ -74,9 +74,8 @@ class ForgotPasswordController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required',
             'token'=>'required'
-
         ]);
-
+            
         $updatePassword = DB::table('password_resets')
             ->where([
                 'email' => $request->email,
@@ -85,10 +84,11 @@ class ForgotPasswordController extends Controller
             ->first();
 
         if (!$updatePassword) {
-            return back()->withInput()->with('error', 'Invalid token!');
+            return $this->failed();
         }
         $user = User::where('email', $request->email)
             ->update(['password' => Hash::make($request->password)]);
+        
 
         DB::table('password_resets')->where(['email' => $request->email])->delete();
 
