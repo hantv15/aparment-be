@@ -68,12 +68,12 @@ class BillDetailController extends Controller
     public function saveEdit($id, Request $request):JsonResponse
     {
         $bill_detail = BillDetail::find($id);
-        if (Bill::find($bill_detail->bill_id)->status != 0){
-            return $this->failed();
-        }
-        if (Bill::find($request->bill_id)->status != 0){
-            return $this->failed();
-        }
+//        if (Bill::find($bill_detail->bill_id)->status != 0){
+//            return $this->failed();
+//        }
+//        if (Bill::find($request->bill_id)->status != 0){
+//            return $this->failed();
+//        }
         $count_service_in_bill = BillDetail::where('bill_id', $request->bill_id)
                                         ->where('service_id', $request->service_id)
                                         ->whereNotIn('service_id', [$bill_detail->service_id])
