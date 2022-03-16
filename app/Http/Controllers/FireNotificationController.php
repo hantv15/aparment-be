@@ -23,11 +23,7 @@ class FireNotificationController extends Controller
     public function createFireNotification(Request $request): JsonResponse
     {
         try {
-            $account_sid = 'AC9c74cd63bd797ebde76dd392b43a701b';
-            $auth_token = '27cbd95575192c3a551d5b370fe1b854';
-            $twilio_number = "+16812461465";
-
-            $client = new Client($account_sid, $auth_token);
+            $client = new Client(config('services.twilio.key'), config('services.twilio.auth'));
             $notification = new Notification();
             $request->validate([
                 'title'   => 'required',
@@ -41,7 +37,7 @@ class FireNotificationController extends Controller
                     $phoneNumber = substr($receiver->phone_number, 1);
                     $receiverNumber = '+84' . $phoneNumber;
                     $client->messages->create($receiverNumber, [
-                        'from' => $twilio_number,
+                        'from' => config('services.twilio.phone'),
                         'body' => [
                             'Fire notification:'. $notification->title . '.' . $notification->content . '.',
                         ]]);

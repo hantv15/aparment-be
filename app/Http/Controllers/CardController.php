@@ -54,8 +54,23 @@ class CardController extends Controller
 
     public function saveAdd(CardRequest $request):JsonResponse
     {
+        $number = rand(100000000, 999999999);
+        $count_exist_number = Card::where('number', $number)->count();
+        while ($count_exist_number > 0) {
+            $number = rand(100000000, 999999999);
+            $count_exist_number = Card::where('number', $number)->count();
+        }
+
+        $count_card_by_apartment_id = Card::where('apartment_id', $request->apartment_id)->count();
+        dd($count_card_by_apartment_id > 4);
+        //Giới hạn mỗi phòng chỉ có tối đa 5 thẻ
+        if ($count_card_by_apartment_id > 4){
+            return $this->failed();
+        }
+
         $card = new Card();
         $card->fill($request->all());
+        $card->number = $number;
         $card->save();
         return $this->success($card);
     }
@@ -72,14 +87,16 @@ class CardController extends Controller
         return view('card.edit', compact('card', 'apartments', 'year', 'month', 'day', 'hour', 'minute'));
     }
 
-    public function saveEdit(CardRequest $request, $id):JsonResponse
+    public function saveEdit(CardRequest $request, $id): JsonResponse
     {
         $card =Card::find($id);
         $card->fill($request->all());
         $card->save();
         return $this->success($card);
     }
-    public function getCardById($id){
+
+    public function getCardById($id)
+    {
         $card =Card::where('id',$id)->get();
         if (!$card) {
             return $this->failed();
