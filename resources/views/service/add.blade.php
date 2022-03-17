@@ -13,6 +13,13 @@
         <textarea name="description" cols="30" rows="5"></textarea>
     </div>
     <div>
+        <label for="">Trạng thái</label>
+        <select name="status" id="">
+            <option value="0">Chưa kich hoat</option>
+            <option value="1">Đã kich hoat</option>
+        </select>
+    </div>
+    <div>
         <button type="submit">Thêm</button>
     </div>
 </form>
