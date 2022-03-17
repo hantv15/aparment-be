@@ -14,9 +14,15 @@ use Illuminate\Http\Request;
 
 class BillController extends Controller
 {
-    public function getBill(): JsonResponse
+    public function getBill(Request $request): JsonResponse
     {
         $bills = Bill::all();
+        if($request->filled('keyword')){
+            $bills = Bill::where('name', 'like', '%' . $request->keyword . '%')->get();
+        }
+        if ($request->filled('page') && $request->filled('page_size')){
+            $bills = $bills->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
+        }
         $result = BillResource::collection($bills);
         return $this->success($result);
     }

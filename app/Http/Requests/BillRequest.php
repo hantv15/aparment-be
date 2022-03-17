@@ -25,13 +25,8 @@ class BillRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:3',
-//            'amount' => 'required|numeric|min:0',
-//            'status' => 'required|integer|min:0|max:1',
-//            'type_payment' => 'required|integer|min:0|max:1',
-//            'payment_method' => 'required|integer|min:0|max:1',
             'image' => 'nullable|string',
             'fax' => 'nullable|string',
-            'apartment_id' => 'required|integer|min:1',
             'receiver_id' => 'nullable|integer'
         ];
     }

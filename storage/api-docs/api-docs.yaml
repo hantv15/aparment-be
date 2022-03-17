@@ -464,20 +464,20 @@ paths:
     get:
       tags:
         - Apartment
-      summary: 'Get finance of apartment by Id'
-      description: 'Get finance of apartment by Id'
+      summary: 'Lấy ra danh sách hóa đơn của căn hộ'
+      description: 'Lấy ra danh sách hóa đơn của căn hộ theo Id của căn hộ'
       produces:
         - application/json
       parameters:
         - name: "id"
           in: "path"
-          description: "ID of apartment"
+          description: "ID của căn hộ"
           required: true
           type: "integer"
           format: "int64"
       responses:
         '200':
-          description: Finance of apartment by Id.
+          description: "Lấy ra danh sách hóa đơn của căn hộ thành công"
           schema:
             type: object
             properties:
@@ -490,25 +490,25 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: ''
+                  $ref: '#/components/schemas/ApiApartmentFinance'
   /api/apartment/{id}/finance/unpaid:
     get:
       tags:
         - Apartment
-      summary: 'Get unpaid bills of apartment by Id'
-      description: 'Get unpaid bills of apartment by Id'
+      summary: 'Lấy ra danh sách hóa đơn chưa thanh toán'
+      description: 'Lấy ra danh sách hóa đơn chưa thanh toán theo căn hộ'
       produces:
         - application/json
       parameters:
         - name: "id"
           in: "path"
-          description: "ID of apartment"
+          description: "ID của căn hộ"
           required: true
           type: "integer"
           format: "int64"
       responses:
         '200':
-          description: Finance of apartment by Id.
+          description: "Lấy ra danh sách hóa đơn chưa thanh toán của căn hộ thành công"
           schema:
             type: object
             properties:
@@ -521,25 +521,25 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: ''
+                  $ref: '#/components/schemas/ApiApartmentFinanceUnPaid'
   /api/apartment/{id}/finance/paid:
     get:
       tags:
         - Apartment
-      summary: 'Get paid bills of apartment by Id'
-      description: 'Get paid bills of apartment by Id'
+      summary: 'Lấy ra danh sách hóa đơn đã thanh toán'
+      description: 'Lấy ra danh sách hóa đơn đã thanh toán theo căn hộ'
       produces:
         - application/json
       parameters:
         - name: "id"
           in: "path"
-          description: "ID of apartment"
+          description: "ID của căn hộ"
           required: true
           type: "integer"
           format: "int64"
       responses:
         '200':
-          description: Finance of apartment by Id.
+          description: "Lấy ra danh sách hóa đơn đã thanh toán của căn hộ thành công"
           schema:
             type: object
             properties:
@@ -552,31 +552,31 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: ''
+                  $ref: '#/components/schemas/ApiApartmentFinancePaid'
   /api/apartment/{id}/finance/{bill_id}/bill-detail:
     get:
       tags:
         - Apartment
-      summary: 'Get bill detail by Apartment Id'
-      description: 'Get bill detail by Apartment Id'
+      summary: 'Lấy ra chi tiết hóa đơn theo căn hộ và mã hóa đơn'
+      description: 'Lấy ra tất cả chi tiết hóa đơn theo mã căn hộ và mã hóa đơn'
       produces:
         - application/json
       parameters:
         - name: "id"
           in: "path"
-          description: "ID of Apartment"
+          description: "ID của căn hộ"
           required: true
           type: "integer"
           format: "int64"
         - name: "bill_id"
           in: "path"
-          description: "ID of Bill"
+          description: "ID của hóa đơn"
           required: true
           type: "integer"
           format: "int64"
       responses:
         '200':
-          description: Bill detail by Apartment Id.
+          description: "Lấy ra chi tiết hóa đơn thành công"
           schema:
             type: object
             properties:
@@ -589,25 +589,25 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BillDetailByApatmentId'
+                  $ref: '#/components/schemas/ApiApartmentBillDetail'
   /api/apartment/{id}/card:
     get:
       tags:
         - Apartment
-      summary: 'Get card of apartment by Id'
-      description: 'Get card of apartment by Id'
+      summary: 'Lấy ra danh sách thẻ của căn hộ'
+      description: 'Lấy ra danh sách thẻ theo mã căn hộ'
       produces:
         - application/json
       parameters:
         - name: "id"
           in: "path"
-          description: "ID of apartment"
+          description: "ID của căn hộ"
           required: true
           type: "integer"
           format: "int64"
       responses:
         '200':
-          description: Finance of apartment by Id.
+          description: "Lấy ra danh sách thẻ của căn hộ thành công"
           schema:
             type: object
             properties:
@@ -620,24 +620,70 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: ''
+                  $ref: '#/components/schemas/ApiApartmentCard'
+  /api/apartment/{id}/add-card:
+    post:
+      tags:
+        - Apartment
+      summary: 'Thêm mới thẻ của căn hộ'
+      description: 'Thêm mới thẻ theo mã căn hộ'
+      produces:
+        - application/json
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID của căn hộ"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "name"
+          in: "query"
+          description: "Tên chủ thẻ"
+          required: true
+          type: string
+        - name: "status"
+          in: "query"
+          description: "Trạng thái"
+          required: true
+          type: number
+        - name: "expire_time"
+          in: "query"
+          description: "Ngày hết hạn"
+          required: false
+          type: string
+      responses:
+        '200':
+          description: "Thêm mới thẻ thành công"
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiApartmentAddCard'
   /api/apartment/upload-excel:
     post:
       tags:
         - Apartment
-      summary: 'Post Excel apartment'
-      description: 'Post Excel apartment'
+      summary: 'Thêm mới căn hộ bằng Excel'
+      description: 'Thêm mới căn hộ bằng Excel'
       produces:
         - application/json
       parameters:
         - name: "file_upload"
           in: "formData"
-          description: "File excel upload"
+          description: "File Excel upload"
           required: true
           type: file
       responses:
         '200':
-          description: Get Service by Id.
+          description: "Thêm mới thành công"
           schema:
             type: object
             properties:
@@ -655,13 +701,13 @@ paths:
     get:
       tags:
         - Bill
-      summary: 'Get list bill'
-      description: 'Get list bill'
+      summary: 'Lấy ra danh sách hóa đơn'
+      description: 'Lấy ra danh sách hóa đơn'
       produces:
         - application/json
       responses:
         '200':
-          description: A list of bills.
+          description: 'Lấy ra thành công'
           schema:
             type: object
             properties:
@@ -674,31 +720,31 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Bill'
+                  $ref: '#/components/schemas/ApiBill'
   /api/bill/add:
     post:
       tags:
         - Bill
-      summary: 'Add a new bill'
-      description: 'Add a new bill'
+      summary: 'Thêm mới hóa đơn'
+      description: 'Thêm mới hóa đơn'
       produces:
         - application/json
       parameters:
         - name: "name"
           in: "query"
-          description: "Name of bill"
+          description: "Tên hóa đơn"
           required: true
           type: string
           format: "int64"
         - name: "apartment_id"
           in: "query"
-          description: "Apartment of bill"
+          description: "Chọn căn hộ"
           required: true
           type: number
           format: "int64"
         - name: "notes"
           in: "query"
-          description: "Notes of bill"
+          description: "Ghi chú"
           required: false
           type: string
           format: "int64"
@@ -717,38 +763,161 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/NewBill'
+                  $ref: '#/components/schemas/ApiBillAdd'
   /api/bill/edit/{id}:
     post:
       tags:
         - Bill
-      summary: 'Update a bill in the system with form data'
-      description: 'Update a bill in the system with form data'
+      summary: 'Cập nhật hóa đơn'
+      description: 'Cập nhật hóa đơn theo mã hóa đơn'
       produces:
         - application/json
       parameters:
         - name: "id"
           in: "path"
-          description: "Id of bill"
+          description: "Id của hóa đơn"
           required: true
           type: string
           format: "int64"
         - name: "name"
           in: "query"
-          description: "Name of bill"
+          description: "Tên hóa đơn"
+          required: true
+          type: string
+          format: "int64"
+        - name: "notes"
+          in: "query"
+          description: "Ghi chú"
+          required: false
+          type: string
+          format: "int64"
+      responses:
+        '200':
+          description:
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiBillEdit'
+  /api/bill/edit/{id}/add-bill-detail:
+    post:
+      tags:
+        - Bill
+      summary: 'Thêm chi tiết hóa đơn vào hóa đơn theo căn hộ'
+      description: 'Thêm chi tiết hóa đơn vào hóa đơn theo căn hộ'
+      produces:
+        - application/json
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id của hóa đơn"
+          required: true
+          type: string
+          format: "int64"
+        - name: "service_id"
+          in: "query"
+          description: "Chọn dịch vụ"
+          required: true
+          type: string
+          format: "int64"
+        - name: "quantity"
+          in: "query"
+          description: "Số lượng"
+          required: false
+          type: string
+          format: "int64"
+      responses:
+        '200':
+          description: "Thêm mới thành công"
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiBillEditAdd'
+  /api/bill/edit/{id}/edit-bill-detail/{bill_detail_id}:
+    post:
+      tags:
+        - Bill
+      summary: 'Sửa chi tiết hóa đơn theo mã hóa đơn'
+      description: 'Sửa chi tiết hóa đơn theo mã hóa đơn'
+      produces:
+        - application/json
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id của hóa đơn"
+          required: true
+          type: string
+          format: "int64"
+        - name: "bill_detail_id"
+          in: "path"
+          description: "Id của hóa đơn chi tiết"
+          required: true
+          type: string
+          format: "int64"
+        - name: "service_id"
+          in: "query"
+          description: "Chọn dịch vụ"
+          required: true
+          type: string
+          format: "int64"
+        - name: "quantity"
+          in: "query"
+          description: "Số lượng"
+          required: false
+          type: string
+          format: "int64"
+      responses:
+        '200':
+          description: "Sửa thành công"
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiBillEditEdit'
+  /api/bill/edit-status/{id}:
+    post:
+      tags:
+        - Bill
+      summary: 'Cập nhật trạng thái hóa đơn'
+      description: 'Cập nhật trạng thái hóa đơn theo mã hóa đơn'
+      produces:
+        - application/json
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id của hóa đơn"
           required: true
           type: string
           format: "int64"
         - name: "status"
           in: "query"
-          description: "Status of bill"
+          description: "Trạng thái"
           required: true
-          type: number
-          format: "int64"
-        - name: "notes"
-          in: "query"
-          description: "Notes of bill"
-          required: false
           type: string
           format: "int64"
       responses:
@@ -766,19 +935,50 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/NewBill'
+                  $ref: '#/components/schemas/ApiBillEditStatus'
   /api/bill/{id}:
     get:
       tags:
         - Bill
-      summary: 'Get Bill by Id'
-      description: 'Get Bill by Id'
+      summary: 'Lấy ra thông tin hóa đơn theo mã hóa đơn'
+      description: 'Lấy ra thông tin hóa đơn theo mã hóa đơn'
       produces:
         - application/json
       parameters:
         - name: "id"
           in: "path"
-          description: "Id of bill"
+          description: "Id của hóa đơn"
+          required: true
+          type: string
+          format: "int64"
+      responses:
+        '200':
+          description: "Lấy thông tin hóa đơn thành công"
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiBillById'
+  /api/bill/{id}/bill-detail:
+    get:
+      tags:
+        - Bill
+      summary: 'Lấy ra thông tin hóa đơn theo mã hóa đơn'
+      description: 'Lấy ra thông tin hóa đơn theo mã hóa đơn'
+      produces:
+        - application/json
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Id của hóa đơn"
           required: true
           type: string
           format: "int64"
@@ -797,19 +997,19 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: ''
+                  $ref: '#/components/schemas/ApiBillBillDetail'
 
   /api/bill-detail:
     get:
       tags:
         - Bill Detail
-      summary: 'Get list Bill Detail'
-      description: 'Get list Bill Detail'
+      summary: 'Lấy ra danh sách chi tiết hóa đơn'
+      description: 'Lấy ra danh sách chi tiết hóa đơn'
       produces:
         - application/json
       responses:
         '200':
-          description: A list of bill details.
+          description: "Lấy ra danh sách chi tiết hóa đơn thành công"
           schema:
             type: object
             properties:
@@ -822,37 +1022,37 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: ''
+                  $ref: '#/components/schemas/ApiBillDetail'
   /api/bill-detail/add:
     post:
       tags:
         - Bill Detail
-      summary: 'Add a new bill detail'
-      description: 'Add a new bill detail'
+      summary: 'Thêm mới hóa đơn chi tiết'
+      description: 'Thêm mới hóa đơn chi tiết'
       produces:
         - application/json
       parameters:
         - name: "service_id"
           in: "query"
-          description: "Service of bill detail"
+          description: "Chọn dịch vụ"
           required: true
           type: string
           format: "int64"
         - name: "bill_id"
           in: "query"
-          description: "Bill of bill detail"
+          description: "Chọn hóa đơn"
           required: true
           type: number
           format: "int64"
         - name: "quantity"
           in: "query"
-          description: "Quantity of service"
+          description: "Nhập số lượng"
           required: true
           type: number
           format: "int64"
       responses:
         '200':
-          description:
+          description: "Thêm mới chi tiết hóa đơn thành công"
           schema:
             type: object
             properties:
@@ -865,43 +1065,43 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/NewBillDetail'
+                  $ref: '#/components/schemas/ApiBillDetailAdd'
   /api/bill-detail/edit/{id}:
     post:
       tags:
         - Bill Detail
-      summary: 'Update a bill detail in the system with form data'
-      description: 'Update a bill detail in the system with form data'
+      summary: 'Sửa chi tiết hóa đơn'
+      description: 'Sửa chi tiết hóa đơn'
       produces:
         - application/json
       parameters:
         - name: "id"
           in: "path"
-          description: "Id of bill detail"
+          description: "Id của chi tiết hóa đơn"
           required: true
           type: string
           format: "int64"
         - name: "service_id"
           in: "query"
-          description: "Service of bill detail"
+          description: "Chọn dịch vụ"
           required: true
           type: string
           format: "int64"
         - name: "bill_id"
           in: "query"
-          description: "Bill of bill detail"
+          description: "Chọn hóa đơn"
           required: true
           type: number
           format: "int64"
         - name: "quantity"
           in: "query"
-          description: "Quantity of service"
+          description: "Nhập số lượng"
           required: true
           type: number
           format: "int64"
       responses:
         '200':
-          description:
+          description: "Sửa chi tiết hóa đơn thành công"
           schema:
             type: object
             properties:
@@ -914,25 +1114,25 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/NewBillDetail'
+                  $ref: '#/components/schemas/ApiBillDetailEdit'
   /api/bill-detail/{id}:
     get:
       tags:
         - Bill Detail
-      summary: 'Get Bill Detail by Id'
-      description: 'Get Bill Detail by Id'
+      summary: 'Lấy ra thông tin của chi tiết hóa đơn'
+      description: 'Lấy ra thông tin của chi tiết hóa đơn'
       produces:
         - application/json
       parameters:
         - name: "id"
           in: "path"
-          description: "ID of Bill Detail"
+          description: "ID của chi tiết hóa đơn"
           required: true
           type: "integer"
           format: "int64"
       responses:
         '200':
-          description: Bill detail by Id.
+          description: "Lấy ra thông tin chi tiết hóa đơn thành công"
           schema:
             type: object
             properties:
@@ -945,44 +1145,69 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: ''
+                  $ref: '#/components/schemas/ApiBillDetailById'
+
+  /api/building:
+    get:
+      tags:
+        - Building
+      summary: 'Lấy ra danh sách tòa nhà'
+      description: 'Lấy ra danh sách các tòa nhà'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: "Lấy ra danh sách các tòa nhà thành công"
+          schema:
+            type: object
+            properties:
+              is_success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: ''
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiBuilding'
 
   /api/service:
     get:
       tags:
         - Service
-      summary: 'Get list Service'
-      description: 'Get list Service'
+      summary: 'Lấy ra danh sách các dịch vụ'
+      description: 'Lấy ra danh sách các dịch vụ'
       produces:
         - application/json
       parameters:
         - name: "keyword"
           in: "query"
-          description: "Sắp xếp theo giá"
+          description: "Từ khóa tìm kiếm"
           required: false
           type: string
           format: "int64"
         - name: "sort"
           in: "query"
-          description: "Sắp xếp theo giá"
+          description: "Phương thức sắp xếp"
           required: false
           type: integer
           format: "int64"
         - name: "page"
           in: "query"
-          description: "page "
+          description: "Trang"
           required: false
           type: integer
           format: "int64"
         - name: "page_size"
           in: "query"
-          description: "page "
+          description: "Kích cỡ trang"
           required: false
           type: integer
           format: "int64"
       responses:
         '200':
-          description: A list of services.
+          description: "Lấy ra danh sách các dịch vụ thành công"
           schema:
             type: object
             properties:
@@ -995,25 +1220,43 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Service'
+                  $ref: '#/components/schemas/ApiService'
   /api/service/add:
     post:
       tags:
         - Service
-      summary: 'Add a new service'
-      description: 'Add a new service'
+      summary: 'Thêm mới dịch vụ'
+      description: 'Thêm mới dịch vụ'
       produces:
         - application/json
       parameters:
-        - in: "body"
-          name: "body"
-          description: "Service object that needs to be added to the system"
+        - name: "name"
+          in: "query"
+          description: "Tên dịch vụ"
           required: true
-          schema:
-            $ref: "#/components/schemas/NewService"
+          type: string
+          format: "int64"
+        - name: "price"
+          in: "query"
+          description: "Giá"
+          required: true
+          type: number
+          format: "int64"
+        - name: "description"
+          in: "query"
+          description: "Mô tả"
+          required: false
+          type: string
+          format: "int64"
+        - name: "status"
+          in: "query"
+          description: "Trạng thái"
+          required: false
+          type: number
+          format: "int64"
       responses:
         '200':
-          description: Add a new service.
+          description: "Thêm mới dịch vụ thành công"
           schema:
             type: object
             properties:
@@ -1026,31 +1269,49 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/NewService'
+                  $ref: '#/components/schemas/ApiServiceAdd'
   /api/service/edit/{id}:
     post:
       tags:
         - Service
-      summary: 'Update a service in the system with form data'
-      description: 'Update a service in the system with form data'
+      summary: 'Cập nhật dịch vụ'
+      description: 'Cập nhật dịch vụ'
       produces:
         - application/json
       parameters:
         - name: "id"
           in: "path"
-          description: "Id of service"
+          description: "Id của dịch vụ"
           required: true
           type: string
           format: "int64"
-        - in: "body"
-          name: "body"
-          description: "Service object that needs to be added to the system"
+        - name: "name"
+          in: "query"
+          description: "Tên dịch vụ"
           required: true
-          schema:
-            $ref: "#/components/schemas/NewService"
+          type: string
+          format: "int64"
+        - name: "price"
+          in: "query"
+          description: "Giá"
+          required: true
+          type: number
+          format: "int64"
+        - name: "description"
+          in: "query"
+          description: "Mô tả"
+          required: false
+          type: string
+          format: "int64"
+        - name: "status"
+          in: "query"
+          description: "Trạng thái"
+          required: false
+          type: number
+          format: "int64"
       responses:
         '200':
-          description: Add a new service.
+          description: "Thêm mới dịch vụ thành công"
           schema:
             type: object
             properties:
@@ -1063,25 +1324,25 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/NewService'
+                  $ref: '#/components/schemas/ApiServiceEdit'
   /api/service/{id}:
     get:
       tags:
         - Service
-      summary: 'Get Service by Id'
-      description: 'Get Service by Id'
+      summary: 'Lấy ra thông tin dịch vụ theo Id'
+      description: 'Lấy ra thông tin dịch vụ theo Id'
       produces:
         - application/json
       parameters:
         - name: "id"
           in: "path"
-          description: "Id of service"
+          description: "ID của dịch vụ"
           required: true
           type: string
           format: "int64"
       responses:
         '200':
-          description: Get Service by Id.
+          description: "Lấy ra thông tin dịch vụ thành công"
           schema:
             type: object
             properties:
@@ -1094,8 +1355,7 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: ''
-
+                  $ref: '#/components/schemas/ApiServiceDetail'
 
   /api/user:
     get:
@@ -1273,7 +1533,6 @@ components:
           example: null
       xml:
         name: ChangePassword
-
 
     ApiApartment:
       type: object
@@ -1458,56 +1717,184 @@ components:
           example: null
       xml:
         name: ApartmentDetail
-    ApartmentById:
+    ApiApartmentFinance:
       type: object
       properties:
+        id:
+          type: number
+          example: 5
+        ten_hoa_don:
+          type: string
+          example: "Hóa đơn tháng 2/2022"
+        ten_chu_ho:
+          type: string
+          example: "Nguyễn Văn A"
         apartment_id:
           type: string
-          example: "P101"
-        floor:
+          example: "VP1"
+        amount:
           type: number
-          example: 1
+          example: 120
         status:
           type: number
           example: 1
-        description:
+        created_at:
           type: string
-          example: "Phong 1 ban cong"
-        square_meters:
-          type: number
-          example: 50
-        type_apartment:
-          type: number
-          example: 1
-      xml:
-        name: Apartment
-    BillDetailByApatmentId:
-      type: object
-      properties:
-        bill_id:
+          example: "2022-03-08T08:16:54.000000Z"
+        updated_at:
+          type: string
+          example: "2022-03-16T13:03:35.000000Z"
+        so_luong_hdct:
           type: number
           example: 4
+      xml:
+        name: ApartmentFinance
+    ApiApartmentFinanceUnPaid:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 5
+        ten_hoa_don:
+          type: string
+          example: "Hóa đơn tháng 2/2022"
+        ten_chu_ho:
+          type: string
+          example: "Nguyễn Văn A"
+        apartment_id:
+          type: string
+          example: "VP1"
+        amount:
+          type: number
+          example: 120
+        status:
+          type: number
+          example: 1
+        created_at:
+          type: string
+          example: "2022-03-08T08:16:54.000000Z"
+        updated_at:
+          type: string
+          example: "2022-03-16T13:03:35.000000Z"
+        so_luong_hdct:
+          type: number
+          example: 4
+      xml:
+        name: ApartmentFinancePaid
+    ApiApartmentFinancePaid:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 5
+        ten_hoa_don:
+          type: string
+          example: "Hóa đơn tháng 2/2022"
+        ten_chu_ho:
+          type: string
+          example: "Nguyễn Văn A"
+        apartment_id:
+          type: string
+          example: "VP1"
+        amount:
+          type: number
+          example: 120
+        status:
+          type: number
+          example: 1
+        created_at:
+          type: string
+          example: "2022-03-08T08:16:54.000000Z"
+        updated_at:
+          type: string
+          example: "2022-03-16T13:03:35.000000Z"
+        so_luong_hdct:
+          type: number
+          example: 4
+      xml:
+        name: ApartmentFinancePaid
+    ApiApartmentBillDetail:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 16
+        bill_id:
+          type: number
+          example: 5
         ten_hoa_don:
           type: string
           example: "Hóa đơn tháng 1/2022"
         ten_dich_vu:
           type: string
           example: "Xe máy"
+        don_gia:
+          type: number
+          example: 4500
         quantity:
           type: number
-          example: 3
+          example: 2
         total_price:
           type: number
-          example: 160000
+          example: 9000
         apartment_id:
           type: number
           example: 13
       xml:
-        name: Apartment
-
-    Bill:
+        name: ApartmentBillDetail
+    ApiApartmentCard:
       type: object
       properties:
+        id:
+          type: number
+          example: 6
+        number:
+          type: string
+          example: "123211123"
+        name:
+          type: string
+          example: "Ngô Trọng"
+        status:
+          type: number
+          example: 1
+        expire_time:
+          type: string
+          example: "2022-03-18 00:00:00"
+        so_luong_phuong_tien:
+          type: number
+          example: 2
+      xml:
+        name: ApartmentCard
+    ApiApartmentAddCard:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Văn Huy"
+        status:
+          type: number
+          example: 0
+        expire_time:
+          type: string
+          example: "2022-03-30T10:39"
+        number:
+          type: string
+          example: "131666929"
+        apartment_id:
+          type: number
+          example: 13
+        id:
+          type: number
+          example: 20
+      xml:
+        name: ApartmentAddCard
+
+    ApiBill:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 5
         name:
           type: string
           example: "Hóa đơn tháng 1/2022"
@@ -1540,12 +1927,15 @@ components:
           example: null
       xml:
         name: Bill
-    NewBill:
+    ApiBillAdd:
       type: object
       properties:
+        id:
+          type: number
+          example: 34
         name:
           type: string
-          example: "Hóa đơn tháng 1/2022"
+          example: "Duy's bill"
         amount:
           type: number
           example: 0
@@ -1569,14 +1959,269 @@ components:
           example: 13
         notes:
           type: string
-          example: "abc"
+          example: "Hóa đơn T3"
         receiver_id:
           type: string
           example: null
       xml:
         name: Bill
+    ApiBillEdit:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 34
+        name:
+          type: string
+          example: "Duy's bill"
+        amount:
+          type: number
+          example: 0
+        status:
+          type: number
+          example: 0
+        type_payment:
+          type: number
+          example: 0
+        payment_method:
+          type: number
+          example: 0
+        image:
+          type: string
+          example: null
+        fax:
+          type: string
+          example: null
+        apartment_id:
+          type: number
+          example: 13
+        notes:
+          type: string
+          example: "Hóa đơn T3"
+        receiver_id:
+          type: string
+          example: null
+        created_at:
+          type: string
+          example: "2022-03-17T03:58:30.000000Z"
+        updated_at:
+          type: string
+          example: "2022-03-17T04:05:27.000000Z"
+      xml:
+        name: BillEdit
+    ApiBillEditAdd:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 34
+        name:
+          type: string
+          example: "Duy's bill"
+        amount:
+          type: number
+          example: 900000
+        status:
+          type: number
+          example: 0
+        type_payment:
+          type: number
+          example: 0
+        payment_method:
+          type: number
+          example: 0
+        image:
+          type: string
+          example: null
+        fax:
+          type: string
+          example: null
+        apartment_id:
+          type: number
+          example: 13
+        notes:
+          type: string
+          example: "Hóa đơn T3"
+        receiver_id:
+          type: string
+          example: null
+        created_at:
+          type: string
+          example: "2022-03-17T03:58:30.000000Z"
+        updated_at:
+          type: string
+          example: "2022-03-17T04:05:27.000000Z"
+      xml:
+        name: BillEditAdd
+    ApiBillEditEdit:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 34
+        name:
+          type: string
+          example: "Duy's bill"
+        amount:
+          type: number
+          example: 900000
+        status:
+          type: number
+          example: 0
+        type_payment:
+          type: number
+          example: 0
+        payment_method:
+          type: number
+          example: 0
+        image:
+          type: string
+          example: null
+        fax:
+          type: string
+          example: null
+        apartment_id:
+          type: number
+          example: 13
+        notes:
+          type: string
+          example: "Hóa đơn T3"
+        receiver_id:
+          type: string
+          example: null
+        created_at:
+          type: string
+          example: "2022-03-17T03:58:30.000000Z"
+        updated_at:
+          type: string
+          example: "2022-03-17T04:05:27.000000Z"
+      xml:
+        name: BillEditEdit
+    ApiBillEditStatus:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 34
+        name:
+          type: string
+          example: "Duy's bill"
+        amount:
+          type: number
+          example: 900000
+        status:
+          type: number
+          example: 1
+        type_payment:
+          type: number
+          example: 0
+        payment_method:
+          type: number
+          example: 0
+        image:
+          type: string
+          example: null
+        fax:
+          type: string
+          example: null
+        apartment_id:
+          type: number
+          example: 13
+        notes:
+          type: string
+          example: "Hóa đơn T3"
+        receiver_id:
+          type: string
+          example: null
+        created_at:
+          type: string
+          example: "2022-03-17T03:58:30.000000Z"
+        updated_at:
+          type: string
+          example: "2022-03-17T04:05:27.000000Z"
+      xml:
+        name: BillEditEdit
+    ApiBillById:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 34
+        ten_hoa_don:
+          type: string
+          example: "Duy's bill"
+        amount:
+          type: number
+          example: 900000
+        status:
+          type: number
+          example: 1
+        apartment_id:
+          type: number
+          example: 30
+        bill_detail_id:
+          type: number
+          example: 30
+        quantity:
+          type: number
+          example: 30
+        service_id:
+          type: number
+          example: 4
+        price:
+          type: number
+          example: 900000
+        total_price:
+          type: number
+          example: 900000
+        ten_dich_vu:
+          type: string
+          example: "Xe máy"
+      xml:
+        name: BillById
+    ApiBillBillDetail:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 48
+        name:
+          type: string
+          example: "Tiền nước"
+        price:
+          type: number
+          example: 4500
+        bill_id:
+          type: number
+          example: 34
+        quantity:
+          type: number
+          example: 153
+        total_price:
+          type: number
+          example: 2176207
+      xml:
+        name: BillBillDetail
 
-    NewBillDetail:
+    ApiBillDetail:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 16
+        service_id:
+          type: number
+          example: 6
+        bill_id:
+          type: number
+          example: 5
+        quantity:
+          type: number
+          example: 2
+        total_price:
+          type: number
+          example: 9000
+    ApiBillDetailAdd:
       type: object
       properties:
         service_id:
@@ -1595,33 +2240,144 @@ components:
           type: number
           example: 17
       xml:
-        name: BillDetail
-
-    Service:
+        name: BillDetailAdd
+    ApiBillDetailEdit:
       type: object
       properties:
+        id:
+          type: number
+          example: 49
+        service_id:
+          type: number
+          example: 6
+        bill_id:
+          type: number
+          example: 32
+        quantity:
+          type: number
+          example: 100
+        total_price:
+          type: number
+          example: 1331970
+      xml:
+        name: BillDetailEdit
+    ApiBillDetailById:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 49
+        service_id:
+          type: number
+          example: 6
+        bill_id:
+          type: number
+          example: 32
+        quantity:
+          type: number
+          example: 100
+        total_price:
+          type: number
+          example: 1331970
+      xml:
+        name: BillDetailById
+
+    ApiBuilding:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
         name:
           type: string
-          example: "Tien dien"
+          example: "VP 1"
+
+    ApiService:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 3
+        name:
+          type: string
+          example: "Phí dịch vụ"
         price:
           type: number
-          example: 150000
+          example: 50000
+        icon:
+          type: string
+          example: null
         description:
           type: string
-          example: "Tien dien thang 1/2022"
+          example: "Thu tiền tuần thứ 2 hàng"
+        status:
+          type: number
+          example: 0
       xml:
         name: Service
-    NewService:
+    ApiServiceAdd:
       type: object
       properties:
         name:
           type: string
-          example: "Tien nuoc"
+          example: "Tiền nước"
         price:
           type: number
           example: 50000
         description:
           type: string
-          example: "Tien nuoc thang 1/2022"
+          example: "Dịch vụ đóng hàng tháng vào chủ nhật đầu tháng"
+        icon:
+          type: string
+          example: null
+        id:
+          type: number
+          example: 51
       xml:
         name: Service
+    ApiServiceEdit:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 51
+        name:
+          type: string
+          example: "Tiền nước"
+        price:
+          type: number
+          example: 50000
+        icon:
+          type: string
+          example: null
+        description:
+          type: string
+          example: "Dịch vụ đóng hàng tháng vào chủ nhật đầu tháng"
+        status:
+          type: number
+          example: 0
+      xml:
+        name: ServiceEdit
+    ApiServiceDetail:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 51
+        name:
+          type: string
+          example: "Tiền nước"
+        price:
+          type: number
+          example: 50000
+        icon:
+          type: string
+          example: null
+        description:
+          type: string
+          example: "Dịch vụ đóng hàng tháng vào chủ nhật đầu tháng"
+        status:
+          type: number
+          example: 0
+      xml:
+        name: ServiceEdit
