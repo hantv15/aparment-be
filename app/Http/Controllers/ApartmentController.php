@@ -187,8 +187,11 @@ class ApartmentController extends Controller
                 'users.name as ten_chu_ho',
                 'apartments.apartment_id',
                 'bills.amount',
-                'bills.status'
+                'bills.status',
+                'bills.created_at',
+                'bills.updated_at'
             )
+            ->withCount('billDetail as so_luong_hdct')
             ->distinct()
             ->where('apartments.id', $id)
             ->get();
@@ -208,8 +211,10 @@ class ApartmentController extends Controller
                 'apartments.apartment_id',
                 'bills.amount',
                 'bills.status',
-                'bills.created_at'
+                'bills.created_at',
+                'bills.updated_at'
             )
+            ->withCount('billDetail as so_luong_hdct')
             ->distinct()
             ->where('apartments.id', $id)
             ->where('bills.status', 0)
@@ -233,6 +238,7 @@ class ApartmentController extends Controller
                 'bills.created_at',
                 'bills.updated_at'
             )
+            ->withCount('billDetail as so_luong_hdct')
             ->distinct()
             ->where('apartments.id', $id)
             ->where('bills.status', 1)
@@ -275,8 +281,22 @@ class ApartmentController extends Controller
 
     public function saveAddCard($id, Request $request): JsonResponse
     {
+        $number = rand(100000000, 999999999);
+        $count_exist_number = Card::where('number', $number)->count();
+        while ($count_exist_number > 0) {
+            $number = rand(100000000, 999999999);
+            $count_exist_number = Card::where('number', $number)->count();
+        }
+
+        $count_card_by_apartment_id = Card::where('apartment_id', $request->apartment_id)->count();
+        //Giới hạn mỗi phòng chỉ có tối đa 5 thẻ
+        if ($count_card_by_apartment_id > 4){
+            return $this->failed();
+        }
+
         $card = new Card();
         $card->fill($request->all());
+        $card->number = $number;
         $card->apartment_id = $id;
         $card->save();
         return $this->success($card);
