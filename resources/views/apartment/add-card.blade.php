@@ -1,10 +1,6 @@
 <form action="" method="POST">
     @csrf
     <div>
-        <label for="">Number</label>
-        <input type="number" name="number">
-    </div>
-    <div>
         <label for="">Tên</label>
         <input type="text" name="name">
     </div>

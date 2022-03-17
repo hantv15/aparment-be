@@ -30,20 +30,18 @@ class CardController extends Controller
         return $this->success($result);
     }
 
-    public function getCardByApartmentId($id):JsonResponse
+    public function getCardByApartmentId($id): JsonResponse
     {
-        $cards = Card::leftJoin('vehicles', 'cards.id', '=', 'vehicles.card_id')
-                    ->leftJoin('vehicle_types', 'vehicles.vehicle_type_id', '=', 'vehicle_types.id')
-                    ->select(
+        $cards = Card::select(
                         'cards.id',
                         'cards.number',
                         'cards.name',
                         'cards.status',
-                        'cards.expire_time',
-                        'vehicles.plate_number',
-                        'vehicle_types.name as loai_phuong_tien'
+                        'cards.expire_time'
                     )
-                    ->where('apartment_id', $id)->get();
+                    ->withCount('vehicles as so_luong_phuong_tien')
+                    ->where('apartment_id', $id)
+                    ->get();
         return $this->success($cards);
     }
 
@@ -62,7 +60,6 @@ class CardController extends Controller
         }
 
         $count_card_by_apartment_id = Card::where('apartment_id', $request->apartment_id)->count();
-        dd($count_card_by_apartment_id > 4);
         //Giới hạn mỗi phòng chỉ có tối đa 5 thẻ
         if ($count_card_by_apartment_id > 4){
             return $this->failed();

@@ -38,10 +38,12 @@ Route::get('reset-password', [ForgotPasswordController::class, 'showResetPasswor
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/user', [UserController::class, 'getUserLogin']);
-    Route::post('change-password', [UserController::class, 'changePassword']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('change-password', [UserController::class, 'changePassword']);
+
     Route::post('/send-notification', [ApartmentNotiController::class, 'sendNotification'])->name('save-token');
+
+    Route::get('/user', [UserController::class, 'getUserLogin']);
 });
 
 Route::prefix('/apartment')->group(function (){
@@ -108,8 +110,6 @@ Route::prefix('/card')->group(function (){
     Route::get('/{id}', [CardController::class, 'getCardById'])->name('card.detail');
 });
 
-Route::get('fire_notification', [FireNotificationController::class, 'formFireNotification']);
-Route::post('fire_notification', [FireNotificationController::class, 'createFireNotification'])->name('fire_notification');
 
 Route::post('payment', [PaymentController::class, 'payment']);
 
@@ -122,15 +122,6 @@ Route::prefix('/service')->group(function (){
     Route::get('/{id}', [ServiceController::class, 'getServiceById'])->name('service.detail');
 });
 
-Route::prefix('/vehicle')->group(function (){
-    Route::get('/', [VehicleController::class, 'getVehicle'])->name('vehicle');
-    Route::get('/add', [VehicleController::class, 'addForm'])->name('vehicle.add');
-    Route::post('/add', [VehicleController::class, 'saveAdd']);
-    Route::get('/edit/{id}', [VehicleController::class, 'editForm'])->name('vehicle.edit');
-    Route::post('/edit/{id}', [VehicleController::class, 'saveEdit']);
-    Route::get('/{id}', [VehicleController::class, 'getVehicleById'])->name('vehicle.detail');
-});
-
 Route::prefix('/user')->group(function (){
     Route::get('/list', [UserController::class, 'getUser']);
     Route::get('/add', [UserController::class, 'registerForm']);
@@ -139,6 +130,15 @@ Route::prefix('/user')->group(function (){
     Route::post('/edit/{id}', [UserController::class, 'saveEditUser']);
     Route::get('/remove/{id}', [UserController::class, 'removeUser']);
     Route::get('/{id}', [UserController::class, 'getUserInfomationById']);
+});
+
+Route::prefix('/vehicle')->group(function (){
+    Route::get('/', [VehicleController::class, 'getVehicle'])->name('vehicle');
+    Route::get('/add', [VehicleController::class, 'addForm'])->name('vehicle.add');
+    Route::post('/add', [VehicleController::class, 'saveAdd']);
+    Route::get('/edit/{id}', [VehicleController::class, 'editForm'])->name('vehicle.edit');
+    Route::post('/edit/{id}', [VehicleController::class, 'saveEdit']);
+    Route::get('/{id}', [VehicleController::class, 'getVehicleById'])->name('vehicle.detail');
 });
 
 Route::prefix('/vehicle-type')->group(function (){
@@ -150,5 +150,6 @@ Route::prefix('/vehicle-type')->group(function (){
     Route::get('/{id}', [VehicleTypeController::class, 'getVehicleTypeById'])->name('vehicle-type.detail');
 });
 
+Route::get('fire_notification', [FireNotificationController::class, 'formFireNotification']);
 Route::post('fire_notification', [\App\Http\Controllers\FireNotificationController::class, 'createFireNotification'])->name('fire_notification');
 Route::get('service_notification', [\App\Http\Controllers\SendServiceNotificationController::class, 'get']);
