@@ -8,13 +8,12 @@ use App\Http\Resources\UserResource;
 use App\Models\Apartment;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Js;
-use Ramsey\Collection\Collection as CollectionCollection;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -43,13 +42,21 @@ class UserController extends Controller
     public function changePassword(Request $request)
     {
         $user = User::find($request->user()->id);
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'password' => 'required|string|confirmed',
+        ], [
+            'password.required' => 'Password không được để trống',
+            'password.string' => 'Password không có ký tự đặc biệt',
+            'password.confirmed' => 'Password nhập lại sai'
         ]);
+        if ($validator->fails()) {
+            return $this->failed($validator->messages());
+        }
+
         $user->password = Hash::make($request->password);
         $user->save();
 
-        return $this->success($user);
+        return $this->success($user, 'Đổi mật khẩu thành công!');
     }
 
     public function getUser(Request $request): JsonResponse
@@ -67,7 +74,7 @@ class UserController extends Controller
         if ($request->filled('page') && $request->filled('page_size')){
             $user = $user->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
         }
-         $result = UserResource::collection($user);
+        $result = UserResource::collection($user);
         return $this->success($result);
     }
 
@@ -77,13 +84,28 @@ class UserController extends Controller
         return view('user.add', compact('apartments'));
     }
 
-    public function saveUser(UserRequest $request)
+    public function saveUser(Request $request): JsonResponse
     {
-        $request->validate([
-            'email' => 'required|string|unique:users',
-            'phone_number' => 'required|unique:users',
-            'apartment_id' => 'required|unique:users',
-        ]);
+        $validator = Validator::make($request->all(),
+            [
+                'email' => 'required|email|unique:users',
+                'phone_number' => 'required|unique:users',
+                'apartment_id' => 'required|unique:users',
+            ],
+            [
+                'email.required' => 'Email không được trống',
+                'email.email' => 'Email không đúng định dạng',
+                'email.unique' => 'Email đã tồn tại',
+                'phone_number.required' => 'Số điện thoại không được để trống',
+                'phone_number.unique' => 'Số điện thoại đã tồn tại',
+                'apartment_id.required' => 'Phòng không được để trống',
+                'apartment_id.unique' => 'Phòng đã có người đăng ký',
+            ]
+        );
+        if ($validator->fails()) {
+            return $this->failed($validator->messages());
+        }
+
         $user = new User();
         $user->password = Hash::make('12345678');
         if ($request->hasFile('avatar')) {
@@ -99,7 +121,7 @@ class UserController extends Controller
         event(new Registered($user));
         $token = $user->createToken('authtoken')->plainTextToken;
         $result = new RegisterResource($user);
-        return $this->success($result);
+        return $this->success($result, 'Thêm mới tài khoản thành công!');
     }
 
     public function formEditUser($id)
@@ -114,15 +136,42 @@ class UserController extends Controller
         return view('user.edit', compact('user', 'apartments'));
     }
 
-    public function saveEditUser(UserRequest $request, $id): JsonResponse
+    public function saveEditUser($id, Request $request): JsonResponse
     {
         $user = User::find($id);
         if(!$user){
-            return $this->failed();
+            return $this->failed('User không tồn tại');
         }
+
+        $validator = Validator::make($request->all(),
+            [
+                'email' => [
+                    'required', 'email',
+                    Rule::unique('users')->ignore($id)
+                ],
+                'phone_number' => [
+                    'required',
+                    Rule::unique('users')->ignore($id)
+                ],
+                'apartment_id' => 'required|unique:users',
+            ],
+            [
+                'email.required' => 'Email không được trống',
+                'email.email' => 'Email không đúng định dạng',
+                'email.unique' => 'Email đã tồn tại',
+                'phone_number.required' => 'Số điện thoại không được để trống',
+                'phone_number.unique' => 'Số điện thoại đã tồn tại',
+                'apartment_id.required' => 'Phòng không được để trống',
+                'apartment_id.unique' => 'Phòng đã có người đăng ký',
+            ]
+        );
+        if ($validator->fails()) {
+            return $this->failed($validator->messages());
+        }
+
         if($request->has('apartment_id')){
             $apartment_old = Apartment::where('user_id',$user->id)->first();
-            $apartment_old->user_id=null;
+            $apartment_old->user_id = NULL;
             $apartment_old->save();
         }
         if($request->hasFile('avatar')){
@@ -136,7 +185,7 @@ class UserController extends Controller
         $apartment = Apartment::where('id', $request->apartment_id)->first();
         $apartment->user_id = $user->id;
         $apartment->save();
-        return $this->success($user);
+        return $this->success($user, 'Sửa thông tin tài khoản thành công');
     }
     public function removeUser($id)
     {
