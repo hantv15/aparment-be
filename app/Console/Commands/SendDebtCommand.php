@@ -1,13 +1,43 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Console\Commands;
 
 use App\Models\Bill;
+use Illuminate\Console\Command;
 use Twilio\Rest\Client;
 
-class SendServiceNotificationController extends Controller
+class SendDebtCommand extends Command
 {
-    public function get()
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'send:debt';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Send debt notification';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
     {
         $bills = Bill::with(['apartment' => function ($query) {
             $query->with('user');

@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\SendBillCommand;
+use App\Console\Commands\SendDebtCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -10,6 +11,7 @@ class Kernel extends ConsoleKernel
 {
     protected $commands = [
         SendBillCommand::class,
+        SendDebtCommand::class,
     ];
 
     /**
@@ -20,7 +22,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('send:bill')->everyMinute();
+        $schedule->command('send:bill')->monthlyOn(30, '07:00');
+        $schedule->command('send:debt')->monthlyOn(5, '07:00');
+
     }
 
     /**

@@ -14,12 +14,12 @@ trait RestfulResourceTrait
      *
      * @return JsonResponse
      */
-    protected function failed(string $message = '', int $status = 400) : JsonResponse
+    protected function failed($data, string $message = '', int $status = 400) : JsonResponse
     {
         return response()->json([
             'is_success' => false,
             'message' => $message,
-            'data' => [],
+            'data' => $data,
         ], $status);
     }
     /**
