@@ -14,6 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ApartmentController extends Controller
@@ -55,6 +56,10 @@ class ApartmentController extends Controller
                     ['apartments.building_id', $request->building_id],
                     ['users.name', 'like', '%' . $request->keyword . '%'],
                 ])
+                ->orWhere([
+                    ['apartments.building_id', $request->building_id],
+                    ['apartments.apartment_id', 'like', '%' . $request->keyword . '%'],
+                ])
                 ->get();
         } else if (!$request->filled('building_id') && $request->filled('keyword')) {
             $apartments = Apartment::join('users', 'apartments.id', '=', 'users.apartment_id')
@@ -77,6 +82,7 @@ class ApartmentController extends Controller
                 ->where('users.phone_number', $request->keyword)
                 ->orWhere('users.email', 'like', '%' . $request->keyword . '%')
                 ->orWhere('users.name', 'like', '%' . $request->keyword . '%')
+                ->orWhere('apartments.apartment_id', 'like', '%' . $request->keyword . '%')
                 ->get();
         } else if ($request->filled('building_id') && !$request->filled('keyword')) {
             $apartments = Apartment::where('building_id', $request->building_id)->get();
@@ -121,8 +127,50 @@ class ApartmentController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function saveAdd(ApartmentRequest $request): JsonResponse
-    {
+    public function saveAdd(Request $request): JsonResponse
+    {   
+        $validator = Validator::make($request->all(),
+        [
+            'apartment_id' => 'required|string|regex:[a-zA-Z0-9]',
+            'floor' => 'required|integer|min:1',
+            'status' => 'required|integer|min:0|max:1',
+            'square_meters' => 'nullable|numeric|min:1',
+            'type_apartment' => 'required|integer|min:0|max:1',
+            'building_id' => 'required|integer|min:1',
+            'user_id' => 'nullable|integer|min:1'
+        ],
+        [
+            'apartment_id.required' => 'Tên Không được trống',
+            'apartment_id.string' => 'Tên phải là chuỗi',
+            'apartment_id.regex' => 'Tên không được chứa kí tự',
+            'floor.required' => 'Tầng không được trống ',
+            'floor.integer' => 'Tầng phải là định dạn số',
+            'floor.min' => 'Tầng không được nhỏ hơn 1',
+            'status.required' => 'Trạng thái không được trống',
+            'status.integer' => 'Trạng thái phải là số',
+            'status.min' => 'Trạng thái là 0 hoặc 1',
+            'status.max' => 'Trạng thái là 0 hoặc 1',
+
+            'square_meters.numeric' => 'Diện tích phải là đinh dạng số',
+            'square_meters.min' => 'Diện tích không được nhỏ hơn 1',
+
+            'type_apartment.required' => 'Loại căn hộ không được trống',
+            'type_apartment.integer' => 'Loại căn hộ phải là số',
+            'type_apartment.min' => 'Loại căn hộ phải là 0 hoặc 1',
+            'type_apartment.max' => 'Loại căn hộ phải là 0 hoặc 1',
+
+            'building_id.required' => 'Tòa không được trống',
+            'building_id.integer' => 'Tòa định dạng phải là số',
+            'building_id.min' => 'Tòa nhỏ nhất là 1',
+
+            'user_id.integer' => 'user_id phải là số',
+            'user_id.min' => 'User_id nhỏ nhất là 1',
+            
+        ]
+    );
+    if ($validator->fails()) {
+        return $this->failed($validator->messages());
+    }
         $model = new Apartment();
         $model->fill($request->all());
         $model->save();
@@ -136,8 +184,49 @@ class ApartmentController extends Controller
         return view('apartment.edit', compact('apartment', 'buildings'));
     }
 
-    public function saveEdit($id, ApartmentRequest $request): JsonResponse
-    {
+    public function saveEdit($id, Request $request): JsonResponse
+    {   
+        $validator = Validator::make($request->all(),
+        [
+            'apartment_id' => [
+                'required', 'string',
+                Rule::unique('apartments')->ignore($this->id)
+            ],
+            'floor' => 'required|integer|min:1',
+            'status' => 'required|integer|min:0|max:1',
+            'square_meters' => 'nullable|numeric|min:0',
+            'type_apartment' => 'required|integer|min:0|max:1',
+            'building_id' => 'required|integer|min:1',
+            'user_id' => 'nullable|integer|min:1'
+        ],
+        [
+            'apartment_id.required' => 'Tên Không được trống',
+            'apartment_id.string' => 'Tên phải là chuỗi',
+            'apartment_id.regex' => 'Tên không được chứa kí tự',
+            'floor.required' => 'Tầng không được trống ',
+            'floor.integer' => 'Tầng phải là định dạn số',
+            'floor.min' => 'Tầng không được nhỏ hơn 1',
+            'status.required' => 'Trạng thái không được trống',
+            'status.integer' => 'Trạng thái phải là số',
+            'status.min' => 'Trạng thái là 0 hoặc 1',
+            'status.max' => 'Trạng thái là 0 hoặc 1',
+
+            'square_meters.numeric' => 'Diện tích phải là đinh dạng số',
+            'square_meters.min' => 'Diện tích không được nhỏ hơn 1',
+
+            'type_apartment.required' => 'Loại căn hộ không được trống',
+            'type_apartment.integer' => 'Loại căn hộ phải là số',
+            'type_apartment.min' => 'Loại căn hộ phải là 0 hoặc 1',
+            'type_apartment.max' => 'Loại căn hộ phải là 0 hoặc 1',
+
+            'building_id.required' => 'Tòa không được trống',
+            'building_id.integer' => 'Tòa định dạng phải là số',
+            'building_id.min' => 'Tòa nhỏ nhất là 1',
+
+            'user_id.integer' => 'user_id phải là số',
+            'user_id.min' => 'User_id nhỏ nhất là 1',
+            
+        ]
         $model = Apartment::find($id);
         $model->fill($request->all());
         $model->save();

@@ -11,6 +11,8 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class BuildingController extends Controller
 {
@@ -36,8 +38,23 @@ class BuildingController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function saveAdd(BuildingRequest $request): JsonResponse
+    public function saveAdd(Request $request): JsonResponse
+    
     {
+        $validator = Validator::make($request->all(),
+    ['name' => 'required|string|regex:/[a-zA-Z0-9]^./',
+
+    ],
+    [
+        'name.required'=> 'Tên số Không được trống',
+        'name.string'=> 'Tên phải là chuỗi',
+        'name.regex'=> 'Tên không được chứa kí tự',
+
+    ] 
+);
+if ($validator->fails()) {
+    return $this->failed($validator->messages());
+}
         $building = new Building();
         $building->fill($request->all());
         $building->save();
@@ -50,8 +67,23 @@ class BuildingController extends Controller
         return view('building.edit', compact('building'));
     }
 
-    public function saveEdit($id, BuildingRequest $request): JsonResponse
-    {
+    public function saveEdit($id, Request $request): JsonResponse
+    {   
+        $validator = Validator::make($request->all(),
+        ['name' => [
+            'required', 'string','regex:/[a-zA-Z0-9]^./',
+            Rule::unique('services')->ignore($id)
+        ],
+        ],
+        [
+            'name.required'=> 'Tên số Không được trống',
+            'name.required'=> 'Tên phải la chuỗi',
+            'name.regex'=> 'Tên không được chứa kí tự đặc biêt',
+        ] 
+    );
+    if ($validator->fails()) {
+        return $this->failed($validator->messages());
+    }
         $building = Building::find($id);
         $building->fill($request->all());
         $building->save();

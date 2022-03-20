@@ -8,6 +8,7 @@ use App\Models\BillDetail;
 use App\Models\Service;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class BillDetailController extends Controller
 {
@@ -28,7 +29,29 @@ class BillDetailController extends Controller
     }
 
     public function saveAdd(Request $request): JsonResponse
-    {
+    {   
+        $validator = Validator::make($request->all(),
+        [
+            'service_id' => 'required|integer|exists:services',
+            'quantity' => 'required|integer|min:1',
+            'bill_id' => 'required|integer|exists:bills'
+        ],
+        [
+            'service_id.required' => 'Dịch vụ số Không được trống',
+            'service_id.integer' => 'Dịch vụ không đúng định dạng',
+            'service_id.exists' => 'Dịch vụ không có',
+            'quantity.required' => 'Số lượng không được trống',
+            'quantity.integer' => 'Số phải là số',
+            'quantity.min' => 'Số lượng không được nhỏ hơn 1',
+            'bill_id.required' => 'Hóa Đơn không được trống',
+            'bill_id.integer' => 'Hóa Đơn không đúng định dạng',
+            'bill_id.exists' => 'Hóa Đơn không có',
+
+        ]
+    );
+    if ($validator->fails()) {
+        return $this->failed($validator->messages());
+    }
         $bill_detail = new BillDetail();
         $count_service_in_bill = BillDetail::where('bill_id', $request->bill_id)
                                     ->where('service_id', $request->service_id)
@@ -66,7 +89,29 @@ class BillDetailController extends Controller
     }
 
     public function saveEdit($id, Request $request):JsonResponse
-    {
+    {   
+        $validator = Validator::make($request->all(),
+        [
+            'service_id' => 'required|integer|exists:services',
+            'quantity' => 'required|integer|min:1',
+            'bill_id' => 'required|integer|exists:bills'
+        ],
+        [
+            'service_id.required' => 'Dịch vụ số Không được trống',
+            'service_id.integer' => 'Dịch vụ không đúng định dạng',
+            'service_id.exists' => 'Dịch vụ không có',
+            'quantity.required' => 'Số lượng không được trống',
+            'quantity.integer' => 'Số phải là số',
+            'quantity.min' => 'Số lượng không được nhỏ hơn 1',
+            'bill_id.required' => 'Hóa Đơn không được trống',
+            'bill_id.integer' => 'Hóa Đơn không đúng định dạng',
+            'bill_id.exists' => 'Hóa Đơn không có',
+
+        ]
+    );
+    if ($validator->fails()) {
+        return $this->failed($validator->messages());
+    }
         $bill_detail = BillDetail::find($id);
         $count_service_in_bill = BillDetail::where('bill_id', $request->bill_id)
                                         ->where('service_id', $request->service_id)

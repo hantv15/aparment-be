@@ -49,7 +49,7 @@ class ForgotPasswordController extends Controller
             $message->subject('Reset Password');
         });
 
-        return $this->success('');
+        return $this->success($token);
     }
     /**
      * Write code on Method
