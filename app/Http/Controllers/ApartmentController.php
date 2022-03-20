@@ -14,6 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ApartmentController extends Controller
@@ -55,6 +56,10 @@ class ApartmentController extends Controller
                     ['apartments.building_id', $request->building_id],
                     ['users.name', 'like', '%' . $request->keyword . '%'],
                 ])
+                ->orWhere([
+                    ['apartments.building_id', $request->building_id],
+                    ['apartments.apartment_id', 'like', '%' . $request->keyword . '%'],
+                ])
                 ->get();
         } else if (!$request->filled('building_id') && $request->filled('keyword')) {
             $apartments = Apartment::join('users', 'apartments.id', '=', 'users.apartment_id')
@@ -77,6 +82,7 @@ class ApartmentController extends Controller
                 ->where('users.phone_number', $request->keyword)
                 ->orWhere('users.email', 'like', '%' . $request->keyword . '%')
                 ->orWhere('users.name', 'like', '%' . $request->keyword . '%')
+                ->orWhere('apartments.apartment_id', 'like', '%' . $request->keyword . '%')
                 ->get();
         } else if ($request->filled('building_id') && !$request->filled('keyword')) {
             $apartments = Apartment::where('building_id', $request->building_id)->get();
@@ -121,8 +127,27 @@ class ApartmentController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function saveAdd(ApartmentRequest $request): JsonResponse
-    {
+    public function saveAdd(Request $request): JsonResponse
+    {   
+        $validator = Validator::make($request->all(),
+        [
+            'apartment_id' => 'required|string|regex:/[a-zA-Z]^./',
+            'image' => 'nullable|image',
+            'fax' => 'nullable|string',
+            'receiver_id' => 'nullable|integer'
+        ],
+        [
+            'name.required' => 'Tên số Không được trống',
+            'name.string' => 'Tên phải là chuỗi',
+            'name.min' => 'Tên ít nhất 3 kí tự',
+            'name.regex' => 'Tên không được chứa kí tự hoặc số',
+            'image.image' => 'Ảnh phải là định dạng ảnh',
+            'receiver_id.integer' => 'Người nhận này không dúng định dạng'
+        ]
+    );
+    if ($validator->fails()) {
+        return $this->failed($validator->messages());
+    }
         $model = new Apartment();
         $model->fill($request->all());
         $model->save();

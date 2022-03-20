@@ -11,17 +11,19 @@ use App\Models\BillDetail;
 use App\Models\Service;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class BillController extends Controller
 {
     public function getBill(Request $request): JsonResponse
     {
         $bills = Bill::all();
-        if($request->filled('keyword')){
+        if ($request->filled('keyword')) {
             $bills = Bill::where('name', 'like', '%' . $request->keyword . '%')->get();
         }
-        if ($request->filled('page') && $request->filled('page_size')){
-            $bills = $bills->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
+        if ($request->filled('page') && $request->filled('page_size')) {
+            $bills = $bills->skip(($request->page - 1) * $request->page_size)->take($request->page_size);
         }
         $result = BillResource::collection($bills);
         return $this->success($result);
@@ -35,6 +37,26 @@ class BillController extends Controller
 
     public function saveAdd(BillRequest $request): JsonResponse
     {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|string|min3|regex:/[a-zA-Z]^./',
+                'image' => 'nullable|image',
+                'fax' => 'nullable|string',
+                'receiver_id' => 'nullable|integer'
+            ],
+            [
+                'name.required' => 'Tên số Không được trống',
+                'name.string' => 'Tên phải là chuỗi',
+                'name.min' => 'Tên ít nhất 3 kí tự',
+                'name.regex' => 'Tên không được chứa kí tự hoặc số',
+                'image.image' => 'Ảnh phải là định dạng ảnh',
+                'receiver_id.integer' => 'Người nhận này không dúng định dạng'
+            ]
+        );
+        if ($validator->fails()) {
+            return $this->failed($validator->messages());
+        }
         $bill = new Bill();
         $bill->fill($request->all());
         $bill->save();
@@ -44,20 +66,39 @@ class BillController extends Controller
     public function editForm($id)
     {
         $bill = Bill::find($id);
-        if ($bill->status == 1){
+        if ($bill->status == 1) {
             return $this->failed();
         }
         $bill->load('apartment', 'services');
         return view('bill.edit', compact('bill'));
     }
 
-    public function saveEdit($id, BillRequest $request): JsonResponse
-    {
+    public function saveEdit($id, Request $request): JsonResponse
+    {   
+        $validator = Validator::make($request->all(),
+        [
+            'name' => 'required|string|min3|regex:/[a-zA-Z]^./',
+            'image' => 'nullable|image',
+            'fax' => 'nullable|string',
+            'receiver_id' => 'nullable|integer'
+        ],
+        [
+            'name.required' => 'Tên số Không được trống',
+            'name.string' => 'Tên phải là chuỗi',
+            'name.min' => 'Tên ít nhất 3 kí tự',
+            'name.regex' => 'Tên không được chứa kí tự hoặc số',
+            'image.image' => 'Ảnh phải là định dạng ảnh',
+            'receiver_id.integer' => 'Người nhận này không dúng định dạng'
+        ]
+    );
+    if ($validator->fails()) {
+        return $this->failed($validator->messages());
+    }
         $bill = Bill::find($id);
         if (!$bill) {
             return $this->failed();
         }
-        if ($bill->status == 1){
+        if ($bill->status == 1) {
             return $this->failed();
         }
         $bill->fill($request->all());
@@ -70,24 +111,25 @@ class BillController extends Controller
     {
         $bill = Bill::find($id);
         $services = Service::all();
-        if ($bill->status == 1){
+        if ($bill->status == 1) {
             return $this->failed();
         }
         return view('bill.edit-add-bill-detail', compact('bill', 'services'));
     }
 
-    public function saveEditAddBillDetail($id, BillDetailRequest $request)
-    {
+    public function saveEditAddBillDetail($id, BillDetailRequest $request): JsonResponse
+    {   
+
         $bill = Bill::find($id);
         if (!$bill) {
             return $this->failed();
         }
-        if ($bill->status == 1){
+        if ($bill->status == 1) {
             return $this->failed();
         }
         $count_service_in_bill = BillDetail::where('bill_id', $id)
-                                        ->where('service_id', $request->service_id)
-                                        ->count();
+            ->where('service_id', $request->service_id)
+            ->count();
         if ($count_service_in_bill > 0) {
             return $this->failed();
         }
@@ -115,14 +157,14 @@ class BillController extends Controller
         return $this->success($bill);
     }
 
-    public function editEditBillDetailForm($id, $bill_detail_id)
+    public function editEditBillDetailForm($id, $bill_detail_id): JsonResponse
     {
         $bill = Bill::find($id);
         $services = Service::all();
         $bill_detail = BillDetail::where('id', $bill_detail_id)
-                                ->where('bill_id', $id)
-                                ->first();
-        if ($bill->status == 1){
+            ->where('bill_id', $id)
+            ->first();
+        if ($bill->status == 1) {
             return $this->failed();
         }
         if (!$bill_detail) {
@@ -135,21 +177,21 @@ class BillController extends Controller
     {
         $bill = Bill::find($id);
         $bill_detail = BillDetail::where('id', $bill_detail_id)
-                            ->where('bill_id', $id)
-                            ->first();
+            ->where('bill_id', $id)
+            ->first();
         if (!$bill) {
             return $this->failed();
         }
-        if ($bill->status == 1){
+        if ($bill->status == 1) {
             return $this->failed();
         }
         if (!$bill_detail) {
             return $this->failed();
         }
         $count_service_in_bill = BillDetail::where('bill_id', $id)
-                                        ->where('service_id', $request->service_id)
-                                        ->whereNotIn('service_id', [$bill_detail->service_id])
-                                        ->count();
+            ->where('service_id', $request->service_id)
+            ->whereNotIn('service_id', [$bill_detail->service_id])
+            ->count();
         if ($count_service_in_bill > 0) {
             return $this->failed();
         }
@@ -228,16 +270,16 @@ class BillController extends Controller
     public function getBillDetailByBillId($id)
     {
         $bill_details_by_bill_id = BillDetail::join('services', 'bill_details.service_id', '=', 'services.id')
-                                            ->select(
-                                                'bill_details.id',
-                                                'services.name',
-                                                'services.price',
-                                                'bill_details.bill_id',
-                                                'bill_details.quantity',
-                                                'bill_details.total_price'
-                                            )
-                                            ->where('bill_details.bill_id', $id)
-                                            ->get();
+            ->select(
+                'bill_details.id',
+                'services.name',
+                'services.price',
+                'bill_details.bill_id',
+                'bill_details.quantity',
+                'bill_details.total_price'
+            )
+            ->where('bill_details.bill_id', $id)
+            ->get();
 
         return $this->success($bill_details_by_bill_id);
     }
