@@ -153,7 +153,7 @@ class AuthController extends Controller
         // Check password
         if ($count_user_by_email > 0) {
             if (!$user_by_email || !Hash::check($fields['password'], $user_by_email->password)) {
-                return $this->failed();
+                return $this->failed('string');
             }
             $result = new LoginResource($user_by_email);
             $token = $user_by_email->createToken('myapptoken')->plainTextToken;
@@ -162,7 +162,7 @@ class AuthController extends Controller
             return $this->success($result);
         } elseif ($count_user_by_phone > 0) {
             if (!$user_by_phone || !Hash::check($fields['password'], $user_by_phone->password)) {
-                return $this->failed();
+                return $this->failed('string');
             }
             $result = new LoginResource($user_by_phone);
             $token = $user_by_phone->createToken('myapptoken')->plainTextToken;
@@ -171,7 +171,7 @@ class AuthController extends Controller
             return $this->success($result);
         } elseif ($count_user_by_apartment_id > 0) {
             if (!$user_by_apartment_id || !Hash::check($fields['password'], $user_by_apartment_id->password)) {
-                return $this->failed();
+                return $this->failed('string');
             }
             $result = new LoginResource($user_by_apartment_id);
             $token = $user_by_apartment_id->createToken('myapptoken')->plainTextToken;

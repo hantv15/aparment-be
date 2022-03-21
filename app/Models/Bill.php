@@ -13,7 +13,7 @@ class Bill extends Model
     use HasFactory;
 
     const PAYMENT_SUCCESS = 1;
-    const NOT_YET_PAYMENT = 1;
+    const NOT_YET_PAYMENT = 0;
 
     protected $table = 'bills';
     protected $fillable = [
