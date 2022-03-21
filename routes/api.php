@@ -64,94 +64,95 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('/{id}/add-card', [ApartmentController::class, 'saveAddCard']);
             Route::post('/upload-excel', [ApartmentController::class, 'uploadApartment'])->name('apartment.upload-excel');
         });
+        Route::prefix('/bill')->group(function () {
+            Route::get('/', [BillController::class, 'getBill'])->name('bill');
+            Route::get('/add', [BillController::class, 'addForm'])->name('bill.add');
+            Route::post('/add', [BillController::class, 'saveAdd']);
+            Route::get('/edit/{id}', [BillController::class, 'editForm'])->name('bill.edit');
+            Route::post('/edit/{id}', [BillController::class, 'saveEdit']);
+            Route::get('/edit/{id}/add-bill-detail', [BillController::class, 'editAddBillDetailForm']);
+            Route::post('/edit/{id}/add-bill-detail', [BillController::class, 'saveEditAddBillDetail']);
+            Route::get('/edit/{id}/edit-bill-detail/{bill_detail_id}', [BillController::class, 'editEditBillDetailForm']);
+            Route::post('/edit/{id}/edit-bill-detail/{bill_detail_id}', [BillController::class, 'saveEditEditBillDetail']);
+            Route::get('/edit-status/{id}', [BillController::class, 'editStatusForm']);
+            Route::post('/edit-status/{id}', [BillController::class, 'saveEditStatus']);
+            Route::get('/{id}', [BillController::class, 'getBillById'])->name('bill.detail');
+            Route::get('/{id}/bill-detail', [BillController::class, 'getBillDetailByBillId']);
+        });
+
+        Route::prefix('/bill-detail')->group(function () {
+            Route::get('/', [BillDetailController::class, 'getBillDetail'])->name('bill-detail');
+            Route::get('/add', [BillDetailController::class, 'addForm'])->name('bill-detail.add');
+            Route::post('/add', [BillDetailController::class, 'saveAdd']);
+            Route::get('/edit/{id}', [BillDetailController::class, 'editForm'])->name('bill-detail.edit');
+            Route::post('/edit/{id}', [BillDetailController::class, 'saveEdit']);
+            Route::get('/{id}', [BillDetailController::class, 'getBillDetailById'])->name('bill-detail.detail');
+        });
+
+        Route::prefix('/building')->group(function () {
+            Route::get('/', [BuildingController::class, 'getBuilding'])->name('building');
+            Route::get('/add', [BuildingController::class, 'addForm'])->name('building.add');
+            Route::post('/add', [BuildingController::class, 'saveAdd']);
+            Route::get('/edit/{id}', [BuildingController::class, 'editForm'])->name('building.edit');
+            Route::post('/edit/{id}', [BuildingController::class, 'saveEdit']);
+            Route::get('/{id}', [BuildingController::class, 'geBuildingById'])->name('building.detail');
+            Route::get('/{id}/apartment', [BuildingController::class, 'getApartmentByBuildingId']);
+        });
+
+        Route::prefix('/card')->group(function () {
+            Route::get('/', [CardController::class, 'getCard'])->name('card');
+            Route::get('/add', [CardController::class, 'addForm'])->name('card.add');
+            Route::post('/add', [CardController::class, 'saveAdd']);
+            Route::get('/edit/{id}', [CardController::class, 'editForm'])->name('card.edit');
+            Route::post('/edit/{id}', [CardController::class, 'saveEdit']);
+            Route::post('/remove/{id}', [CardController::class, 'remove']);
+            Route::get('/{id}', [CardController::class, 'getCardById'])->name('card.detail');
+        });
+
+
+        Route::post('payment', [PaymentController::class, 'payment']);
+
+        Route::prefix('/service')->group(function () {
+            Route::get('/', [ServiceController::class, 'getService'])->name('service');
+            Route::get('/add', [ServiceController::class, 'addForm'])->name('service.add');
+            Route::post('/add', [ServiceController::class, 'saveAdd']);
+            Route::get('/edit/{id}', [ServiceController::class, 'editForm'])->name('service.edit');
+            Route::post('/edit/{id}', [ServiceController::class, 'saveEdit']);
+            Route::get('/{id}', [ServiceController::class, 'getServiceById'])->name('service.detail');
+        });
+
+        Route::prefix('/user')->group(function () {
+            Route::get('/list', [UserController::class, 'getUser']);
+            Route::get('/add', [UserController::class, 'registerForm']);
+            Route::post('/add', [UserController::class, 'saveUser']);
+            Route::get('/edit/{id}', [UserController::class, 'formEditUser']);
+            Route::post('/edit/{id}', [UserController::class, 'saveEditUser']);
+            Route::get('/remove/{id}', [UserController::class, 'removeUser']);
+            Route::get('/{id}', [UserController::class, 'getUserInfomationById']);
+        });
+
+        Route::prefix('/vehicle')->group(function () {
+            Route::get('/', [VehicleController::class, 'getVehicle'])->name('vehicle');
+            Route::get('/add', [VehicleController::class, 'addForm'])->name('vehicle.add');
+            Route::post('/add', [VehicleController::class, 'saveAdd']);
+            Route::get('/edit/{id}', [VehicleController::class, 'editForm'])->name('vehicle.edit');
+            Route::post('/edit/{id}', [VehicleController::class, 'saveEdit']);
+            Route::get('/{id}', [VehicleController::class, 'getVehicleById'])->name('vehicle.detail');
+        });
+
+        Route::prefix('/vehicle-type')->group(function () {
+            Route::get('/', [VehicleTypeController::class, 'getVehicleType'])->name('vehicle-type');
+            Route::get('/add', [VehicleTypeController::class, 'addForm'])->name('vehicle-type.add');
+            Route::post('/add', [VehicleTypeController::class, 'saveAdd']);
+            Route::get('/edit/{id}', [VehicleTypeController::class, 'editForm'])->name('vehicle-type.edit');
+            Route::post('/edit/{id}', [VehicleTypeController::class, 'saveEdit']);
+            Route::get('/{id}', [VehicleTypeController::class, 'getVehicleTypeById'])->name('vehicle-type.detail');
+        });
+
+        Route::get('fire_notification', [FireNotificationController::class, 'formFireNotification']);
+        Route::post('fire_notification', [\App\Http\Controllers\FireNotificationController::class, 'createFireNotification'])->name('fire_notification');
+        Route::get('service_notification', [\App\Http\Controllers\SendServiceNotificationController::class, 'get']);
+        Route::get('analytics', [\App\Http\Controllers\ApartmentAnalyticsController::class, 'analyticApartment']);
     });
-    Route::prefix('/bill')->group(function () {
-        Route::get('/', [BillController::class, 'getBill'])->name('bill');
-        Route::get('/add', [BillController::class, 'addForm'])->name('bill.add');
-        Route::post('/add', [BillController::class, 'saveAdd']);
-        Route::get('/edit/{id}', [BillController::class, 'editForm'])->name('bill.edit');
-        Route::post('/edit/{id}', [BillController::class, 'saveEdit']);
-        Route::get('/edit/{id}/add-bill-detail', [BillController::class, 'editAddBillDetailForm']);
-        Route::post('/edit/{id}/add-bill-detail', [BillController::class, 'saveEditAddBillDetail']);
-        Route::get('/edit/{id}/edit-bill-detail/{bill_detail_id}', [BillController::class, 'editEditBillDetailForm']);
-        Route::post('/edit/{id}/edit-bill-detail/{bill_detail_id}', [BillController::class, 'saveEditEditBillDetail']);
-        Route::get('/edit-status/{id}', [BillController::class, 'editStatusForm']);
-        Route::post('/edit-status/{id}', [BillController::class, 'saveEditStatus']);
-        Route::get('/{id}', [BillController::class, 'getBillById'])->name('bill.detail');
-        Route::get('/{id}/bill-detail', [BillController::class, 'getBillDetailByBillId']);
-    });
 
-    Route::prefix('/bill-detail')->group(function () {
-        Route::get('/', [BillDetailController::class, 'getBillDetail'])->name('bill-detail');
-        Route::get('/add', [BillDetailController::class, 'addForm'])->name('bill-detail.add');
-        Route::post('/add', [BillDetailController::class, 'saveAdd']);
-        Route::get('/edit/{id}', [BillDetailController::class, 'editForm'])->name('bill-detail.edit');
-        Route::post('/edit/{id}', [BillDetailController::class, 'saveEdit']);
-        Route::get('/{id}', [BillDetailController::class, 'getBillDetailById'])->name('bill-detail.detail');
-    });
-
-    Route::prefix('/building')->group(function () {
-        Route::get('/', [BuildingController::class, 'getBuilding'])->name('building');
-        Route::get('/add', [BuildingController::class, 'addForm'])->name('building.add');
-        Route::post('/add', [BuildingController::class, 'saveAdd']);
-        Route::get('/edit/{id}', [BuildingController::class, 'editForm'])->name('building.edit');
-        Route::post('/edit/{id}', [BuildingController::class, 'saveEdit']);
-        Route::get('/{id}', [BuildingController::class, 'geBuildingById'])->name('building.detail');
-        Route::get('/{id}/apartment', [BuildingController::class, 'getApartmentByBuildingId']);
-    });
-
-    Route::prefix('/card')->group(function () {
-        Route::get('/', [CardController::class, 'getCard'])->name('card');
-        Route::get('/add', [CardController::class, 'addForm'])->name('card.add');
-        Route::post('/add', [CardController::class, 'saveAdd']);
-        Route::get('/edit/{id}', [CardController::class, 'editForm'])->name('card.edit');
-        Route::post('/edit/{id}', [CardController::class, 'saveEdit']);
-        Route::post('/remove/{id}', [CardController::class, 'remove']);
-        Route::get('/{id}', [CardController::class, 'getCardById'])->name('card.detail');
-    });
-
-
-    Route::post('payment', [PaymentController::class, 'payment']);
-
-    Route::prefix('/service')->group(function () {
-        Route::get('/', [ServiceController::class, 'getService'])->name('service');
-        Route::get('/add', [ServiceController::class, 'addForm'])->name('service.add');
-        Route::post('/add', [ServiceController::class, 'saveAdd']);
-        Route::get('/edit/{id}', [ServiceController::class, 'editForm'])->name('service.edit');
-        Route::post('/edit/{id}', [ServiceController::class, 'saveEdit']);
-        Route::get('/{id}', [ServiceController::class, 'getServiceById'])->name('service.detail');
-    });
-
-    Route::prefix('/user')->group(function () {
-        Route::get('/list', [UserController::class, 'getUser']);
-        Route::get('/add', [UserController::class, 'registerForm']);
-        Route::post('/add', [UserController::class, 'saveUser']);
-        Route::get('/edit/{id}', [UserController::class, 'formEditUser']);
-        Route::post('/edit/{id}', [UserController::class, 'saveEditUser']);
-        Route::get('/remove/{id}', [UserController::class, 'removeUser']);
-        Route::get('/{id}', [UserController::class, 'getUserInfomationById']);
-    });
-
-    Route::prefix('/vehicle')->group(function () {
-        Route::get('/', [VehicleController::class, 'getVehicle'])->name('vehicle');
-        Route::get('/add', [VehicleController::class, 'addForm'])->name('vehicle.add');
-        Route::post('/add', [VehicleController::class, 'saveAdd']);
-        Route::get('/edit/{id}', [VehicleController::class, 'editForm'])->name('vehicle.edit');
-        Route::post('/edit/{id}', [VehicleController::class, 'saveEdit']);
-        Route::get('/{id}', [VehicleController::class, 'getVehicleById'])->name('vehicle.detail');
-    });
-
-    Route::prefix('/vehicle-type')->group(function () {
-        Route::get('/', [VehicleTypeController::class, 'getVehicleType'])->name('vehicle-type');
-        Route::get('/add', [VehicleTypeController::class, 'addForm'])->name('vehicle-type.add');
-        Route::post('/add', [VehicleTypeController::class, 'saveAdd']);
-        Route::get('/edit/{id}', [VehicleTypeController::class, 'editForm'])->name('vehicle-type.edit');
-        Route::post('/edit/{id}', [VehicleTypeController::class, 'saveEdit']);
-        Route::get('/{id}', [VehicleTypeController::class, 'getVehicleTypeById'])->name('vehicle-type.detail');
-    });
-
-    Route::get('fire_notification', [FireNotificationController::class, 'formFireNotification']);
-    Route::post('fire_notification', [\App\Http\Controllers\FireNotificationController::class, 'createFireNotification'])->name('fire_notification');
-    Route::get('service_notification', [\App\Http\Controllers\SendServiceNotificationController::class, 'get']);
-    Route::get('analytics', [\App\Http\Controllers\ApartmentAnalyticsController::class, 'analyticApartment']);
 });
