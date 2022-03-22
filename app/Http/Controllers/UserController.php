@@ -7,6 +7,7 @@ use App\Http\Resources\RegisterResource;
 use App\Http\Resources\UserResource;
 use App\Models\Apartment;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -86,20 +87,26 @@ class UserController extends Controller
 
     public function saveUser(Request $request): JsonResponse
     {
+        $yearOld18=  Carbon::now();
         $validator = Validator::make($request->all(),
             [
                 'email' => 'required|email|unique:users',
                 'phone_number' => 'required|unique:users',
                 'apartment_id' => 'required|unique:users',
+                'dob'=>'required|date_format:Y-m-d|before:'.$yearOld18
             ],
             [
-                'email.required' => 'Email không được trống',
+                'email.required' => 'Vui lòng nhập Email',
                 'email.email' => 'Email không đúng định dạng',
                 'email.unique' => 'Email đã tồn tại',
                 'phone_number.required' => 'Số điện thoại không được để trống',
                 'phone_number.unique' => 'Số điện thoại đã tồn tại',
                 'apartment_id.required' => 'Phòng không được để trống',
                 'apartment_id.unique' => 'Phòng đã có người đăng ký',
+                'dob.required' => 'Ngày sinh trống',
+                'dob.date_format' => 'Ngày sinh phải là định dạng đúng định dạng (Năm-tháng-ngày)',
+                'dob.before'=>'Ngày sinh không được là tương lai'
+                
             ]
         );
         if ($validator->fails()) {
@@ -153,7 +160,10 @@ class UserController extends Controller
                     'required',
                     Rule::unique('users')->ignore($id)
                 ],
-                'apartment_id' => 'required|unique:users',
+                'apartment_id' => [
+                    'required',
+                    Rule::unique('users')->ignore($id)
+                ],
             ],
             [
                 'email.required' => 'Email không được trống',
