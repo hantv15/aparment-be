@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-
 use Illuminate\Support\Facades\DB as FacadesDB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
