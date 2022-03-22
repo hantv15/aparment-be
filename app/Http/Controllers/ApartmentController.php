@@ -130,9 +130,10 @@ class ApartmentController extends Controller
      */
     public function saveAdd(Request $request): JsonResponse
     {
+        
         $validator = Validator::make($request->all(),
         [
-            'apartment_id' => 'required|string|regex:[a-zA-Z0-9]',
+            'apartment_id' => 'required|string|unique:apartments|regex:/^[a-zA-Z0-9]+$/',
             'floor' => 'required|integer|min:1',
             'status' => 'required|integer|min:0|max:1',
             'square_meters' => 'nullable|numeric|min:1',
@@ -143,6 +144,7 @@ class ApartmentController extends Controller
         [
             'apartment_id.required' => 'Tên Không được trống',
             'apartment_id.string' => 'Tên phải là chuỗi',
+            'apartment_id.unique' => 'Tên căn hộ đã tồn tại',
             'apartment_id.regex' => 'Tên không được chứa kí tự',
             'floor.required' => 'Tầng không được trống ',
             'floor.integer' => 'Tầng phải là định dạn số',
@@ -190,8 +192,9 @@ class ApartmentController extends Controller
         $validator = Validator::make($request->all(),
         [
             'apartment_id' => [
-                'required', 'string',
-                Rule::unique('apartments')->ignore($id)
+                'required', 'string','regex:/^[a-zA-Z0-9]+$/',
+                Rule::unique('apartments')->ignore($id),
+                
             ],
             'floor' => 'required|integer|min:1',
             'status' => 'required|integer|min:0|max:1',
@@ -203,6 +206,7 @@ class ApartmentController extends Controller
         [
             'apartment_id.required' => 'Tên Không được trống',
             'apartment_id.string' => 'Tên phải là chuỗi',
+            'apartment_id.unique' => 'Tên đã tồn tại',
             'apartment_id.regex' => 'Tên không được chứa kí tự',
             'floor.required' => 'Tầng không được trống ',
             'floor.integer' => 'Tầng phải là định dạn số',
@@ -224,6 +228,9 @@ class ApartmentController extends Controller
             'user_id.min' => 'User_id nhỏ nhất là 1',
 
         ]);
+        if ($validator->fails()) {
+            return $this->failed($validator->messages());
+        }
         $model = Apartment::find($id);
         $model->fill($request->all());
         $model->save();
