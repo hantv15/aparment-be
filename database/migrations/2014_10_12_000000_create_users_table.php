@@ -18,13 +18,12 @@ class CreateUsersTable extends Migration
             $table->string('email', 50)->unique();
             $table->string('phone_number', 10)->unique();
             $table->string('password', 255);
-            $table->string('name', 50)->nullable();            
+            $table->string('name', 50)->nullable();
             $table->date('dob')->nullable();
             $table->integer('number_card')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->unsignedBigInteger('apartment_id')->unique()->nullable();
             $table->string('avatar', 255)->nullable();
-            $table->unsignedBigInteger('role_id')->nullable();
             $table->timestamps();
         });
     }

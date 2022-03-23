@@ -93,7 +93,6 @@ class AuthController extends Controller
                                         'users.status',
                                         'users.apartment_id',
                                         'users.avatar',
-                                        'users.role_id',
                                         'apartments.apartment_id as apartment_name',
                                         'apartments.floor',
                                         'apartments.description',
@@ -116,7 +115,6 @@ class AuthController extends Controller
                                 'users.status',
                                 'users.apartment_id',
                                 'users.avatar',
-                                'users.role_id',
                                 'apartments.apartment_id as apartment_name',
                                 'apartments.floor',
                                 'apartments.description',
@@ -139,7 +137,6 @@ class AuthController extends Controller
                                 'users.status',
                                 'users.apartment_id',
                                 'users.avatar',
-                                'users.role_id',
                                 'apartments.apartment_id as apartment_name',
                                 'apartments.floor',
                                 'apartments.description',
@@ -179,7 +176,7 @@ class AuthController extends Controller
             Auth::attempt(['apartment_id' => $request->username, 'password' => $request->password], $request->remember);
             return $this->success($result);
         } else {
-            return $this->failed();
+            return $this->failed('Failed login');
         }
     }
 

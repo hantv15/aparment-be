@@ -25,7 +25,7 @@ class CreatePermissionTables extends Migration
             throw new \Exception('Error: team_foreign_key on config/permission.php not loaded. Run [php artisan config:clear] and try again.');
         }
 
-        Schema::create($tableNames['permission'], function (Blueprint $table) {
+        Schema::create($tableNames['permissions'], function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');       // For MySQL 8.0 use string('name', 125);
             $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
@@ -34,7 +34,7 @@ class CreatePermissionTables extends Migration
             $table->unique(['name', 'guard_name']);
         });
 
-        Schema::create($tableNames['role'], function (Blueprint $table) use ($teams, $columnNames) {
+        Schema::create($tableNames['roles'], function (Blueprint $table) use ($teams, $columnNames) {
             $table->bigIncrements('id');
             if ($teams || config('permission.testing')) { // permission.testing is a fix for sqlite testing
                 $table->unsignedBigInteger($columnNames['team_foreign_key'])->nullable();
@@ -59,7 +59,7 @@ class CreatePermissionTables extends Migration
 
             $table->foreign(PermissionRegistrar::$pivotPermission)
                 ->references('id')
-                ->on($tableNames['permission'])
+                ->on($tableNames['permissions'])
                 ->onDelete('cascade');
             if ($teams) {
                 $table->unsignedBigInteger($columnNames['team_foreign_key']);
@@ -83,7 +83,7 @@ class CreatePermissionTables extends Migration
 
             $table->foreign(PermissionRegistrar::$pivotRole)
                 ->references('id')
-                ->on($tableNames['role'])
+                ->on($tableNames['roles'])
                 ->onDelete('cascade');
             if ($teams) {
                 $table->unsignedBigInteger($columnNames['team_foreign_key']);
@@ -103,12 +103,12 @@ class CreatePermissionTables extends Migration
 
             $table->foreign(PermissionRegistrar::$pivotPermission)
                 ->references('id')
-                ->on($tableNames['permission'])
+                ->on($tableNames['permissions'])
                 ->onDelete('cascade');
 
             $table->foreign(PermissionRegistrar::$pivotRole)
                 ->references('id')
-                ->on($tableNames['role'])
+                ->on($tableNames['roles'])
                 ->onDelete('cascade');
 
             $table->primary([PermissionRegistrar::$pivotPermission, PermissionRegistrar::$pivotRole], 'role_has_permissions_permission_id_role_id_primary');
