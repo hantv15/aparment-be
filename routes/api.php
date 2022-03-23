@@ -46,29 +46,27 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/send-notification', [ApartmentNotiController::class, 'sendNotification'])->name('save-token');
 
     Route::get('/user', [UserController::class, 'getUserLogin']);
-    Route::middleware('check.user')->group(function (){
+    Route::prefix('/apartment')->group(function () {
+        Route::get('/', [ApartmentController::class, 'getApartment'])->name('apartment');
+        Route::get('/not-owned', [ApartmentController::class, 'getApartmentNotOwned']);
+        Route::get('/not-owned/{id}', [ApartmentController::class, 'getApartmentNotOwnedAndId']);
+        Route::get('/add', [ApartmentController::class, 'addForm'])->name('apartment.add');
+        Route::post('/add', [ApartmentController::class, 'saveAdd']);
+        Route::get('/edit/{id}', [ApartmentController::class, 'editForm'])->name('apartment.edit');
+        Route::post('/edit/{id}', [ApartmentController::class, 'saveEdit']);
+        Route::get('/{id}', [ApartmentController::class, 'getApartmentById'])->name('apartment.detail');
+        Route::get('/{id}/finance', [ApartmentController::class, 'getBillByApartmentId']);
+        Route::get('/{id}/finance/unpaid', [ApartmentController::class, 'getUnpaidBillByApartmentId']);
+        Route::get('/{id}/finance/paid', [ApartmentController::class, 'getPaidBillByApartmentId']);
+        Route::get('/{id}/finance/{bill_id}/bill-detail', [ApartmentController::class, 'getBillDetailByApartmentId']);
+        Route::get('/{id}/card', [CardController::class, 'getCardByApartmentId']);
+        Route::get('/{id}/add-card', [ApartmentController::class, 'addCardForm']);
+        Route::post('/{id}/add-card', [ApartmentController::class, 'saveAddCard']);
+        Route::post('/upload-excel', [ApartmentController::class, 'uploadApartment'])->name('apartment.upload-excel');
     });
-
 });
 
-Route::prefix('/apartment')->group(function () {
-    Route::get('/', [ApartmentController::class, 'getApartment'])->name('apartment');
-    Route::get('/not-owned', [ApartmentController::class, 'getApartmentNotOwned']);
-    Route::get('/not-owned/{id}', [ApartmentController::class, 'getApartmentNotOwnedAndId']);
-    Route::get('/add', [ApartmentController::class, 'addForm'])->name('apartment.add');
-    Route::post('/add', [ApartmentController::class, 'saveAdd']);
-    Route::get('/edit/{id}', [ApartmentController::class, 'editForm'])->name('apartment.edit');
-    Route::post('/edit/{id}', [ApartmentController::class, 'saveEdit']);
-    Route::get('/{id}', [ApartmentController::class, 'getApartmentById'])->name('apartment.detail');
-    Route::get('/{id}/finance', [ApartmentController::class, 'getBillByApartmentId']);
-    Route::get('/{id}/finance/unpaid', [ApartmentController::class, 'getUnpaidBillByApartmentId']);
-    Route::get('/{id}/finance/paid', [ApartmentController::class, 'getPaidBillByApartmentId']);
-    Route::get('/{id}/finance/{bill_id}/bill-detail', [ApartmentController::class, 'getBillDetailByApartmentId']);
-    Route::get('/{id}/card', [CardController::class, 'getCardByApartmentId']);
-    Route::get('/{id}/add-card', [ApartmentController::class, 'addCardForm']);
-    Route::post('/{id}/add-card', [ApartmentController::class, 'saveAddCard']);
-    Route::post('/upload-excel', [ApartmentController::class, 'uploadApartment'])->name('apartment.upload-excel');
-});
+
 Route::prefix('/bill')->group(function () {
     Route::get('/', [BillController::class, 'getBill'])->name('bill');
     Route::get('/add', [BillController::class, 'addForm'])->name('bill.add');
