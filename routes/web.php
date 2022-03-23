@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('layouts.app');
 });
+Route::prefix('user-manager')->name('user.')->group(function (){
+    Route::get('/', [\App\Http\Controllers\UserController::class, 'getUser'])->name('index');
+});

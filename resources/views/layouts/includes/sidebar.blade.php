@@ -45,12 +45,12 @@
         </li>
         <li>
             <a href="javascript:;" class="has-arrow">
-                <div class="parent-icon"><i class="bi bi-droplet-fill"></i>
+                <div class="parent-icon"><i class="bi bi-persons"></i>
                 </div>
                 <div class="menu-title">User</div>
             </a>
             <ul>
-                <li> <a href="widgets-static-widgets.html"><i class="bi bi-circle"></i>List user</a>
+                <li> <a href="{{route('user.index')}}"><i class="bi bi-circle"></i>List user</a>
                 </li>
             </ul>
         </li>
