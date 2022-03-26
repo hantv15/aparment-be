@@ -66,7 +66,7 @@
                             <div class="table-actions d-flex align-items-center gap-3 fs-6">
                                 <a href="javascript:;" class="text-primary" data-bs-toggle="tooltip"
                                     data-bs-placement="bottom" title="Views"><i class="bi bi-eye-fill"></i></a>
-                                <a href="javascript:;" class="text-warning" data-bs-toggle="tooltip"
+                                <a href="{{route('service.edit', ['id' => $service->id])}}" class="text-warning" data-bs-toggle="tooltip"
                                     data-bs-placement="bottom" title="Edit"><i class="bi bi-pencil-fill"></i></a>
                                 <a href="javascript:;" class="text-danger" data-bs-toggle="tooltip"
                                     data-bs-placement="bottom" title="Delete"><i class="bi bi-trash-fill"></i></a>
