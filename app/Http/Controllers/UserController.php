@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserRequest;
 use App\Http\Resources\RegisterResource;
-use App\Http\Resources\UserResource;
 use App\Models\Apartment;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
@@ -105,7 +102,6 @@ class UserController extends Controller
                 'dob.required'          => 'Ngày sinh trống',
                 'dob.date_format'       => 'Ngày sinh phải là định dạng đúng định dạng (Năm-tháng-ngày)',
                 'dob.before'            => 'Ngày sinh không được là tương lai',
-
             ]
         );
         if ($validator->fails()) {
@@ -226,7 +222,6 @@ class UserController extends Controller
             )
             ->where('users.id', $id)
             ->get();
-
         return $this->success($user);
     }
 }

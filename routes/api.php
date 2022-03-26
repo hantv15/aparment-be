@@ -46,6 +46,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/send-notification', [ApartmentNotiController::class, 'sendNotification'])->name('save-token');
 
     Route::get('/user', [UserController::class, 'getUserLogin']);
+
     Route::prefix('/apartment')->group(function () {
         Route::get('/', [ApartmentController::class, 'getApartment'])->name('apartment');
         Route::get('/not-owned', [ApartmentController::class, 'getApartmentNotOwned']);
@@ -65,7 +66,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/upload-excel', [ApartmentController::class, 'uploadApartment'])->name('apartment.upload-excel');
     });
 });
-
 
 Route::prefix('/bill')->group(function () {
     Route::get('/', [BillController::class, 'getBill'])->name('bill');
