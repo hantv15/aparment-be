@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\ServiceController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,6 +18,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('layouts.app');
 });
-Route::prefix('user-manager')->name('user.')->group(function (){
+Route::prefix('user-manager')->group(function (){
     Route::get('/', [\App\Http\Controllers\UserController::class, 'getUser'])->name('index');
+});
+Route::prefix('service-manage')->group(function (){
+    Route::get('/', [ServiceController::class, 'getService'])->name('service.index');
+    Route::get('/add', [ServiceController::class, 'addForm'])->name('add');
+    Route::post('/add', [ServiceController::class, 'saveAdd']);
+    Route::get('/edit/{id}', [ServiceController::class, 'editForm'])->name('edit');
+    Route::post('/edit/{id}', [ServiceController::class, 'saveEdit']);
 });

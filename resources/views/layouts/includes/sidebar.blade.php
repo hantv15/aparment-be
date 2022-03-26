@@ -50,7 +50,7 @@
                 <div class="menu-title">User</div>
             </a>
             <ul>
-                <li> <a href="{{route('user.index')}}"><i class="bi bi-circle"></i>List user</a>
+                <li> <a href="{{route('index')}}"><i class="bi bi-circle"></i>List user</a>
                 </li>
             </ul>
         </li>
@@ -85,7 +85,7 @@
                 <div class="menu-title">Service</div>
             </a>
             <ul>
-                <li> <a href="authentication-forgot-password.html" target="_blank"><i class="bi bi-circle"></i>List</a>
+                <li> <a href="{{route('service.index')}}" target="_blank"><i class="bi bi-circle"></i>List</a>
                 </li>
             </ul>
         </li>
