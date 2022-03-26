@@ -15,11 +15,10 @@ class CreateCardsTable extends Migration
     {
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
-            $table->integer('number', 9)->unique()->nullable();
+            $table->string('number', 9)->unique()->nullable();
             $table->string('name', 255);
             $table->tinyInteger('status')->default(0);
-            $table->dateTime('expire_time')->nullable();
-
+            $table->dateTime('expire_time')->nullable();    
             $table->unsignedBigInteger('apartment_id');
             $table->foreign('apartment_id')->references('id')->on('apartments')
                     ->onUpdate('cascade')
