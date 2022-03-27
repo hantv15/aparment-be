@@ -23,7 +23,7 @@
 
                 <div class="col-md-6">
                     <label for="validationCustom04" class="form-label">Trạng thái</label>
-                    <select class="form-select" id="validationCustom04" required="">
+                    <select class="form-select discription" id="validationCustom04" required="">
                         <option >0</option>
                         <option >1</option>
                     </select>
