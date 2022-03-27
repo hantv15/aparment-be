@@ -8,12 +8,17 @@ use App\Models\User;
 
 class FeedbackController extends Controller
 {   
-    
-    public function sendFeedback(Request $request){        
-        Mail::send('email.feedback', ['feedback' => $request->feedback], function ($message) {
-            $message->to('anhndph12795@fpt.edu.vn');
-            $message->subject('Phản hồi từ khách hàng');
-        });
-        return $this->success($request->feedback);
+    public function getFeedback(){
+        return view('feedbacks.feedback');
+    }
+
+    public function sendFeedback(Request $request){  
+        $users = User::where('role',0)->get();      
+        foreach($users as $user){
+            Mail::send('email.feedback', ['feedback' => 'abc'], function ($message) use ($user) {
+                $message->to($user->email);
+                $message->subject('Phản hồi từ khách hàng');
+            });
+        }
     }
 }
