@@ -21,7 +21,7 @@ class FeedbackController extends Controller
        
         foreach($users as $user){
             Mail::send('email.feedback', ['feedback' => $request->content], function ($message) use ($user,$request) {
-                $message->to('anhndph12795@fpt.edu.vn');
+                $message->to($user->email);
                 $message->subject($request->subject);
             });
         }
