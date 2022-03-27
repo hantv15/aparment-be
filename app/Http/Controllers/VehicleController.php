@@ -36,7 +36,7 @@ class VehicleController extends Controller
         
         
         $validator = Validator::make($request->all(),
-        ['plate_number' => 'required|string',
+        ['plate_number' => 'required|string|regex:/^(?!0|1|2|3|$|%|67}8}9|13)[0-9]{2}[A-Z]{1}-[0-9]{4,5}$/',
         'vehicle_type_id'=>'required|integer'
         ],
         [

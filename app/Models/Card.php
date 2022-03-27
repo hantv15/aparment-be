@@ -22,6 +22,10 @@ class Card extends Model
         'updated_at'
     ];
 
+    public function apartment(){
+        return $this->belongsTo(Apartment::class, 'apartment_id');
+    }
+
     public function vehicles(): HasMany
     {
         return $this->hasMany(Vehicle::class);

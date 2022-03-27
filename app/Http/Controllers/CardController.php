@@ -13,7 +13,7 @@ use Illuminate\Validation\Rule;
 
 class CardController extends Controller
 {
-    public function getCard(Request $request):JsonResponse
+    public function getCard(Request $request)
     {
         $cards = Card::all();
         if($request->filled('keyword')){
@@ -28,8 +28,8 @@ class CardController extends Controller
         if ($request->filled('page') && $request->filled('page_size')){
             $cards = $cards->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
         }
-        $result = CardResource::collection($cards);
-        return $this->success($result);
+        
+        return view('cards.index',compact('cards'));
     }
 
     public function getCardByApartmentId($id): JsonResponse
@@ -49,33 +49,14 @@ class CardController extends Controller
 
     public function addForm(){
         $apartments = Apartment::all();
-        return view('card.add',compact('apartments'));
+        // dd($apartments->apartment_id);die;
+        return view('cards.add',compact('apartments'));
     }
 
-    public function saveAdd(Request $request):JsonResponse
+    public function saveAdd(CardRequest $request)
     {   
-        $validator = Validator::make($request->all(),
-        ['name' => 'required|string|regex:[a-zA-Z]',
-        'status'=>'required|integer|min:0|max:1',
-        'expire_time'=>'date_format:Y-m-d\TH:i',
-        'apartment_id'=>'required|integer'
-        ],
-        [
-            'name.required'=> 'Tên số Không được trống',
-            'name.string'=> 'Tên phải là chuỗi',
-            'name.regex'=>'Tên không được chứa kí tự đặc biệt hoặc số',
-            'status.required'=> 'Trạng thái Không được trống',
-            'status.integer'=>'Trạng thái không đúng định dạng',
-            'status.min'=> 'Trạng thái không được nhỏ hơn 0',
-            'status.min'=> 'Trạng thái không được lớn hơn 1',
-            'expire_time.date_format'=> 'Thời gian không hợp lệ',
-            'apartment_id.required'=> 'Căn hộ này không được để trống',
-            'apartment_id.integer'=> 'Căn hộ sai định dạng',
-        ] 
-    );
-    if ($validator->fails()) {
-        return $this->failed($validator->messages());
-    }
+        
+       
 
         $number = rand(100000000, 999999999);
         $count_exist_number = Card::where('number', $number)->count();
@@ -94,7 +75,7 @@ class CardController extends Controller
         $card->fill($request->all());
         $card->number = $number;
         $card->save();
-        return $this->success($card);
+        return redirect(route('card.index'));
     }
 
     public function editForm($id)
@@ -106,34 +87,16 @@ class CardController extends Controller
         $hour = substr($card->expire_time, 11, 2);
         $minute = substr($card->expire_time, 14, 2);
         $apartments = Apartment::all();
-        return view('card.edit', compact('card', 'apartments', 'year', 'month', 'day', 'hour', 'minute'));
+        return view('cards.edit', compact('card', 'apartments', 'year', 'month', 'day', 'hour', 'minute'));
     }
 
-    public function saveEdit(Request $request, $id): JsonResponse
+    public function saveEdit(CardRequest $request, $id)
     {   
-        $validator = Validator::make($request->all(),
-        ['name' => 'required|string|regex:[a-zA-Z]',
-        'status'=>'required|integer|min:0|max:1',
-        'expire_time'=>'date_format:Y-m-d\TH:i'
-        ],
-        [
-            'name.required'=> 'Tên số Không được trống',
-            'name.string'=> 'Tên phải là chuỗi',
-            'name.regex'=> 'Tên không được chứa kí tự hoặc số',
-            'status.required'=> 'Trạng thái Không được trống',
-            'status.integer'=>'Trạng thái không đúng định dạng',
-            'status.min'=> 'Phí không được nhỏ hơn 0',
-            'status.min'=> 'Phí không được lớn hơn 1',
-            'expire_time.date_format'=> 'Thời gian không hợp lệ',
-        ] 
-    );
-    if ($validator->fails()) {
-        return $this->failed($validator->messages());
-    }
+       
         $card =Card::find($id);
         $card->fill($request->all());
         $card->save();
-        return $this->success($card);
+        return redirect(route('card.index'));
     }
 
     public function getCardById($id)
