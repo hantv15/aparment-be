@@ -130,7 +130,7 @@
                 <div class="menu-title">Feedback</div>
             </a>
             <ul>
-                <li> <a href="map-google-maps.html"><i class="bi bi-circle"></i>List feedback</a>
+                <li> <a href="{{route('feedback.list')}}"><i class="bi bi-circle"></i>List feedback</a>
                 </li>
             </ul>
         </li>

@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +31,7 @@ Route::prefix('/card')->group(function () {
     Route::post('/remove/{id}', [CardController::class, 'remove'])->name('card.remove');
     Route::get('/{id}', [CardController::class, 'getCardById'])->name('card.detail');
 });
+Route::get('feedback',[FeedbackController::class,'getFeedback']);
+Route::post('feedback',[FeedbackController::class,'sendFeedback']);
+Route::get('listFeedback',[FeedbackController::class,'listFeedback'])->name('feedback.list');
+Route::get('getFeedbackID/{id}',[FeedbackController::class,'getFeedbackById'])->name('feedback.view');
