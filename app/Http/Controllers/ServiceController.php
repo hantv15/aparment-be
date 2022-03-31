@@ -15,9 +15,9 @@ class ServiceController extends Controller
     /**
      * @return JsonResponse
      */
-    public function getService(Request $request): JsonResponse
+    public function getService(Request $request)
     {
-        $services = Service::all();
+        $services = Service::paginate(10);
         if($request->filled('keyword')){
             $services = Service::where('name','like','%' . $request->keyword . '%')
                                 ->orWhere('price',  $request->keyword)
@@ -34,8 +34,7 @@ class ServiceController extends Controller
         if ($request->filled('page') && $request->filled('page_size')){
             $services = $services->skip( ($request->page-1) * $request->page_size )->take($request->page_size);
         }
-        $result = ServiceResource::collection($services);
-        return $this->success($result);
+        return view('services.index', compact('services'));
     }
 
     /**
@@ -43,10 +42,10 @@ class ServiceController extends Controller
      * @return JsonResponse
      */
     public function addForm(){
-        return view('service.add');
+        return view('services.add');
     }
 
-    public function saveAdd(Request $request): JsonResponse
+    public function saveAdd(Request $request)
     {
         $validator = Validator::make($request->all(),
         ['name' => 'required|string|unique:services|regex:/[a-zA-Z]/',
@@ -70,19 +69,16 @@ class ServiceController extends Controller
         $service = new Service();
         $service->fill($request->all());
         $service->save();
-        return $this->success($service);
+        return redirect(route('service.index'));
     }
 
     public function editForm($id)
     {
         $service = Service::find($id);
-        if (!$service) {
-            return $this->failed();
-        }
-        return view('service.edit', compact('service'));
+        return view('services.edit', compact('service'));   
     }
 
-    public function saveEdit(Request $request, $id): JsonResponse
+    public function saveEdit(Request $request, $id)
     {
         $validator = Validator::make($request->all(),
         ['name' => [
@@ -91,6 +87,8 @@ class ServiceController extends Controller
         ],
         'price'=>'required|integer|min:1',
         'icon' => 'nullable|image',
+        'description' =>  'required', 'string','regex:/[a-zA-Z]/',
+        Rule::unique('services')->ignore($id),
         ],
         [
             'name.required'=> 'Tên số Không được trống',
@@ -111,7 +109,7 @@ class ServiceController extends Controller
         }
         $service->fill($request->all());
         $service->save();
-        return $this->success($service);
+        return redirect(route('service.index'));
     }
     public function getServiceById($id):JsonResponse
     {

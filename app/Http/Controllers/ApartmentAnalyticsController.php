@@ -12,7 +12,7 @@ class ApartmentAnalyticsController extends Controller
     /**
      * @return JsonResponse
      */
-    public function analyticApartment(Request $request): JsonResponse
+    public function analyticApartment(Request $REQUEST): JsonResponse
     {
         $totalData = Bill::query();
         $userNotPaymentQuery = Bill::where('status', Bill::NOT_YET_PAYMENT);
