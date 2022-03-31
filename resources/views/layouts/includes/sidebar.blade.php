@@ -54,6 +54,17 @@
                 </li>
             </ul>
         </li>
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="bi bi-persons"></i>
+                </div>
+                <div class="menu-title">Card</div>
+            </a>
+            <ul>
+                <li> <a href="{{route('card.index')}}"><i class="bi bi-circle"></i>List Card</a>
+                </li>
+            </ul>
+        </li>
         <li class="menu-label">Building Management</li>
         <li>
             <a class="has-arrow" href="javascript:;">
@@ -119,7 +130,7 @@
                 <div class="menu-title">Feedback</div>
             </a>
             <ul>
-                <li> <a href="map-google-maps.html"><i class="bi bi-circle"></i>List feedback</a>
+                <li> <a href="{{route('feedback.list')}}"><i class="bi bi-circle"></i>List feedback</a>
                 </li>
             </ul>
         </li>

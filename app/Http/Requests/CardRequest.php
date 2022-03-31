@@ -23,11 +23,33 @@ class CardRequest extends FormRequest
      */
     public function rules()
     {
-        $requestRule = [
-            'name' => 'required|string|min:3',
+        $requestRule =  [
+            'name' => [
+                'required',
+                Rule::unique('cards')->ignore($this->id)
+            ],
             'status'=>'required|integer|min:0|max:1',
+        'expire_time'=>'date_format:Y-m-d\TH:i',
+        'apartment_id'=>'required|integer'
         ];
+        
+        
 
         return $requestRule;
+    }
+    public function messages()
+    {
+        return [
+            'name.required'=> 'Tên số Không được trống',
+            'name.string'=> 'Tên phải là chuỗi',
+            'name.regex'=>'Tên không được chứa kí tự đặc biệt hoặc số',
+            'status.required'=> 'Trạng thái Không được trống',
+            'status.integer'=>'Trạng thái không đúng định dạng',
+            'status.min'=> 'Trạng thái không được nhỏ hơn 0',
+            'status.min'=> 'Trạng thái không được lớn hơn 1',
+            'expire_time.date_format'=> 'Thời gian không hợp lệ',
+            'apartment_id.required'=> 'Căn hộ này không được để trống',
+            'apartment_id.integer'=> 'Căn hộ sai định dạng',
+        ];
     }
 }
