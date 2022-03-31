@@ -84,7 +84,7 @@
                 <div class="menu-title">Apartment</div>
             </a>
             <ul>
-                <li> <a href="table-advance-tables.html"><i class="bi bi-circle"></i>List apartment</a>
+                <li> <a href="{{route('apartment')}}"><i class="bi bi-circle"></i>List apartment</a>
                 </li>
             </ul>
         </li>
