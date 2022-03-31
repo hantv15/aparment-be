@@ -23,7 +23,7 @@ Route::prefix('user-manager')->group(function (){
 });
 Route::prefix('service-manage')->group(function (){
     Route::get('/', [ServiceController::class, 'getService'])->name('service.index');
-    Route::get('/add', [ServiceController::class, 'addForm'])->name('add');
+    Route::get('/add', [ServiceController::class, 'addForm'])->name('service.add');
     Route::post('/add', [ServiceController::class, 'saveAdd']);
     Route::get('/edit/{id}', [ServiceController::class, 'editForm'])->name('edit');
     Route::post('/edit/{id}', [ServiceController::class, 'saveEdit']);

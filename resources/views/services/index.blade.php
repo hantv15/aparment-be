@@ -7,13 +7,13 @@
             <ol class="breadcrumb mb-0 p-0">
                 <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">User management</li>
+                <li class="breadcrumb-item active" aria-current="page">Dịch vụ</li>
             </ol>
         </nav>
     </div>
     <div class="ms-auto">
         <div class="btn-group">
-            <a href="#" class="btn btn-success">Add user</a>
+            <a href="{{route('service.add')}}" class="btn btn-success">Thêm dịch vụ</a>
             &nbsp &nbsp &nbsp
             <a href="#" class="btn btn-primary">Settings</a>
         </div>
@@ -24,7 +24,7 @@
 <div class="card">
     <div class="card-body">
         <div class="d-flex align-items-center">
-            <h5 class="mb-0">User Details</h5>
+            <h5 class="mb-0">Dịch vụ</h5>
             <form method="GET" action="{{\Illuminate\Support\Facades\URL::current()}}"
                 class="ms-auto position-relative d-flex">
                 <input class="form-control ps-5" type="text" name="keyword" placeholder="search"> &nbsp;
@@ -41,7 +41,7 @@
                         <th>Ảnh</th>
                         <th>Mô tả</th>
                         <th>Trạng thái</th>
-                        <th>Thêm</th>
+                        <th>Tùy chỉnh</th>
                       
                     </tr>
                 </thead>
@@ -64,12 +64,10 @@
                         <td>{{$service->status}}</td>
                         <td>
                             <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                <a href="javascript:;" class="text-primary" data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom" title="Views"><i class="bi bi-eye-fill"></i></a>
+                        
                                 <a href="{{route('service.edit', ['id' => $service->id])}}" class="text-warning" data-bs-toggle="tooltip"
                                     data-bs-placement="bottom" title="Edit"><i class="bi bi-pencil-fill"></i></a>
-                                <a href="javascript:;" class="text-danger" data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom" title="Delete"><i class="bi bi-trash-fill"></i></a>
+                
                             </div>
                         </td>
                     </tr>
