@@ -35,11 +35,11 @@
                     <thead class="table-secondary">
                     <tr>
                         <th>#</th>
-                        <th>Number</th>
-                        <th>name</th>
-                        <th>status</th>
-                        <th>expire_time</th>
-                        <th>apartment_id</th>
+                        <th>Số thẻ</th>
+                        <th>Tên chủ thẻ</th>
+                        <th>trạng thái</th>
+                        <th>Ngày hết hạn</th>
+                        <th>Căn hộ</th>
                         <th></th>
                         
                     </tr>
