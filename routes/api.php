@@ -38,6 +38,7 @@ Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPassw
 Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
 Route::get('reset-password', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+Route::get('feedback',[FeedbackController::class,'getFeedback']);
 Route::post('feedback',[FeedbackController::class,'sendFeedback']);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
@@ -102,15 +103,15 @@ Route::prefix('/building')->group(function () {
     Route::get('/{id}/apartment', [BuildingController::class, 'getApartmentByBuildingId']);
 });
 
-Route::prefix('/card')->group(function () {
-    Route::get('/', [CardController::class, 'getCard'])->name('card');
-    Route::get('/add', [CardController::class, 'addForm'])->name('card.add');
-    Route::post('/add', [CardController::class, 'saveAdd']);
-    Route::get('/edit/{id}', [CardController::class, 'editForm'])->name('card.edit');
-    Route::post('/edit/{id}', [CardController::class, 'saveEdit']);
-    Route::post('/remove/{id}', [CardController::class, 'remove']);
-    Route::get('/{id}', [CardController::class, 'getCardById'])->name('card.detail');
-});
+// Route::prefix('/card')->group(function () {
+//     Route::get('/', [CardController::class, 'getCard'])->name('card');
+//     Route::get('/add', [CardController::class, 'addForm'])->name('card.add');
+//     Route::post('/add', [CardController::class, 'saveAdd']);
+//     Route::get('/edit/{id}', [CardController::class, 'editForm'])->name('card.edit');
+//     Route::post('/edit/{id}', [CardController::class, 'saveEdit']);
+//     Route::post('/remove/{id}', [CardController::class, 'remove']);
+//     Route::get('/{id}', [CardController::class, 'getCardById'])->name('card.detail');
+// });
 
 
 Route::post('payment', [PaymentController::class, 'payment']);

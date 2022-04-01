@@ -50,7 +50,18 @@
                 <div class="menu-title">User</div>
             </a>
             <ul>
-                <li> <a href="{{route('user.index')}}"><i class="bi bi-circle"></i>List user</a>
+                <li> <a href="{{route('index')}}"><i class="bi bi-circle"></i>List user</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="bi bi-persons"></i>
+                </div>
+                <div class="menu-title">Card</div>
+            </a>
+            <ul>
+                <li> <a href="{{route('card.index')}}"><i class="bi bi-circle"></i>List Card</a>
                 </li>
             </ul>
         </li>
@@ -73,7 +84,7 @@
                 <div class="menu-title">Apartment</div>
             </a>
             <ul>
-                <li> <a href="table-advance-tables.html"><i class="bi bi-circle"></i>List apartment</a>
+                <li> <a href="{{route('apartment')}}"><i class="bi bi-circle"></i>List apartment</a>
                 </li>
             </ul>
         </li>
@@ -85,7 +96,7 @@
                 <div class="menu-title">Service</div>
             </a>
             <ul>
-                <li> <a href="authentication-forgot-password.html" target="_blank"><i class="bi bi-circle"></i>List</a>
+                <li> <a href="{{route('service.index')}}" target="_blank"><i class="bi bi-circle"></i>List</a>
                 </li>
             </ul>
         </li>
@@ -119,7 +130,7 @@
                 <div class="menu-title">Feedback</div>
             </a>
             <ul>
-                <li> <a href="map-google-maps.html"><i class="bi bi-circle"></i>List feedback</a>
+                <li> <a href="{{route('feedback.list')}}"><i class="bi bi-circle"></i>List feedback</a>
                 </li>
             </ul>
         </li>

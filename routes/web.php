@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\ApartmentController;
@@ -17,6 +16,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\VehicleTypeController;
+use App\Http\Controllers\ServiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,13 +97,12 @@ Route::prefix('/card')->group(function () {
     Route::get('/{id}', [CardController::class, 'getCardById'])->name('card.detail');
 });
 
-Route::prefix('/service')->group(function () {
-    Route::get('/', [ServiceController::class, 'getService'])->name('service');
+Route::prefix('service-manage')->group(function (){
+    Route::get('/', [ServiceController::class, 'getService'])->name('service.index');
     Route::get('/add', [ServiceController::class, 'addForm'])->name('service.add');
     Route::post('/add', [ServiceController::class, 'saveAdd']);
-    Route::get('/edit/{id}', [ServiceController::class, 'editForm'])->name('service.edit');
+    Route::get('/edit/{id}', [ServiceController::class, 'editForm'])->name('edit');
     Route::post('/edit/{id}', [ServiceController::class, 'saveEdit']);
-    Route::get('/{id}', [ServiceController::class, 'getServiceById'])->name('service.detail');
 });
 
 Route::prefix('/user')->group(function () {
@@ -137,3 +136,9 @@ Route::prefix('/vehicle-type')->group(function () {
     Route::post('/edit/{id}', [VehicleTypeController::class, 'saveEdit']);
     Route::get('/{id}', [VehicleTypeController::class, 'getVehicleTypeById'])->name('vehicle-type.detail');
 });
+
+Route::get('feedback',[FeedbackController::class,'getFeedback']);
+Route::post('feedback',[FeedbackController::class,'sendFeedback']);
+Route::get('listFeedback',[FeedbackController::class,'listFeedback'])->name('feedback.list');
+Route::get('getFeedbackID/{id}',[FeedbackController::class,'getFeedbackById'])->name('feedback.view');
+
