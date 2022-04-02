@@ -73,7 +73,7 @@
                 <div class="menu-title">Căn hộ</div>
             </a>
             <ul>
-                <li> <a href="{{route('apartment')}}"><i class="bi bi-circle"></i>Danh sách căn hộ</a>
+{{--                <li> <a href="{{route('apartment')}}"><i class="bi bi-circle"></i>Danh sách căn hộ</a>--}}
                 </li>
             </ul>
         </li>
