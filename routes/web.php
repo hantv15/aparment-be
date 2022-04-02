@@ -17,10 +17,10 @@ use App\Http\Controllers\ServiceController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('login', [\App\Http\Controllers\AuthController::class, 'login']);
+Route::get('login', [\App\Http\Controllers\AuthController::class, 'login'])->name('login');
 Route::post('login', [\App\Http\Controllers\AuthController::class, 'postLogin']);
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['web','auth'])->group(function () {
 
     Route::get('feedback', [FeedbackController::class, 'getFeedback']);
     Route::post('feedback', [FeedbackController::class, 'sendFeedback']);
