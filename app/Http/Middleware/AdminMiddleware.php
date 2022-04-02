@@ -17,7 +17,7 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->role == 1) {
+        if (Auth::user()->role == 0) {
             return $next($request);
         } else {
             return redirect()->back()->with('msg', 'Bạn không thể truy cập vào trang này.');
