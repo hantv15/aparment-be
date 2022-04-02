@@ -51,8 +51,7 @@
                         <td>{{$key++}}</td>
                         <td>
                             <div class="d-flex align-items-center gap-3 cursor-pointer">
-                                <img src="https://via.placeholder.com/110X110" class="rounded-circle" width="44"
-                                    height="44" alt="">
+                               
                                 <div class="">
                                     <p class="mb-0">{{$service->name}}</p>
                                 </div>
