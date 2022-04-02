@@ -15,8 +15,8 @@
                 <li class="nav-item dropdown dropdown-user-setting">
                     <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
                         <div class="user-setting d-flex align-items-center">
-                            <span class="p-3">Nguyen Anh Tuan</span>
-                            <img src="https://via.placeholder.com/110X110" class="user-img" alt="">
+                            <span class="p-3">{{\Illuminate\Support\Facades\Auth::user()->name}}</span>
+                            <img src="{{asset('assets/images/logo-icon.png')}}" class="user-img" alt="">
                         </div>
                     </a>
                 </li>
