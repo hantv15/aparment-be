@@ -43,9 +43,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/edit-user/{id}', [\App\Http\Controllers\UserController::class, 'formEditUser'])->name('edit');
 
         });
-        Route::prefix('user-manager')->group(function () {
-            Route::get('/', [\App\Http\Controllers\UserController::class, 'getUser'])->name('index');
-        });
 
         Route::prefix('service-manage')->group(function () {
             Route::get('/', [ServiceController::class, 'getService'])->name('service.index');
