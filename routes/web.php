@@ -5,6 +5,7 @@ use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\Clients\HomeController;
 
 
 /*
@@ -20,6 +21,9 @@ use App\Http\Controllers\ServiceController;
 
 Route::get('/', function () {
     return view('layouts.app');
+});
+Route::prefix('client')->group(function (){
+    Route::get('/', [\App\Http\Controllers\Clients\HomeController::class, 'index'])->name('home');
 });
 Route::prefix('user-manager')->group(function (){
     Route::get('/', [\App\Http\Controllers\UserController::class, 'getUser'])->name('index');

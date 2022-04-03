@@ -12,6 +12,8 @@
 
 
     <!-- Additional CSS Files -->
+    
+    <link rel="stylesheet" href="{{asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/clients/fontawesome.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/clients/templatemo-edu-meeting.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/clients/owl.css')}}">
