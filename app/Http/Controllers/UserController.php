@@ -3,16 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\RegisterResource;
+use App\Http\Requests\RegisterUserRequest;
 use App\Models\Apartment;
 use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -78,10 +77,14 @@ class UserController extends Controller
     public function registerForm()
     {
         $apartments = Apartment::where('user_id', null)->get();
-        return view('user.add', compact('apartments'));
+        return view('users.add-user', compact('apartments'));
     }
 
-    public function saveUser(Request $request): JsonResponse
+    /**
+     * @param RegisterUserRequest $request
+     * @return RedirectResponse
+     */
+    public function saveUser(RegisterUserRequest $request): RedirectResponse
     {
         $yearOld18 = Carbon::now();
         $validator = Validator::make($request->all(),
@@ -124,6 +127,19 @@ class UserController extends Controller
         $token = $user->createToken('authtoken')->plainTextToken;
         $result = new RegisterResource($user);
         return $this->success($result, 'Thêm mới tài khoản thành công!');
+           $user = new User();
+           $user->password = Hash::make('12345678');
+           if ($request->hasFile('avatar')) {
+               $imgPath = $request->file('avatar')->store('users');
+               $imgPath = str_replace('public/', '', $imgPath);
+               $user->avatar = $imgPath;
+           }
+           $user->fill($request->all());
+           $user->save();
+           $apartment = Apartment::where('id', $request->apartment_id)->first();
+           $apartment->user_id = $user->id;
+           $apartment->save();
+           return redirect()->route('user.index');
     }
 
     public function formEditUser($id)
@@ -135,43 +151,14 @@ class UserController extends Controller
         $apartments = Apartment::where('user_id', null)
             ->orWhere('user_id', $id)
             ->get();
-        return view('user.edit', compact('user', 'apartments'));
+        return view('users.edit', compact('user', 'apartments'));
     }
 
-    public function saveEditUser($id, Request $request): JsonResponse
+    public function saveEditUser($id, RegisterUserRequest $request)
     {
         $user = User::find($id);
         if (! $user) {
-            return $this->failed('User không tồn tại');
-        }
-
-        $validator = Validator::make($request->all(),
-            [
-                'email'        => [
-                    'required', 'email',
-                    Rule::unique('users')->ignore($id),
-                ],
-                'phone_number' => [
-                    'required',
-                    Rule::unique('users')->ignore($id),
-                ],
-                'apartment_id' => [
-                    'required',
-                    Rule::unique('users')->ignore($id),
-                ],
-            ],
-            [
-                'email.required'        => 'Email không được trống',
-                'email.email'           => 'Email không đúng định dạng',
-                'email.unique'          => 'Email đã tồn tại',
-                'phone_number.required' => 'Số điện thoại không được để trống',
-                'phone_number.unique'   => 'Số điện thoại đã tồn tại',
-                'apartment_id.required' => 'Phòng không được để trống',
-                'apartment_id.unique'   => 'Phòng đã có người đăng ký',
-            ]
-        );
-        if ($validator->fails()) {
-            return $this->failed($validator->messages());
+           abort(404);
         }
 
         if ($request->has('apartment_id')) {
@@ -190,7 +177,7 @@ class UserController extends Controller
         $apartment = Apartment::where('id', $request->apartment_id)->first();
         $apartment->user_id = $user->id;
         $apartment->save();
-        return $this->success($user, 'Sửa thông tin tài khoản thành công');
+        return redirect()->route('user.index')->with(['message' => 'Cập nhật thông tin user thành công']);
     }
 
     public function removeUser($id)

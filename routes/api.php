@@ -103,15 +103,15 @@ Route::prefix('/building')->group(function () {
     Route::get('/{id}/apartment', [BuildingController::class, 'getApartmentByBuildingId']);
 });
 
-// Route::prefix('/card')->group(function () {
-//     Route::get('/', [CardController::class, 'getCard'])->name('card');
-//     Route::get('/add', [CardController::class, 'addForm'])->name('card.add');
-//     Route::post('/add', [CardController::class, 'saveAdd']);
-//     Route::get('/edit/{id}', [CardController::class, 'editForm'])->name('card.edit');
-//     Route::post('/edit/{id}', [CardController::class, 'saveEdit']);
-//     Route::post('/remove/{id}', [CardController::class, 'remove']);
-//     Route::get('/{id}', [CardController::class, 'getCardById'])->name('card.detail');
-// });
+ Route::prefix('/card')->group(function () {
+     Route::get('/', [CardController::class, 'getCard'])->name('card');
+     Route::get('/add', [CardController::class, 'addForm'])->name('card.add');
+     Route::post('/add', [CardController::class, 'saveAdd']);
+     Route::get('/edit/{id}', [CardController::class, 'editForm'])->name('card.edit');
+     Route::post('/edit/{id}', [CardController::class, 'saveEdit']);
+     Route::post('/remove/{id}', [CardController::class, 'remove']);
+     Route::get('/{id}', [CardController::class, 'getCardById'])->name('card.detail');
+ });
 
 
 Route::post('payment', [PaymentController::class, 'payment']);
@@ -157,3 +157,4 @@ Route::get('fire_notification', [FireNotificationController::class, 'formFireNot
 Route::post('fire_notification', [\App\Http\Controllers\FireNotificationController::class, 'createFireNotification'])->name('fire_notification');
 Route::get('service_notification', [\App\Http\Controllers\SendServiceNotificationController::class, 'get']);
 Route::get('analytics', [\App\Http\Controllers\ApartmentAnalyticsController::class, 'analyticApartment']);
+
