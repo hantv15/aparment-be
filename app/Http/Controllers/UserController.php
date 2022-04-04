@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RegisterResource;
 use App\Http\Requests\RegisterUserRequest;
 use App\Models\Apartment;
 use App\Models\User;
@@ -85,6 +86,47 @@ class UserController extends Controller
      */
     public function saveUser(RegisterUserRequest $request): RedirectResponse
     {
+        $yearOld18 = Carbon::now();
+        $validator = Validator::make($request->all(),
+            [
+                'email'        => 'required|email|unique:users',
+                'phone_number' => 'required|unique:users',
+                'apartment_id' => 'required|unique:users',
+                'dob'          => 'required|date_format:Y-m-d|before:' . $yearOld18,
+            ],
+            [
+                'email.required'        => 'Vui lòng nhập Email',
+                'email.email'           => 'Email không đúng định dạng',
+                'email.unique'          => 'Email đã tồn tại',
+                'phone_number.required' => 'Số điện thoại không được để trống',
+                'phone_number.unique'   => 'Số điện thoại đã tồn tại',
+                'apartment_id.required' => 'Phòng không được để trống',
+                'apartment_id.unique'   => 'Phòng đã có người đăng ký',
+                'dob.required'          => 'Ngày sinh trống',
+                'dob.date_format'       => 'Ngày sinh phải là định dạng đúng định dạng (Năm-tháng-ngày)',
+                'dob.before'            => 'Ngày sinh không được là tương lai',
+            ]
+        );
+        if ($validator->fails()) {
+            return $this->failed($validator->messages());
+        }
+
+        $user = new User();
+        $user->password = Hash::make('12345678');
+        if ($request->hasFile('avatar')) {
+            $imgPath = $request->file('avatar')->store('users');
+            $imgPath = str_replace('public/', '', $imgPath);
+            $user->avatar = $imgPath;
+        }
+        $user->fill($request->all());
+        $user->save();
+        $apartment = Apartment::where('id', $request->apartment_id)->first();
+        $apartment->user_id = $user->id;
+        $apartment->save();
+        event(new Registered($user));
+        $token = $user->createToken('authtoken')->plainTextToken;
+        $result = new RegisterResource($user);
+        return $this->success($result, 'Thêm mới tài khoản thành công!');
            $user = new User();
            $user->password = Hash::make('12345678');
            if ($request->hasFile('avatar')) {
@@ -167,7 +209,6 @@ class UserController extends Controller
             )
             ->where('users.id', $id)
             ->get();
-
         return $this->success($user);
     }
 }

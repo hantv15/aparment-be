@@ -14,4 +14,8 @@ class Building extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function apartments(){
+        return $this->hasMany(Apartment::class,'building_id');
+    }
 }
