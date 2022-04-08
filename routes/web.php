@@ -14,9 +14,11 @@ use App\Http\Controllers\FireNotificationController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\Clients\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\VehicleTypeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -31,13 +33,22 @@ use App\Http\Controllers\VehicleTypeController;
 Route::get('login', [\App\Http\Controllers\AuthController::class, 'login'])->name('login');
 Route::post('login', [\App\Http\Controllers\AuthController::class, 'postLogin']);
 
+
+Route::get('/', function () {
+    return view('layouts.app');
+});
+Route::prefix('client')->group(function (){
+    Route::get('/', [\App\Http\Controllers\Clients\HomeController::class, 'index'])->name('home');
+});
+Route::prefix('user-manager')->group(function (){
+    Route::get('/', [\App\Http\Controllers\UserController::class, 'getUser'])->name('index');
+});
 Route::middleware(['web','auth'])->group(function () {
     Route::get('feedback', [FeedbackController::class, 'getFeedback']);
     Route::post('feedback', [FeedbackController::class, 'sendFeedback']);
     Route::get('listFeedback', [FeedbackController::class, 'listFeedback'])->name('feedback.list');
     Route::get('getFeedbackID/{id}', [FeedbackController::class, 'getFeedbackById'])->name('feedback.view');
     Route::get('signout', [\App\Http\Controllers\AuthController::class, 'signOut'])->name('signout');
-
     Route::get('/', function () {
         return view('layouts.app');
     });
