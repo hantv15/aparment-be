@@ -19,11 +19,11 @@ class BuildingController extends Controller
     /**
      * @return JsonResponse
      */
-    public function getBuilding(): JsonResponse
+    public function getBuilding()
     {
-        $buildings = Building::all();
-        $result = BuildingResource::collection($buildings);
-        return $this->success($result);
+        $buildings = Building::paginate(5);
+        $buildings->load('apartments');
+        return view('buildings.index', compact('buildings'));
     }
 
     /**
@@ -31,66 +31,36 @@ class BuildingController extends Controller
      */
     public function addForm()
     {
-        return view('building.add');
+        return view('buildings.add');
     }
 
     /**
      * @param Request $request
      * @return JsonResponse
      */
-    public function saveAdd(Request $request): JsonResponse
-    
+    public function saveAdd(BuildingRequest $request)
     {
-        $validator = Validator::make($request->all(),
-    ['name' => 'required|string|regex:/[a-zA-Z0-9]^./',
-
-    ],
-    [
-        'name.required'=> 'Tên số Không được trống',
-        'name.string'=> 'Tên phải là chuỗi',
-        'name.regex'=> 'Tên không được chứa kí tự',
-
-    ] 
-);
-if ($validator->fails()) {
-    return $this->failed($validator->messages());
-}
         $building = new Building();
         $building->fill($request->all());
         $building->save();
-        return $this->success($building);
+        return redirect(route('building'))->with('message', 'Thêm mới tòa nhà thành công!');
     }
 
     public function editForm($id)
     {
         $building = Building::find($id);
-        return view('building.edit', compact('building'));
+        return view('buildings.edit', compact('building'));
     }
 
-    public function saveEdit($id, Request $request): JsonResponse
-    {   
-        $validator = Validator::make($request->all(),
-        ['name' => [
-            'required', 'string','regex:/[a-zA-Z0-9]^./',
-            Rule::unique('services')->ignore($id)
-        ],
-        ],
-        [
-            'name.required'=> 'Tên số Không được trống',
-            'name.required'=> 'Tên phải la chuỗi',
-            'name.regex'=> 'Tên không được chứa kí tự đặc biêt',
-        ] 
-    );
-    if ($validator->fails()) {
-        return $this->failed($validator->messages());
-    }
+    public function saveEdit($id, Building $request)
+    {
         $building = Building::find($id);
         $building->fill($request->all());
         $building->save();
         return $this->success($building);
     }
 
-    public function geBuildingById($id): JsonResponse
+    public function geBuildingById($id)
     {
         $building = Building::find($id);
         if (!$building) {
@@ -99,7 +69,7 @@ if ($validator->fails()) {
         return $this->success($building);
     }
 
-    public function getApartmentByBuildingId($id): JsonResponse
+    public function getApartmentByBuildingId($id)
     {
         $buildings = Building::join('apartments','buildings.id','apartments.building_id')
                             ->leftJoin('users','apartments.id','users.apartment_id')

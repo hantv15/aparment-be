@@ -31,4 +31,13 @@ class BuildingRequest extends FormRequest
             ],
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Tên tòa nhà không được để trống',
+            'name.string' => 'Tên phải tòa nhà là chuỗi',
+            'name.unique' => 'Tên tòa nhà đã tồn tại',
+        ];
+    }
 }
