@@ -16,7 +16,7 @@ use Illuminate\Validation\Rule;
 
 class BillController extends Controller
 {
-    public function getBill(Request $request): JsonResponse
+    public function getBill(Request $request)
     {
         $bills = Bill::all();
         if ($request->filled('keyword')) {
@@ -25,8 +25,7 @@ class BillController extends Controller
         if ($request->filled('page') && $request->filled('page_size')) {
             $bills = $bills->skip(($request->page - 1) * $request->page_size)->take($request->page_size);
         }
-        $result = BillResource::collection($bills);
-        return $this->success($result);
+        return view('bills.index', compact('bills'));
     }
 
     public function addForm()
@@ -49,7 +48,7 @@ class BillController extends Controller
                 'name.required' => 'Tên số Không được trống',
                 'name.string' => 'Tên phải là chuỗi',
                 'name.min' => 'Tên ít nhất 3 kí tự',
-                'name.regex' => 'Tên không được chứa kí tự hoặc số',
+                'name.regex' => 'Tên không được chứa kí tự hoặc số', 
                 'image.image' => 'Ảnh phải là định dạng ảnh',
                 'receiver_id.integer' => 'Người nhận này không dúng định dạng'
             ]
