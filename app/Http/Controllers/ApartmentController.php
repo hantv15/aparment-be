@@ -151,7 +151,7 @@ class ApartmentController extends Controller
         $model = Apartment::find($id);
         $model->fill($request->all());
         $model->save();
-        return redirect(route('apartment.edit', ['id' => $id]))->with('message', 'Sửa căn hộ căn hộ thành công!');
+        return redirect(route('apartment.edit', ['id' => $id]))->with('message', 'Sửa căn hộ thành công!');
     }
 
     /**
