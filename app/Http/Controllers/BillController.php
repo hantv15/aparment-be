@@ -31,10 +31,10 @@ class BillController extends Controller
     public function addForm()
     {
         $apartments = Apartment::all();
-        return view('bill.add', compact('apartments'));
+        return view('bills.add', compact('apartments'));
     }
 
-    public function saveAdd(BillRequest $request): JsonResponse
+    public function saveAdd(BillRequest $request)
     {
         $validator = Validator::make(
             $request->all(),
@@ -59,7 +59,7 @@ class BillController extends Controller
         $bill = new Bill();
         $bill->fill($request->all());
         $bill->save();
-        return $this->success(BillResource::collection(Bill::where('id', $bill->id)->get()));
+        return view('bill');
     }
 
     public function editForm($id)
@@ -69,10 +69,10 @@ class BillController extends Controller
             return $this->failed();
         }
         $bill->load('apartment', 'services');
-        return view('bill.edit', compact('bill'));
+        return view('bills.edit', compact('bill'));
     }
 
-    public function saveEdit($id, Request $request): JsonResponse
+    public function saveEdit($id, Request $request)
     {   
         $validator = Validator::make($request->all(),
         [
@@ -103,7 +103,7 @@ class BillController extends Controller
         $bill->fill($request->all());
         $bill->save();
 
-        return $this->success($bill);
+        return view('bill');
     }
 
     public function editAddBillDetailForm($id)
