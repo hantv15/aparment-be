@@ -103,7 +103,7 @@ Route::middleware(['web','auth'])->group(function () {
         });
 
         Route::prefix('/bill')->group(function () {
-            Route::get('/', [BillController::class, 'getBill'])->name('index');
+            Route::get('/', [BillController::class, 'getBill'])->name('bill.index');
             Route::get('/add', [BillController::class, 'addForm'])->name('bill.add');
             Route::post('/add', [BillController::class, 'saveAdd']);
             Route::get('/edit/{id}', [BillController::class, 'editForm'])->name('bill.edit');

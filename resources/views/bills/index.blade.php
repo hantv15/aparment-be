@@ -13,7 +13,7 @@
         </div>
         <div class="ms-auto">
             <div class="btn-group">
-                <a href="{{route('bill.add')}}" class="btn btn-success">Thêm tòa nhà</a>
+                <a href="{{route('bill.add')}}" class="btn btn-success">Thêm hóa đơn</a>
                 &nbsp  &nbsp  &nbsp
                 <a href="#" class="btn btn-primary">Cài đặt</a>
             </div>
@@ -38,9 +38,14 @@
                     <thead class="table-secondary">
                     <tr>
                         <th>#</th>
-                        <th>ID</th>
                         <th>Tên tòa nhà</th>
-                        <th>Số lượng căn hộ</th>
+                        <th>Số lượng </th>
+                        <th>Trạng thái </th>
+                        <th>Loại thanh toán </th>
+                        <th>Phương thức thanh toán </th>
+                        <th>Ảnh </th>
+                        <th>Số Fax</th>
+                        <th>Ghi chú</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -48,20 +53,67 @@
                     @foreach($bills as $key =>$bill)
                         <tr>
                             <td>{{$key++}}</td>
-                            <td>{{$bill->id}}</td>
                             <td>
                                 <div class="d-flex align-items-center gap-3 cursor-pointer">
-                                    <img src="https://via.placeholder.com/110X110" class="rounded-circle" width="44" height="44" alt="">
                                     <div class="">
                                         <p class="mb-0">{{$bill->name}}</p>
                                     </div>
                                 </div>
                             </td>
-                            <td>{{count($bill->apartments)}}</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-3 cursor-pointer">
+                                    <div class="">
+                                        <p class="mb-0">{{$bill->amount}}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center gap-3 cursor-pointer">
+                                    <div class="">
+                                        <p class="mb-0">{{$bill->status}}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center gap-3 cursor-pointer">
+                                    <div class="">
+                                        <p class="mb-0">{{$bill->type_payment}}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center gap-3 cursor-pointer">
+                                    <div class="">
+                                        <p class="mb-0">{{$bill->payment_method}}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center gap-3 cursor-pointer">
+                                    <div class="">
+                                        <img src="{{$bill->image}}" alt="">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center gap-3 cursor-pointer">
+                                    <div class="">
+                                        <p class="mb-0">{{$bill->fax}}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center gap-3 cursor-pointer">
+                                    <div class="">
+                                        <p class="mb-0">{{$bill->note}}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            {{-- <td>{{count($bill->apartments)}}</td> --}}
                             <td>
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                    <a href="{{route('building.detail', ['id' => $bill->id])}}" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Views"><i class="bi bi-eye-fill"></i></a>
-                                    <a href="{{route('building.edit', ['id' => $bill->id])}}" class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"><i class="bi bi-pencil-fill"></i></a>
+                                    <a href="{{route('bill.detail', ['id' => $bill->id])}}" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Views"><i class="bi bi-eye-fill"></i></a>
+                                    <a href="{{route('bill.edit', ['id' => $bill->id])}}" class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"><i class="bi bi-pencil-fill"></i></a>
                                     <a href="javascript:;" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="bi bi-trash-fill"></i></a>
                                 </div>
                             </td>
