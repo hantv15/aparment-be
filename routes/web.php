@@ -9,11 +9,13 @@ use App\Http\Controllers\BillController;
 use App\Http\Controllers\BillDetailController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FireNotificationController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\Clients\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
@@ -135,6 +137,25 @@ Route::middleware(['web','auth'])->group(function () {
             Route::post('/edit/{id}', [BuildingController::class, 'saveEdit']);
             Route::get('/{id}', [BuildingController::class, 'geBuildingById'])->name('building.detail');
             Route::get('/{id}/apartment', [BuildingController::class, 'getApartmentByBuildingId']);
+        });
+
+        Route::prefix('/department')->name('department.')->group(function () {
+            Route::get('/', [DepartmentController::class, 'getDepartment'])->name('index');
+            Route::get('/add', [DepartmentController::class, 'addForm'])->name('add');
+            Route::post('/add', [DepartmentController::class, 'saveAdd']);
+            Route::get('/edit/{id}', [DepartmentController::class, 'editForm'])->name('edit');
+            Route::post('/edit/{id}', [DepartmentController::class, 'saveEdit']);
+            Route::get('/{id}', [DepartmentController::class, 'getDepartmentById'])->name('detail');
+        });
+
+        Route::prefix('/staff')->name('staff.')->group(function () {
+            Route::get('/', [StaffController::class, 'getStaff'])->name('index');
+            Route::get('/add', [StaffController::class, 'addForm'])->name('add');
+            Route::post('/add', [StaffController::class, 'saveAdd']);
+            Route::get('/edit/{id}', [StaffController::class, 'editForm'])->name('edit');
+            Route::post('/edit/{id}', [StaffController::class, 'saveEdit']);
+            Route::get('/remove/{id}', [StaffController::class, 'remove'])->name('remove');
+            Route::get('/{id}', [StaffController::class, 'getStaffById'])->name('detail');
         });
 
         Route::prefix('/vehicle')->group(function () {

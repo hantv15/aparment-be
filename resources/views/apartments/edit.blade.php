@@ -4,10 +4,10 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
+                    <h3 class="card-title">Sửa thông tin căn hộ</h3>
                     @if (Session::has('message'))
                         <p class="text-danger">{{Session::get('message')}}</p>
                     @endif
-                    <h3 class="card-title">Thêm mới căn hộ</h3>
                 </div>
                 <div class="card-body">
                     <form action="" method="post" enctype="multipart/form-data">
@@ -81,7 +81,7 @@
                                 </div>
                             </div>
                             <div class="mt-4">
-                                <button type="submit" class="btn btn-danger">Sửa</button>
+                                <button type="submit" class="btn btn-success">Sửa</button>
                                 <a href="{{route('apartment')}}" class="btn btn-primary">Quay lại</a>
                             </div>
                         </div>

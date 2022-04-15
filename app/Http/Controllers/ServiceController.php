@@ -12,9 +12,6 @@ use Illuminate\Validation\Rule;
 
 class ServiceController extends Controller
 {
-    /**
-     * @return JsonResponse
-     */
     public function getService(Request $request)
     {
         $services = Service::paginate(10);
@@ -23,12 +20,12 @@ class ServiceController extends Controller
                                 ->orWhere('price',  $request->keyword)
                                 ->get();
         }
-        if( $request->filled('sort') && $request->sort == 1){
+        if($request->filled('sort') && $request->sort == 1){
             $services= $services->sortByDesc('price');
         }
-        elseif(  $request->filled('sort') && $request->sort == 2){
+        elseif ($request->filled('sort') && $request->sort == 2){
             $services= $services->sortBy('price');
-        }elseif(  $request->filled('sort') && $request->sort == 3){
+        }elseif($request->filled('sort') && $request->sort == 3){
             $services= $services->sortBy('name');
         }
         if ($request->filled('page') && $request->filled('page_size')){
@@ -37,10 +34,6 @@ class ServiceController extends Controller
         return view('services.index', compact('services'));
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
     public function addForm(){
         return view('services.add');
     }
@@ -61,7 +54,7 @@ class ServiceController extends Controller
             'price.integer'=>'Phí phải là số',
             'price.min'=> 'Phí không được nhỏ hơn 1',
             'icon.image'=> 'Icon phải là định dạng ảnh',
-        ] 
+        ]
     );
     if ($validator->fails()) {
         return $this->failed($validator->messages());
@@ -75,7 +68,7 @@ class ServiceController extends Controller
     public function editForm($id)
     {
         $service = Service::find($id);
-        return view('services.edit', compact('service'));   
+        return view('services.edit', compact('service'));
     }
 
     public function saveEdit(Request $request, $id)
@@ -98,7 +91,7 @@ class ServiceController extends Controller
             'price.integer'=>'Phí phải là số',
             'price.min'=> 'Phí không được nhỏ hơn 1',
             'icon.image'=> 'Icon phải là định dạng ảnh',
-        ] 
+        ]
     );
     if ($validator->fails()) {
         return $this->failed($validator->messages());
@@ -117,7 +110,7 @@ class ServiceController extends Controller
         if (!$service) {
             return $this->failed();
         }
-        
+
         return $this->success($service);
     }
 

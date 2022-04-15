@@ -24,7 +24,9 @@
                 <div class="menu-title">Nhân viên</div>
             </a>
             <ul>
-                <li> <a href="widgets-static-widgets.html"><i class="bi bi-circle"></i>Danh sách nhân viên</a>
+                <li> <a href="{{route('staff.index')}}"><i class="bi bi-circle"></i>Danh sách nhân viên</a>
+                </li>
+                <li> <a href="{{route('department.index')}}"><i class="bi bi-circle"></i>Danh sách phòng ban</a>
                 </li>
                 <li> <a href="widgets-data-widgets.html"><i class="bi bi-circle"></i>Bảng chấm công</a>
                 </li>
