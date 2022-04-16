@@ -92,13 +92,13 @@
             </ul>
         </li>
         <li>
-            <a class="has-arrow" href="javascript:;">
+            <a class="has-arrow" href="">
                 <div class="parent-icon"><i class="bi bi-exclamation-triangle-fill"></i>
                 </div>
                 <div class="menu-title">Hóa đơn</div>
             </a>
             <ul>
-                <li> <a href="pages-errors-coming-soon.html" target="_blank"><i class="bi bi-circle"></i>Danh sách hóa đơn</a>
+                <li> <a href="{{route('bill.index')}}" target="_blank"><i class="bi bi-circle"></i>Danh sách hóa đơn</a>
                 </li>
             </ul>
         </li>
