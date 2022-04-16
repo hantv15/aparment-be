@@ -12,11 +12,13 @@ use App\Http\Controllers\CardController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FireNotificationController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\VehicleTypeController;
+use App\Models\Maintenance;
 
 /*
 |--------------------------------------------------------------------------
