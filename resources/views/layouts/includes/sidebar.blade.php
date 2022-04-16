@@ -64,7 +64,7 @@
                 <div class="menu-title">Tòa nhà</div>
             </a>
             <ul>
-                <li> <a href="{{route('building')}}"><i class="bi bi-circle"></i>Danh sách căn hộ</a>
+                <li> <a href="{{route('building.index')}}"><i class="bi bi-circle"></i>Danh sách tòa nhà</a>
                 </li>
             </ul>
         </li>
@@ -75,7 +75,7 @@
                 <div class="menu-title">Căn hộ</div>
             </a>
             <ul>
-               <li> <a href="{{route('apartment')}}"><i class="bi bi-circle"></i>Danh sách căn hộ</a>
+               <li> <a href="{{route('apartment.index')}}"><i class="bi bi-circle"></i>Danh sách căn hộ</a>
                 </li>
             </ul>
         </li>

@@ -22,33 +22,93 @@
     <!--end breadcrumb-->
 
     <div class="card">
+        <div class="card-header">
+            <form method="GET"  action="" class="ms-auto position-relative>
+                @csrf
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Từ khóa</label>
+                            <input type="text" class="form-control" name="keyword" value="{{$searchData['keyword']}}" placeholder="Tìm kiếm căn hộ theo tên">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Tòa nhà</label>
+                            <select name="building_id" class="form-control">
+                                <option value="">Tất cả</option>
+                                @foreach ($buildings as $item)
+                                    <option @if($item->id == $searchData['building_id']) selected @endif value="{{$item->id}}">{{$item->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="">Tên cột</label>
+                            <select name="column_names" class="form-control">
+                                @foreach ($column_names as $key => $item)
+                                    <option  @if($key == $searchData['column_names']) selected @endif value="{{$key}}">{{$item}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Sắp xếp theo</label>
+                            <select name="order_by" class="form-control">
+                                @foreach ($order_by as $key => $item)
+                                    <option @if($key == $searchData['order_by']) selected @endif value="{{$key}}">{{$item}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="">Kích cỡ trang</label>
+                            <select name="page_size" id="" class="form-control">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for=""></label>
+                            <div class="row d-flex">
+                                <div class="col-6">
+                                    <button class="btn btn-primary form-control" type="submit">Tìm kiếm</button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-success form-control" type="submit">
+                                        <a href="{{route('apartment.index')}}" class="text-white">Chọn lại</a>
+                                    </button>
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
         <div class="card-body">
             <div class="d-flex align-items-center">
                 @if (Session::has('message'))
                     <p class="text-danger">{{Session::get('message')}}</p>
                 @endif
                 <h5 class="mb-0">User Details</h5>
-                <form method="GET"  action="{{\Illuminate\Support\Facades\URL::current()}}" class="ms-auto position-relative d-flex">
-                    <input class="form-control ps-5" type="text" name="keyword" placeholder="search"> &nbsp;
-                    <select name="building_id">
-                        <option value="">Chọn tòa</option>
-                        @foreach($buildings as $building)
-                            <option value="{{$building->id}}">{{$building->name}}</option>
-                        @endforeach
-                    </select>
-                    <input type="submit" class="btn btn-primary"> &nbsp;
-                </form>
-            </div>
+                </div>
             <div class="table-responsive mt-3">
                 <table class="table align-middle">
                     <thead class="table-secondary">
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Date of birth</th>
-                        <th>Apartment</th>
+                        <th>Tên căn hộ</th>
+                        <th>Tòa nhà</th>
+                        <th>Tầng</th>
+                        <th>Trạng thái</th>
+                        <th>Diện tích</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -64,7 +124,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>{{$apartment->building_id}}</td>
+                            <td>{{$apartment->building->name}}</td>
                             <td>{{$apartment->floor}}</td>
                             <td>{{$apartment->status}}</td>
                             <td>{{$apartment->square_meters}}</td>
