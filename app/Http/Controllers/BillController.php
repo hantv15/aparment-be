@@ -16,7 +16,7 @@ use Illuminate\Validation\Rule;
 
 class BillController extends Controller
 {
-    public function getBill(Request $request): JsonResponse
+    public function getBill(Request $request)
     {
         $bills = Bill::all();
         if ($request->filled('keyword')) {
@@ -25,17 +25,16 @@ class BillController extends Controller
         if ($request->filled('page') && $request->filled('page_size')) {
             $bills = $bills->skip(($request->page - 1) * $request->page_size)->take($request->page_size);
         }
-        $result = BillResource::collection($bills);
-        return $this->success($result);
+        return view('bills.index', compact('bills'));
     }
 
     public function addForm()
     {
         $apartments = Apartment::all();
-        return view('bill.add', compact('apartments'));
+        return view('bills.add', compact('apartments'));
     }
 
-    public function saveAdd(BillRequest $request): JsonResponse
+    public function saveAdd(BillRequest $request)
     {
         $validator = Validator::make(
             $request->all(),
@@ -49,7 +48,7 @@ class BillController extends Controller
                 'name.required' => 'Tên số Không được trống',
                 'name.string' => 'Tên phải là chuỗi',
                 'name.min' => 'Tên ít nhất 3 kí tự',
-                'name.regex' => 'Tên không được chứa kí tự hoặc số',
+                'name.regex' => 'Tên không được chứa kí tự hoặc số', 
                 'image.image' => 'Ảnh phải là định dạng ảnh',
                 'receiver_id.integer' => 'Người nhận này không dúng định dạng'
             ]
@@ -60,7 +59,7 @@ class BillController extends Controller
         $bill = new Bill();
         $bill->fill($request->all());
         $bill->save();
-        return $this->success(BillResource::collection(Bill::where('id', $bill->id)->get()));
+        return view('bill');
     }
 
     public function editForm($id)
@@ -70,10 +69,10 @@ class BillController extends Controller
             return $this->failed();
         }
         $bill->load('apartment', 'services');
-        return view('bill.edit', compact('bill'));
+        return view('bills.edit', compact('bill'));
     }
 
-    public function saveEdit($id, Request $request): JsonResponse
+    public function saveEdit($id, Request $request)
     {   
         $validator = Validator::make($request->all(),
         [
@@ -104,7 +103,7 @@ class BillController extends Controller
         $bill->fill($request->all());
         $bill->save();
 
-        return $this->success($bill);
+        return view('bill');
     }
 
     public function editAddBillDetailForm($id)
