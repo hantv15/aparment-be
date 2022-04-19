@@ -20,6 +20,7 @@ class CreateStaffsTable extends Migration
             $table->string('email', 50)->unique();
             $table->string('phone_number', 10)->unique();
             $table->date('dob')->nullable();
+            $table->tinyInteger('gender');
 
             $table->unsignedBigInteger('department_id');
             $table->foreign('department_id')->references('id')->on('departments')
