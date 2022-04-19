@@ -15,7 +15,7 @@
             <div class="btn-group">
                 <a href="{{route('bill.add')}}" class="btn btn-success">Thêm hóa đơn</a>
                 &nbsp  &nbsp  &nbsp
-                <a href="#" class="btn btn-primary">Cài đặt</a>
+                {{-- <a href="#" class="btn btn-primary">Cài đặt</a> --}}
             </div>
         </div>
     </div>
@@ -38,7 +38,7 @@
                     <thead class="table-secondary">
                     <tr>
                         <th>#</th>
-                        <th>Tên tòa nhà</th>
+                        <th>Tên</th>
                         <th>Số lượng </th>
                         <th>Trạng thái </th>
                         <th>Loại thanh toán </th>
