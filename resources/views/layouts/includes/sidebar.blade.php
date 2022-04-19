@@ -34,7 +34,7 @@
         </li>
         <li>
             <a href="javascript:;" class="has-arrow">
-                <div class="parent-icon"><i class="bi bi-"></i>
+                <div class="parent-icon"><i class="bi bi-" ></i>
                 </div>
                 <div class="menu-title">Quản lý quản trị</div>
             </a>
@@ -87,7 +87,7 @@
                 <div class="menu-title">Dịch vụ</div>
             </a>
             <ul>
-                <li> <a href="{{route('service.index')}}" target="_blank"><i class="bi bi-circle"></i>Danh sách dịch vụ</a>
+                <li> <a href="{{route('service.index')}}" ><i class="bi bi-circle"></i>Danh sách dịch vụ</a>
                 </li>
             </ul>
         </li>
@@ -98,7 +98,7 @@
                 <div class="menu-title">Hóa đơn</div>
             </a>
             <ul>
-                <li> <a href="{{route('bill.index')}}" target="_blank"><i class="bi bi-circle"></i>Danh sách hóa đơn</a>
+                <li> <a href="{{route('bill.index')}}" ><i class="bi bi-circle"></i>Danh sách hóa đơn</a>
                 </li>
             </ul>
         </li>

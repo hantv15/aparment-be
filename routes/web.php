@@ -17,6 +17,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\Clients\HomeController;
+use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\VehicleTypeController;
@@ -175,5 +176,10 @@ Route::middleware(['web','auth'])->group(function () {
             Route::post('/edit/{id}', [VehicleTypeController::class, 'saveEdit']);
             Route::get('/{id}', [VehicleTypeController::class, 'getVehicleTypeById'])->name('vehicle-type.detail');
         });
+    });
+    Route::prefix('/maintenance')->group(function(){
+        Route::get('/',[MaintenanceController::class,'getMaintenance'])->name('maintenance');
+        Route::get('/add',[MaintenanceController::class,'addForm'])->name('maintenance.add');
+        Route::post('/add',[MaintenanceController::class,'saveAdd']);
     });
 });
