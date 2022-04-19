@@ -180,5 +180,6 @@ Route::middleware(['web','auth'])->group(function () {
     Route::prefix('/maintenance')->group(function(){
         Route::get('/',[MaintenanceController::class,'getMaintenance'])->name('maintenance');
         Route::get('/add',[MaintenanceController::class,'addForm'])->name('maintenance.add');
+        Route::post('/add',[MaintenanceController::class,'saveAdd']);
     });
 });

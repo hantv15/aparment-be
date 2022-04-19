@@ -34,7 +34,7 @@
         </li>
         <li>
             <a href="javascript:;" class="has-arrow">
-                <div class="parent-icon"><i class="bi bi-"></i>
+                <div class="parent-icon"><i class="bi bi-" ></i>
                 </div>
                 <div class="menu-title">Quản lý quản trị</div>
             </a>
