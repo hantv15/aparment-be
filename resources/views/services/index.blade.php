@@ -38,7 +38,7 @@
                         <th>ID</th>
                         <th>Tên</th>
                         <th>Giá</th>
-                        <th>Ảnh</th>
+                      
                         <th>Mô tả</th>
                         <th>Trạng thái</th>
                         <th>Tùy chỉnh</th>
@@ -58,7 +58,7 @@
                             </div>
                         </td>
                         <td>{{$service->price}}</td>
-                        <td><img src="{{asset($service->icon)}}" width="80x" height="80px" alt=""></td>
+                       
                         <td>{{$service->description}}</td>
                         <td>{{$service->status}}</td>
                         <td>

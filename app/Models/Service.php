@@ -15,7 +15,8 @@ class Service extends Model
         'name',
         'price',
         'description',
-        'status'
+        'status',
+        'category'
     ];
     protected $hidden = [
         'created_at',
