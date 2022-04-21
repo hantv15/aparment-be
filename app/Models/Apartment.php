@@ -35,7 +35,7 @@ class Apartment extends Model
     /**
      * @return BelongsTo
      */
-    public function buildings(): BelongsTo
+    public function building(): BelongsTo
     {
         return $this->belongsTo(Building::class);
     }

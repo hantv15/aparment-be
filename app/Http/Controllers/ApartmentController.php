@@ -22,81 +22,48 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ApartmentController extends Controller
 {
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
     public function getApartment(Request $request)
     {
-        $apartments = Apartment::paginate(5);
+        $page_size = 5;
+        if ($request->has('page_size')) {
+            $page_size = $request->page_size;
+        }
+        $column_names = [
+            'apartment_id' => 'Tên căn hộ',
+            'floor' => 'Tầng',
+            'square_meters' => 'Diện tích',
+        ];
+        $order_by = [
+            'asc' => 'Tăng dần',
+            'desc' => 'Giảm dần'
+        ];
+
+        $keyword = $request->has('keyword') ? $request->keyword : "";
+        $building_id = $request->has('building_id') ? $request->building_id : "";
+        $rq_column_names = $request->has('column_names') ? $request->column_names : "id";
+        $rq_order_by = $request->has('order_by') ? $request->order_by : 'asc';
+
+        $query = Apartment::where('apartment_id', 'like', "%$keyword%");
+
+        if($rq_order_by == 'asc'){
+            $query->orderBy($rq_column_names);
+        }else{
+            $query->orderByDesc($rq_column_names);
+        }
+        if(!empty($building_id)){
+            $query->where('$building_id', $building_id);
+        }
+
+        $apartments = $query->paginate($page_size);
+        $apartments->appends($request->input());
+        $apartments->load('user', 'building');
         $buildings = Building::all();
-        if ($request->filled('building_id') && $request->filled('keyword')) {
-            $apartments = Apartment::join('users', 'apartments.id', '=', 'users.apartment_id')
-                ->join('buildings', 'apartments.building_id', '=', 'buildings.id')
-                ->select(
-                    'apartments.id',
-                    'apartments.apartment_id',
-                    'apartments.floor',
-                    'apartments.status',
-                    'apartments.description',
-                    'apartments.square_meters',
-                    'apartments.type_apartment',
-                    'apartments.building_id',
-                    'apartments.user_id',
-                    'buildings.name as building_name',
-                    'users.email',
-                    'users.phone_number',
-                    'users.name'
-                )
-                ->where([
-                    ['apartments.building_id', $request->building_id],
-                    ['users.phone_number', $request->keyword],
-                ])
-                ->orWhere([
-                    ['apartments.building_id', $request->building_id],
-                    ['users.email', 'like', '%' . $request->keyword . '%'],
-                ])
-                ->orWhere([
-                    ['apartments.building_id', $request->building_id],
-                    ['users.name', 'like', '%' . $request->keyword . '%'],
-                ])
-                ->orWhere([
-                    ['apartments.building_id', $request->building_id],
-                    ['apartments.apartment_id', 'like', '%' . $request->keyword . '%'],
-                ])
-                ->get();
-        } else if (!$request->filled('building_id') && $request->filled('keyword')) {
-            $apartments = Apartment::join('users', 'apartments.id', '=', 'users.apartment_id')
-                ->join('buildings', 'apartments.building_id', '=', 'buildings.id')
-                ->select(
-                    'apartments.id',
-                    'apartments.apartment_id',
-                    'apartments.floor',
-                    'apartments.status',
-                    'apartments.description',
-                    'apartments.square_meters',
-                    'apartments.type_apartment',
-                    'apartments.building_id',
-                    'apartments.user_id',
-                    'buildings.name as building_name',
-                    'users.email',
-                    'users.phone_number',
-                    'users.name'
-                )
-                ->where('users.phone_number', $request->keyword)
-                ->orWhere('users.email', 'like', '%' . $request->keyword . '%')
-                ->orWhere('users.name', 'like', '%' . $request->keyword . '%')
-                ->orWhere('apartments.apartment_id', 'like', '%' . $request->keyword . '%')
-                ->get();
-        } else if ($request->filled('building_id') && !$request->filled('keyword')) {
-            $apartments = Apartment::where('building_id', $request->building_id)->get();
-        }
 
-        if ($request->filled('page') && $request->filled('page_size')) {
-            $apartments = $apartments->skip(($request->page - 1) * $request->page_size)->take($request->page_size);
-        }
+        $searchData = compact('keyword', 'building_id');
+        $searchData['order_by'] = $rq_order_by;
+        $searchData['column_names'] = $rq_column_names;
 
-        return view('apartments.index', compact('apartments', 'buildings'));
+        return view('apartments.index', compact('apartments', 'buildings', 'column_names', 'order_by', 'searchData'));
     }
 
     public function getApartmentNotOwned(Request $request): JsonResponse

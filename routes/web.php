@@ -86,15 +86,15 @@ Route::middleware(['web','auth'])->group(function () {
             Route::get('/{id}', [CardController::class, 'getCardById'])->name('detail');
         });
 
-        Route::prefix('/apartment')->group(function () {
-            Route::get('/', [ApartmentController::class, 'getApartment'])->name('apartment');
+        Route::prefix('/apartment')->name('apartment.')->group(function () {
+            Route::get('/', [ApartmentController::class, 'getApartment'])->name('index');
             Route::get('/not-owned', [ApartmentController::class, 'getApartmentNotOwned']);
             Route::get('/not-owned/{id}', [ApartmentController::class, 'getApartmentNotOwnedAndId']);
-            Route::get('/add', [ApartmentController::class, 'addForm'])->name('apartment.add');
+            Route::get('/add', [ApartmentController::class, 'addForm'])->name('add');
             Route::post('/add', [ApartmentController::class, 'saveAdd']);
-            Route::get('/edit/{id}', [ApartmentController::class, 'editForm'])->name('apartment.edit');
+            Route::get('/edit/{id}', [ApartmentController::class, 'editForm'])->name('edit');
             Route::post('/edit/{id}', [ApartmentController::class, 'saveEdit']);
-            Route::get('/{id}', [ApartmentController::class, 'getApartmentById'])->name('apartment.detail');
+            Route::get('/{id}', [ApartmentController::class, 'getApartmentById'])->name('detail');
             Route::get('/{id}/finance', [ApartmentController::class, 'getBillByApartmentId']);
             Route::get('/{id}/finance/unpaid', [ApartmentController::class, 'getUnpaidBillByApartmentId']);
             Route::get('/{id}/finance/paid', [ApartmentController::class, 'getPaidBillByApartmentId']);
@@ -130,14 +130,14 @@ Route::middleware(['web','auth'])->group(function () {
             Route::get('/{id}', [BillDetailController::class, 'getBillDetailById'])->name('bill-detail.detail');
         });
 
-        Route::prefix('/building')->group(function () {
-            Route::get('/', [BuildingController::class, 'getBuilding'])->name('building');
-            Route::get('/add', [BuildingController::class, 'addForm'])->name('building.add');
+        Route::prefix('/building')->name('building.')->group(function () {
+            Route::get('/', [BuildingController::class, 'getBuilding'])->name('index');
+            Route::get('/add', [BuildingController::class, 'addForm'])->name('add');
             Route::post('/add', [BuildingController::class, 'saveAdd']);
-            Route::get('/edit/{id}', [BuildingController::class, 'editForm'])->name('building.edit');
+            Route::get('/edit/{id}', [BuildingController::class, 'editForm'])->name('edit');
             Route::post('/edit/{id}', [BuildingController::class, 'saveEdit']);
-            Route::get('/{id}', [BuildingController::class, 'geBuildingById'])->name('building.detail');
-            Route::get('/{id}/apartment', [BuildingController::class, 'getApartmentByBuildingId']);
+            Route::get('/{id}', [BuildingController::class, 'geBuildingById'])->name('detail');
+            Route::get('/{id}/apartment', [BuildingController::class, 'getApartmentByBuildingId'])->name('apartment');
         });
 
         Route::prefix('/department')->name('department.')->group(function () {
