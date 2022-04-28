@@ -44,11 +44,11 @@ Route::get('/', function () {
     return view('layouts.app');
 });
 Route::prefix('client')->group(function (){
-    Route::get('/', [\App\Http\Controllers\Clients\HomeController::class, 'index'])->name('home');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
     
 });
 Route::prefix('user-manager')->group(function (){
-    Route::get('/', [\App\Http\Controllers\UserController::class, 'getUser'])->name('index');
+    Route::get('/', [UserController::class, 'getUser'])->name('index');
 });
 Route::middleware(['web','auth'])->group(function () {
     Route::get('feedback', [FeedbackController::class, 'getFeedback'])->name('feedback.add');
@@ -56,7 +56,7 @@ Route::middleware(['web','auth'])->group(function () {
     Route::get('listFeedback', [FeedbackController::class, 'listFeedback'])->name('feedback.list');
     Route::get('getFeedbackID/{id}', [FeedbackController::class, 'getFeedbackById'])->name('feedback.view');
     Route::get('remove-feedback/{id}', [FeedbackController::class, 'remove'])->name('feedback.remove');
-    Route::get('signout', [\App\Http\Controllers\AuthController::class, 'signOut'])->name('signout');
+    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/', function () {
         return view('layouts.app');
     });

@@ -125,7 +125,7 @@
                 </li>
             </ul>
         </li>
-        <li class="menu-label"><a style="background-color: #3461ff; color: white; text-decoration: none" href="{{route('signout')}}">Đăng xuất</a></li>
+        <li class="menu-label"><a style="background-color: #3461ff; color: white; text-decoration: none" href="{{route('logout')}}">Đăng xuất</a></li>
     </ul>
     <!--end navigation-->
 </aside>
