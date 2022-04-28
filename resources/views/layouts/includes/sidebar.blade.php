@@ -39,7 +39,7 @@
                 <div class="menu-title">Quản lý quản trị</div>
             </a>
             <ul>
-                <li> <a href="ecommerce-add-new-product-2.html"><i class="bi bi-circle"></i>Danh sách quản trị viên</a>
+                <li> <a href="{{route('admin-technicians.index')}}"><i class="bi bi-circle"></i>Danh sách quản trị viên</a>
                 </li>
             </ul>
         </li>
