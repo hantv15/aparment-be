@@ -110,7 +110,7 @@
                 <div class="menu-title">Quản lý bảo trì</div>
             </a>
             <ul>
-                <li> <a href="{{route('maintenance.indexs')}}"><i class="bi bi-circle"></i>Tạo thông báo</a>
+                <li> <a href="{{route('maintenance.index')}}"><i class="bi bi-circle"></i>Danh sách bảo trì</a>
                 </li>
             </ul>
         </li>
