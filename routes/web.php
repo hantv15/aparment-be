@@ -3,9 +3,9 @@
 use App\Http\Controllers\AdminTechnicians;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\ApartmentController;
 use App\Http\Controllers\ApartmentNotiController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BillController;
 use App\Http\Controllers\BillDetailController;
 use App\Http\Controllers\BuildingController;
@@ -34,8 +34,8 @@ use App\Http\Controllers\VehicleTypeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('login', [\App\Http\Controllers\AuthController::class, 'login'])->name('login');
-Route::post('login', [\App\Http\Controllers\AuthController::class, 'postLogin']);
+Route::get('login', [AuthController::class, 'login'])->name('login');
+Route::post('login', [AuthController::class, 'postLogin']);
 Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
 Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
 Route::get('reset-password', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');

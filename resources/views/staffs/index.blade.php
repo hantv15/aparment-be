@@ -49,7 +49,7 @@
                     <tbody>
                     @foreach($staffs as $key =>$staff)
                         <tr>
-                            <td>{{$key++}}</td>
+                            <td>{{++$key}}</td>
                             <td>{{$staff->id}}</td>
                             <td>
                                 <div class="d-flex align-items-center gap-3 cursor-pointer">

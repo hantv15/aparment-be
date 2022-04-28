@@ -47,7 +47,7 @@
                     <tbody>
                     @foreach($vehicles as $key =>$vehicle)
                         <tr>
-                            <td>{{$key++}}</td>
+                            <td>{{++$key}}</td>
                             <td>{{$vehicle->id}}</td>
                             <td>
                                 <div class="d-flex align-items-center gap-3 cursor-pointer">

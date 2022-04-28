@@ -38,7 +38,7 @@
                     <tbody>
                     @foreach($feedbacks as $key =>$feedback)
                         <tr>
-                            <td>{{$key++}}</td>
+                            <td>{{++$key}}</td>
                             
                             <td>{{$feedback->subject}}</td>
                             <td>

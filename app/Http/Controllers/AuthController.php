@@ -16,24 +16,23 @@ class AuthController extends Controller
     public function postLogin(Request $request)
     {
         $request->validate([
-            'email'    => 'required',
+            'username' => 'required',
             'password' => 'required',
         ]);
 
-        $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
+        $username = $request->username;
+        $password = $request->password;
+
+        if (Auth::attempt(['email' => $username, 'password' => $password], $request->remember) || Auth::attempt(['phone_number' => $username, 'password' => $password], $request->remember)) {
             return redirect()->route('dashboard');
         }
-
-        return redirect()->back()->with('msg', 'Email hoặc mật khẩu không chính xác');
-
+        return redirect()->back()->with('msg', 'Tài khoản hoặc mật khẩu không chính xác');
     }
 
-    public function signOut()
+    public function logout()
     {
         Session::flush();
         Auth::logout();
-
-        return Redirect('login');
+        return redirect(route('login'));
     }
 }

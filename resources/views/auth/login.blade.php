@@ -100,10 +100,10 @@
                         <form method="POST"  novalidate="">
                             @csrf
                             <div class="form-group">
-                                <label for="email">Địa chỉ  E-Mail</label>
-                                <input id="email" type="email" class="form-control" name="email" value="" required autofocus>
-                                @if ($errors->has('email'))
-                                    <p class="alert-danger p-1 mt-1">{{ __('string.email') }}</p>
+                                <label for="username">Tài khoản</label>
+                                <input id="username" type="text" class="form-control" name="username" value="" required autofocus placeholder="Nhập địa chỉ Email hoặc số điện thoại">
+                                @if ($errors->has('username'))
+                                    <p class="alert-danger p-1 mt-1">{{ __('string.username') }}</p>
                                 @endif
                             </div>
 
@@ -113,18 +113,18 @@
                                         Quên mật khẩu?
                                     </a>
                                 </label>
-                                <input id="password" type="password" class="form-control" name="password" required data-eye>
+                                <input id="password" type="password" class="form-control" name="password" required data-eye placeholder="Nhập mật khẩu">
                                 @if ($errors->has('password'))
                                     <p class="alert-danger p-1 mt-1">{{ __('string.password') }}</p>
                                 @endif
                             </div>
 
-                            {{-- <div class="form-group">
+                            <div class="form-group">
                                 <div class="custom-checkbox custom-control">
                                     <input type="checkbox" name="remember" id="remember" class="custom-control-input">
                                     <label for="remember" class="custom-control-label">Nhớ mật khẩu</label>
                                 </div>
-                            </div> --}}
+                            </div>
 
                             <div class="form-group m-0">
                                 @if(session('msg'))
@@ -170,7 +170,7 @@
                 paddingRight: 60
             });
             $this.after($("<div/>", {
-                html: 'Show',
+                html: 'Ẩn/Hiện',
                 class: 'btn btn-primary btn-sm',
                 id: 'passeye-toggle-'+i,
             }).css({
