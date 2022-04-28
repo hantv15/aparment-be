@@ -20,4 +20,7 @@ class Vehicle extends Model
         'created_at',
         'updated_at'
     ];
+    public function category(){
+        return $this->belongsTo(Maintenancecategory::class,'vehicle_type_id');
+    }
 }

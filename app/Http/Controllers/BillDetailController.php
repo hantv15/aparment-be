@@ -15,31 +15,32 @@ class BillDetailController extends Controller
     /**
      * @return JsonResponse
      */
-    public function getBillDetail(): JsonResponse
+    public function getBillDetail()
     {
         $bill_details = BillDetail::all();
-        return $this->success($bill_details);
+        return view('bill-detail.index',compact($bill_details));
     }
 
     public function addForm()
     {
         $services = Service::all();
         $bills = Bill::where('status', 0)->get();
-        return view('bill-detail.add', compact('services', 'bills'));
+        // var_dump(json_decode($bills));die;
+        return view('bill-details.add', compact('services', 'bills'));
     }
 
-    public function saveAdd(Request $request): JsonResponse
+    public function saveAdd(Request $request)
     {   
         $validator = Validator::make($request->all(),
         [
-            'service_id' => 'required|integer|exists:services',
+            'service_id' => 'required|integer',
             'quantity' => 'required|integer|min:1',
-            'bill_id' => 'required|integer|exists:bills'
+            'bill_id' => 'required|integer'
         ],
         [
             'service_id.required' => 'Dịch vụ số Không được trống',
             'service_id.integer' => 'Dịch vụ không đúng định dạng',
-            'service_id.exists' => 'Dịch vụ không có',
+            // 'service_id.exists' => 'Dịch vụ không có',
             'quantity.required' => 'Số lượng không được trống',
             'quantity.integer' => 'Số phải là số',
             'quantity.min' => 'Số lượng không được nhỏ hơn 1',
@@ -53,13 +54,15 @@ class BillDetailController extends Controller
         return $this->failed($validator->messages());
     }
         $bill_detail = new BillDetail();
-        $count_service_in_bill = BillDetail::where('bill_id', $request->bill_id)
-                                    ->where('service_id', $request->service_id)
-                                    ->count();
-        if ($count_service_in_bill > 0) {
-            return $this->failed();
-        }
+        // $count_service_in_bill = BillDetail::where('bill_id', $request->bill_id)
+        //                             ->where('service_id', $request->service_id)
+        //                             ->count();
+        // if ($count_service_in_bill > 0) {
+        //     return 1;
+        //  return 'lỗi';
+        // }
         $bill_detail->fill($request->all());
+      
         $bill_detail->total_price = $request->quantity * Service::where('id', $request->service_id)->first()->price;
         if ($request->service_id == Service::WATER_SERVICE) {
             if ($request->quantity <= 10) {
@@ -77,8 +80,8 @@ class BillDetailController extends Controller
         $bill = Bill::where('id', $request->bill_id)->first();
         $bill->amount += $bill_detail->total_price;
         $bill->save();
-
-        return $this->success($bill_detail);
+        return redirect(round('apartment'));
+        // return $this->success($bill_detail);
     }
 
     public function editForm($id){

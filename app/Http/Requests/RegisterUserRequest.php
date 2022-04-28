@@ -32,7 +32,7 @@ class RegisterUserRequest extends FormRequest
             'dob'          => 'required|date_format:Y-m-d|before:' . Carbon::now(),
             'name'         => 'required',
             'number_card'  => 'required',
-            'avatar'       => 'mimes:png, jpg, jpeg',
+            'avatar'       => 'image',
         ];
     }
 

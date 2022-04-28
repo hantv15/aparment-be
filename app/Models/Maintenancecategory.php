@@ -10,6 +10,7 @@ class Maintenancecategory extends Model
     use HasFactory;
     protected $table = 'maintenance_category';
     protected $fillable =[
+        'building_id',
         'name'
     ];
 }

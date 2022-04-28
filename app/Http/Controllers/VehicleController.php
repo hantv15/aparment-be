@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 class VehicleController extends Controller
 {
-    public function getVehicle():JsonResponse
+    public function getVehicle()
     {
         $vehicles = Vehicle::all();
-        $result = VehicleResource::collection($vehicles);
-        return $this->success($result);
+        
+        return view('vehicles.index',compact('vehicles'));
     }
 
     public function addForm(){

@@ -30,9 +30,10 @@
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="validationTextarea" class="form-label">Mô tả</label>
-                    <textarea class="form-control is-invalid" name="description" value="{{$service->description}}" 
-                        placeholder="Required example textarea" required="" style="height: 97px;"></textarea>
+                    <textarea class="form-control is-invalid" name="description"  
+                        placeholder="Required example textarea" required="" style="height: 97px;" rows="4" cols="50">{{$service->description}}</textarea>
                 </div>
+                {{-- <input type="text" value="{{$service->description}}"> --}}
 
                 <div class="col-12">
                     <button class="btn btn-primary" type="submit">Sửa</button>

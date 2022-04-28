@@ -35,22 +35,27 @@ use App\Http\Controllers\VehicleTypeController;
 */
 Route::get('login', [\App\Http\Controllers\AuthController::class, 'login'])->name('login');
 Route::post('login', [\App\Http\Controllers\AuthController::class, 'postLogin']);
-
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
+Route::get('reset-password', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
 Route::get('/', function () {
     return view('layouts.app');
 });
 Route::prefix('client')->group(function (){
     Route::get('/', [\App\Http\Controllers\Clients\HomeController::class, 'index'])->name('home');
+    
 });
 Route::prefix('user-manager')->group(function (){
     Route::get('/', [\App\Http\Controllers\UserController::class, 'getUser'])->name('index');
 });
 Route::middleware(['web','auth'])->group(function () {
-    Route::get('feedback', [FeedbackController::class, 'getFeedback']);
+    Route::get('feedback', [FeedbackController::class, 'getFeedback'])->name('feedback.add');
     Route::post('feedback', [FeedbackController::class, 'sendFeedback']);
     Route::get('listFeedback', [FeedbackController::class, 'listFeedback'])->name('feedback.list');
     Route::get('getFeedbackID/{id}', [FeedbackController::class, 'getFeedbackById'])->name('feedback.view');
+    Route::get('remove-feedback/{id}', [FeedbackController::class, 'remove'])->name('feedback.remove');
     Route::get('signout', [\App\Http\Controllers\AuthController::class, 'signOut'])->name('signout');
     Route::get('/', function () {
         return view('layouts.app');
@@ -66,6 +71,7 @@ Route::middleware(['web','auth'])->group(function () {
             Route::get('add-user', [UserController::class, 'registerForm'])->name('register');
             Route::post('add-user', [UserController::class, 'saveUser']);
             Route::get('/edit-user/{id}', [UserController::class, 'formEditUser'])->name('edit');
+            Route::post('/edit-user/{id}', [UserController::class, 'formEditUser']);
         });
 
         Route::prefix('service-manager')->name('service.')->group(function () {
@@ -160,7 +166,7 @@ Route::middleware(['web','auth'])->group(function () {
         });
 
         Route::prefix('/vehicle')->group(function () {
-            Route::get('/', [VehicleController::class, 'getVehicle'])->name('vehicle');
+            Route::get('/', [VehicleController::class, 'getVehicle'])->name('vehicle.index');
             Route::get('/add', [VehicleController::class, 'addForm'])->name('vehicle.add');
             Route::post('/add', [VehicleController::class, 'saveAdd']);
             Route::get('/edit/{id}', [VehicleController::class, 'editForm'])->name('vehicle.edit');
@@ -178,8 +184,11 @@ Route::middleware(['web','auth'])->group(function () {
         });
     });
     Route::prefix('/maintenance')->group(function(){
-        Route::get('/',[MaintenanceController::class,'getMaintenance'])->name('maintenance');
+        Route::get('/',[MaintenanceController::class,'getMaintenance'])->name('maintenance.index');
         Route::get('/add',[MaintenanceController::class,'addForm'])->name('maintenance.add');
         Route::post('/add',[MaintenanceController::class,'saveAdd']);
+        Route::get('/edit/{id}',[MaintenanceController::class,'editForm'])->name('maintenance.edit');
+        Route::post('/edit/{id}',[MaintenanceController::class,'saveEdit']);
+        Route::get('/remove/{id}',[MaintenanceController::class,'remove'])->name('maintenance.remove');
     });
 });
