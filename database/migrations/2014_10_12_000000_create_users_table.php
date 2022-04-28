@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('password', 255);
             $table->string('name', 50)->nullable();
             $table->date('dob')->nullable();
-            $table->integer('number_card')->nullable();
+            $table->string('number_card', 12)->nullable();
             $table->tinyInteger('status')->default(0);
             $table->unsignedBigInteger('role_id')->default(0);
             $table->unsignedBigInteger('apartment_id')->unique()->nullable();
