@@ -52,7 +52,7 @@
                     <tbody>
                     @foreach($bills as $key =>$bill)
                         <tr>
-                            <td>{{$key++}}</td>
+                            <td>{{++$key}}</td>
                             <td>
                                 <div class="d-flex align-items-center gap-3 cursor-pointer">
                                     <div class="">

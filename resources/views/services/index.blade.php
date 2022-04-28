@@ -48,7 +48,7 @@
                 <tbody>
                     @foreach($services as $key =>$service)
                     <tr>
-                        <td>{{$key++}}</td>
+                        <td>{{++$key}}</td>
                         <td>
                             <div class="d-flex align-items-center gap-3 cursor-pointer">
                                

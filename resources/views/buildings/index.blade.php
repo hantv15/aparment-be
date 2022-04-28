@@ -47,7 +47,7 @@
                     <tbody>
                     @foreach($buildings as $key =>$building)
                         <tr>
-                            <td>{{$key++}}</td>
+                            <td>{{++$key}}</td>
                             <td>{{$building->id}}</td>
                             <td>
                                 <div class="d-flex align-items-center gap-3 cursor-pointer">
