@@ -25,8 +25,17 @@ class BillDetailRequest extends FormRequest
     {
         return [
             'service_id' => 'required|integer|min:1',
-//            'bill_id' => 'required|integer|min:1',
             'quantity' => 'required|integer|min:0'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'service_id.required' => 'Vui lòng chọn dịch vụ',
+            'quantity.required' => 'Vui lòng nhập số lượng',
+            'quantity.integer' => 'Số lượng phải là số',
+            'quantity.min' => 'Số lượng tối thiểu là 0',
         ];
     }
 }

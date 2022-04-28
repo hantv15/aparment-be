@@ -39,11 +39,11 @@
                     <tr>
                         <th>#</th>
                         <th>Tên</th>
-                        <th>Số lượng </th>
-                        <th>Trạng thái </th>
-                        <th>Loại thanh toán </th>
-                        <th>Phương thức thanh toán </th>
-                        <th>Ảnh </th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th>Loại thanh toán</th>
+                        <th>Phương thức thanh toán</th>
+                        <th>Ảnh</th>
                         <th>Số Fax</th>
                         <th>Ghi chú</th>
                         <th>Actions</th>
@@ -63,14 +63,14 @@
                             <td>
                                 <div class="d-flex align-items-center gap-3 cursor-pointer">
                                     <div class="">
-                                        <p class="mb-0">{{$bill->amount}}</p>
+                                        <p class="mb-0">{{number_format($bill->amount, 0, '.', ',')}} VNĐ</p>
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="d-flex align-items-center gap-3 cursor-pointer">
                                     <div class="">
-                                        <p class="mb-0">{{$bill->status}}</p>
+                                        <p class="mb-0">{{$bill->status == 1 ? "Đã thanh toán" : "Chưa thanh toán"}}</p>
                                     </div>
                                 </div>
                             </td>

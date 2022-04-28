@@ -13,7 +13,7 @@
     </div>
     <div class="ms-auto">
         <div class="btn-group">
-            <a href="{{route('bill.add')}}" class="btn btn-success">Thêm hóa đơn</a>
+            <a href="{{route('bill.add-bill-detail', ['id' => $bill->id])}}" class="btn btn-success">Thêm hóa đơn chi tiết</a>
             &nbsp  &nbsp  &nbsp
             <a href="#" class="btn btn-primary">Cài đặt</a>
         </div>

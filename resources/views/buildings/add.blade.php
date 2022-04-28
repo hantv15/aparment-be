@@ -15,7 +15,7 @@
                                     <label>Tên tòa nhà</label>
                                     <input type="text" name="name" class="form-control">
                                     @error('name')
-                                    <p class="text-danger">{{$message}}</p>
+                                        <p class="text-danger">{{$message}}</p>
                                     @enderror
                                 </div>
                             </div>

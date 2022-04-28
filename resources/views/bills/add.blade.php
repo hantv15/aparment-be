@@ -13,39 +13,44 @@
                     <input type="text" class="form-control" name="name" required="">
                 </div>
                 <div class="col-md-6">
-                    <label for="validationCustom02" class="form-label">Số lượng</label>
-                    <input type="text" class="form-control" name="amount" required="">
+                    <label for="validationCustom04" class="form-label">Trạng thái thanh toán</label>
+                    <select class="form-select discription" name="status" id="validationCustom04" required="">
+                        <option value="0">Chưa thanh toán</option>
+                        <option value="1">Đã thanh toán</option>
+                    </select>
+                </div>
+                {{-- <div class="col-md-6">
+                    <label for="validationCustom04" class="form-label">Loại thanh toán</label>
+                    <select class="form-select discription" id="validationCustom04" required="">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="validationCustom04" class="form-label">Phương thức thanh toán</label>
+                    <select class="form-select discription" id="validationCustom04" required="">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                    </select>
+                </div> --}}
+                <div class="col-md-6">
+                    <label for="validationCustom02" class="form-label">Ảnh</label>
+                    <input type="file" class="form-control" name="image" required="">
                 </div>
                 <div class="col-md-6">
                     <label for="validationCustom02" class="form-label">Số Fax</label>
                     <input type="text" class="form-control" name="fax" required="">
                 </div>
                 <div class="col-md-6">
-                    <label for="validationCustom02" class="form-label">Ảnh</label>
-                    <input type="file" class="form-control" name="image" required="">
+                    <label for="validationCustom02" class="form-label">Căn hộ</label>
+                    <select name="apartment_id" class="form-select discription" id="">
+                        <option value="">Chọn căn hộ</option>
+                        @foreach ($apartments as $item)
+                            <option value="{{$item->id}}">{{$item->apartment_id}}</option>
+                        @endforeach
+                    </select>
                 </div>
 
-                <div class="col-md-6">
-                    <label for="validationCustom04" class="form-label">Trạng thái</label>
-                    <select class="form-select discription" id="validationCustom04" required="">
-                        <option >0</option>
-                        <option >1</option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label for="validationCustom04" class="form-label">Loại thanh toán</label>
-                    <select class="form-select discription" id="validationCustom04" required="">
-                        <option >0</option>
-                        <option >1</option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label for="validationCustom04" class="form-label">Phương thức thanh toán</label>
-                    <select class="form-select discription" id="validationCustom04" required="">
-                        <option >0</option>
-                        <option >1</option>
-                    </select>
-                </div>
                 <div class="col-md-6">
                     <label for="validationCustom02" class="form-label">Người nhận</label>
                     <input type="text" class="form-control" name="receiver_id" >

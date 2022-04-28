@@ -30,4 +30,11 @@ class BillRequest extends FormRequest
             'receiver_id' => 'nullable|integer'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            
+        ];
+    }
 }

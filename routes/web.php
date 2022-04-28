@@ -117,7 +117,7 @@ Route::middleware(['web','auth'])->group(function () {
             Route::post('/add', [BillController::class, 'saveAdd']);
             Route::get('/edit/{id}', [BillController::class, 'editForm'])->name('bill.edit');
             Route::post('/edit/{id}', [BillController::class, 'saveEdit']);
-            Route::get('/edit/{id}/add-bill-detail', [BillController::class, 'editAddBillDetailForm']);
+            Route::get('/edit/{id}/add-bill-detail', [BillController::class, 'editAddBillDetailForm'])->name('bill.add-bill-detail');
             Route::post('/edit/{id}/add-bill-detail', [BillController::class, 'saveEditAddBillDetail']);
             Route::get('/edit/{id}/edit-bill-detail/{bill_detail_id}', [BillController::class, 'editEditBillDetailForm']);
             Route::post('/edit/{id}/edit-bill-detail/{bill_detail_id}', [BillController::class, 'saveEditEditBillDetail']);

@@ -18,7 +18,7 @@
                                     <label>Tên căn hộ</label>
                                     <input type="text" name="apartment_id" class="form-control" value="{{$apartment->apartment_id}}">
                                     @error('apartment_id')
-                                    <p class="text-danger">{{$message}}</p>
+                                        <p class="text-danger">{{$message}}</p>
                                     @enderror
                                 </div>
                             </div>
