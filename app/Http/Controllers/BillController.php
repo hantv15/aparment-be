@@ -13,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use function Sodium\compare;
 
 class BillController extends Controller
 {
@@ -48,7 +49,7 @@ class BillController extends Controller
                 'name.required' => 'Tên số Không được trống',
                 'name.string' => 'Tên phải là chuỗi',
                 'name.min' => 'Tên ít nhất 3 kí tự',
-                'name.regex' => 'Tên không được chứa kí tự hoặc số', 
+                'name.regex' => 'Tên không được chứa kí tự hoặc số',
                 'image.image' => 'Ảnh phải là định dạng ảnh',
                 'receiver_id.integer' => 'Người nhận này không dúng định dạng'
             ]
@@ -73,7 +74,7 @@ class BillController extends Controller
     }
 
     public function saveEdit($id, Request $request)
-    {   
+    {
         $validator = Validator::make($request->all(),
         [
             'name' => 'required|string|min3|regex:/[a-zA-Z]^./',
@@ -117,7 +118,7 @@ class BillController extends Controller
     }
 
     public function saveEditAddBillDetail($id, BillDetailRequest $request): JsonResponse
-    {   
+    {
 
         $bill = Bill::find($id);
         if (!$bill) {
@@ -240,9 +241,10 @@ class BillController extends Controller
         return $this->success($bill);
     }
 
-    public function getBillById($id): JsonResponse
+    public function getBillById($id)
     {
-        $bill = Bill::leftJoin('bill_details', 'bills.id', '=', 'bill_details.bill_id')
+        $bill = Bill::find($id);
+        $bill_detail_by_bill_id = Bill::leftJoin('bill_details', 'bills.id', '=', 'bill_details.bill_id')
             ->leftJoin('services', 'bill_details.service_id', '=', 'services.id')
             ->select(
                 'bills.id',
@@ -263,7 +265,7 @@ class BillController extends Controller
             return $this->failed();
         }
 
-        return $this->success($bill);
+        return view('bills.detail', compact('bill', 'bill_detail_by_bill_id'));
     }
 
     public function getBillDetailByBillId($id)
