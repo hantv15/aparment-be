@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->date('dob')->nullable();
             $table->integer('number_card')->nullable();
             $table->tinyInteger('status')->default(0);
-            // $table->bigInteger('role_id')->default(0);
+            $table->unsignedBigInteger('role_id')->default(0);
             $table->unsignedBigInteger('apartment_id')->unique()->nullable();
             $table->string('avatar', 255)->nullable();
             $table->timestamps();

@@ -81,9 +81,9 @@ class CardController extends Controller
     public function editForm($id)
     {
         $card = Card::find($id);
-        $year = substr($card->expire_time, 0, 4);
-        $month = substr($card->expire_time, 5, 2);
-        $day = substr($card->expire_time, 8, 2);
+            $year = substr($card->expire_time, 0, 4);
+            $month = substr($card->expire_time, 5, 2);
+            $day = substr($card->expire_time, 8, 2);
         $hour = substr($card->expire_time, 11, 2);
         $minute = substr($card->expire_time, 14, 2);
         $apartments = Apartment::all();

@@ -30,7 +30,7 @@
                     <tr>
                         <th>#</th>
                         <th>Tiêu đề</th>
-                        
+                        <th>Tòa</th>
                         <th></th>
                         
                     </tr>
@@ -41,11 +41,18 @@
                             <td>{{$key++}}</td>
                             
                             <td>{{$feedback->subject}}</td>
+                            <td>
+                                @foreach ($buildings as $bui)
+                                @if ($bui->id==$feedback->building_id)
+                                    {{ $bui->name }}
+                                @endif
+                            @endforeach
+                            </td>
                             
                             <td>
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6">
                                      <a href="{{route('feedback.view',['id' => $feedback->id])}}" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Views"><i class="bi bi-eye-fill"></i></a> 
-                                    
+                                     <a href="{{route('feedback.remove',['id'=>$feedback->id])}}" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="bi bi-trash-fill"></i></a>
                                     
                                 </div>
                             </td>

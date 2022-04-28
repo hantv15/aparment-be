@@ -59,35 +59,22 @@ class BillDetailController extends Controller
         //                             ->count();
         // if ($count_service_in_bill > 0) {
         //     return 1;
-        //  return lỗi
+        //  return 'lỗi';
         // }
         $bill_detail->fill($request->all());
-        $category_service = Service::where('id',$request->service_id)->first()->category;
-        if( $category_service ==1 ){
-            $bill_detail->total_price = $request->quantity * Service::where('id', $request->service_id)->first()->price;
-        }elseif($category_service ==3){
+      
+        $bill_detail->total_price = $request->quantity * Service::where('id', $request->service_id)->first()->price;
+        if ($request->service_id == Service::WATER_SERVICE) {
             if ($request->quantity <= 10) {
-                        $bill_detail->total_price = $request->quantity * 5973;
-                    } elseif ($request->quantity <= 20) {
-                        $bill_detail->total_price = 10 * 5973 + ($request->quantity - 10) * 7052;
-                    } elseif ($request->quantity <= 30) {
-                        $bill_detail->total_price = 10 * 5973 + 10 * 7052 + ($request->quantity - 20) * 8669;
-                    } elseif ($request->quantity > 30) {
-                        $bill_detail->total_price = 10 * 5973 + 10 * 7052 + 10 * 8669 + ($request->quantity - 30) * 15929;
-                    }
+                $bill_detail->total_price = $request->quantity * 5973;
+            } elseif ($request->quantity <= 20) {
+                $bill_detail->total_price = 10 * 5973 + ($request->quantity - 10) * 7052;
+            } elseif ($request->quantity <= 30) {
+                $bill_detail->total_price = 10 * 5973 + 10 * 7052 + ($request->quantity - 20) * 8669;
+            } elseif ($request->quantity > 30) {
+                $bill_detail->total_price = 10 * 5973 + 10 * 7052 + 10 * 8669 + ($request->quantity - 30) * 15929;
+            }
         }
-        // $bill_detail->total_price = $request->quantity * Service::where('id', $request->service_id)->first()->price;
-        // if ($request->service_id == Service::WATER_SERVICE) {
-        //     if ($request->quantity <= 10) {
-        //         $bill_detail->total_price = $request->quantity * 5973;
-        //     } elseif ($request->quantity <= 20) {
-        //         $bill_detail->total_price = 10 * 5973 + ($request->quantity - 10) * 7052;
-        //     } elseif ($request->quantity <= 30) {
-        //         $bill_detail->total_price = 10 * 5973 + 10 * 7052 + ($request->quantity - 20) * 8669;
-        //     } elseif ($request->quantity > 30) {
-        //         $bill_detail->total_price = 10 * 5973 + 10 * 7052 + 10 * 8669 + ($request->quantity - 30) * 15929;
-        //     }
-        // }
         $bill_detail->save();
 
         $bill = Bill::where('id', $request->bill_id)->first();

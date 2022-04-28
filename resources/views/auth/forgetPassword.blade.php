@@ -96,42 +96,27 @@
                 </div>
                 <div class="card fat">
                     <div class="card-body">
-                        <h4 class="card-title">Login</h4>
+                        <h4 class="card-title">Quên mật khẩu</h4>
                         <form method="POST"  novalidate="">
                             @csrf
                             <div class="form-group">
-                                <label for="email">Địa chỉ  E-Mail</label>
+                                <label for="email">Địa chỉ E-Mail </label>
                                 <input id="email" type="email" class="form-control" name="email" value="" required autofocus>
-                                @if ($errors->has('email'))
+                                {{-- @if ($errors->has('email'))
                                     <p class="alert-danger p-1 mt-1">{{ __('string.email') }}</p>
-                                @endif
+                                @endif --}}
                             </div>
 
-                            <div class="form-group">
-                                <label for="password">Mật khẩu
-                                    <a href="{{route('forget.password.get')}}" class="float-right">
-                                        Quên mật khẩu?
-                                    </a>
-                                </label>
-                                <input id="password" type="password" class="form-control" name="password" required data-eye>
-                                @if ($errors->has('password'))
-                                    <p class="alert-danger p-1 mt-1">{{ __('string.password') }}</p>
-                                @endif
-                            </div>
+                         
 
-                            {{-- <div class="form-group">
-                                <div class="custom-checkbox custom-control">
-                                    <input type="checkbox" name="remember" id="remember" class="custom-control-input">
-                                    <label for="remember" class="custom-control-label">Nhớ mật khẩu</label>
-                                </div>
-                            </div> --}}
+                           
 
                             <div class="form-group m-0">
                                 @if(session('msg'))
                                     <p class="alert-danger p-1 mt-1">{{session('msg')}}</p>
                                 @endif
                                 <button type="submit" class="btn btn-primary btn-block">
-                                    Đăng nhập
+                                    Gửi
                                 </button>
                             </div>
                         </form>

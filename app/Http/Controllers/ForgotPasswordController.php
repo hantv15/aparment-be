@@ -35,20 +35,23 @@ class ForgotPasswordController extends Controller
             'email' => 'required|email|exists:users',
         ]);
 
-        $token = Str::random(6);
-
+       
+        $token = rand(11111,99999);
+        $email= $request->email;
+        
         DB::table('password_resets')->insert([
             'email' => $request->email,
             'token' => $token,
             'created_at' => Carbon::now()
         ]);
 
-        MaiL::send('email.forgetPassword', ['token' => $token], function ($message) use ($request) {
+        MaiL::send('email.forgetPassword', ['token' => $token,'email'=>$email], function ($message) use ($request) {
             $message->to($request->email);
-            $message->subject('Reset Password');
+            $message->subject('Thông báo đổi mật khẩu');
         });
 
-        return $this->success($token);
+        return redirect(route('reset.password.get'));
+        // return view('auth.forgetPasswordLink',compact('email'));
     }
     /**
      * Write code on Method
@@ -83,7 +86,7 @@ class ForgotPasswordController extends Controller
             ->first();
 
         if (!$updatePassword) {
-            return $this->failed();
+            // return $this->back();
         }
         $user = User::where('email', $request->email)
             ->update(['password' => Hash::make($request->password)]);
@@ -91,7 +94,7 @@ class ForgotPasswordController extends Controller
 
         DB::table('password_resets')->where(['email' => $request->email])->delete();
 
-        return $this->success('');
+        return 1;
 
         // return redirect('/api/login')->with('message', 'Your password has been changed!');
     }
