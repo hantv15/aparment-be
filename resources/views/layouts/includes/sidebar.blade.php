@@ -39,7 +39,7 @@
                 <div class="menu-title">Quản lý quản trị</div>
             </a>
             <ul>
-                <li> <a href="ecommerce-add-new-product-2.html"><i class="bi bi-circle"></i>Danh sách quản trị viên</a>
+                <li> <a href="{{route('admin-technicians.index')}}"><i class="bi bi-circle"></i>Danh sách quản trị viên</a>
                 </li>
             </ul>
         </li>
@@ -107,10 +107,10 @@
             <a class="has-arrow" href="javascript:;">
                 <div class="parent-icon"><i class="bi bi-bar-chart-line-fill"></i>
                 </div>
-                <div class="menu-title">Quản lý thông báo</div>
+                <div class="menu-title">Quản lý bảo trì</div>
             </a>
             <ul>
-                <li> <a href="charts-apex-chart.html"><i class="bi bi-circle"></i>Tạo thông báo</a>
+                <li> <a href="{{route('maintenance.index')}}"><i class="bi bi-circle"></i>Danh sách bảo trì</a>
                 </li>
             </ul>
         </li>

@@ -38,10 +38,10 @@ class UserSeeder extends Seeder
             ],
             [
                 'email' => 'anhndph12795@fpt.edu.vn',
-                'phone_number' => '0399089821',
+                'phone_number' => '0813635868',
                 'password' => Hash::make('12345678'),
                 'name' => 'Đức Anh',
-                'dob' => '1998-01-02',
+                'dob' => '1998-12-28',
                 'number_card' => '001097027957',
                 'status' => 1,
                 'role_id' => 1,

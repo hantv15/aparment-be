@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminTechnicians;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ApartmentController;
@@ -190,5 +191,13 @@ Route::middleware(['web','auth'])->group(function () {
         Route::get('/edit/{id}',[MaintenanceController::class,'editForm'])->name('maintenance.edit');
         Route::post('/edit/{id}',[MaintenanceController::class,'saveEdit']);
         Route::get('/remove/{id}',[MaintenanceController::class,'remove'])->name('maintenance.remove');
+    });
+    Route::prefix('/admin-technicians')->group(function(){
+        Route::get('/',[AdminTechnicians::class,'get'])->name('admin-technicians.index');
+        Route::get('/add',[AdminTechnicians::class,'addForm'])->name('admin-technicians.add');
+        Route::post('/add',[AdminTechnicians::class,'saveAdd']);
+        Route::get('/edit/{id}',[AdminTechnicians::class,'editForm'])->name('admin-technicians.edit');
+        Route::post('/edit/{id}',[AdminTechnicians::class,'saveEdit']);
+        Route::get('/remove/{id}',[AdminTechnicians::class,'remove'])->name('admin-technicians.remove');
     });
 });
