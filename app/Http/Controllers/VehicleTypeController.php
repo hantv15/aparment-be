@@ -12,11 +12,11 @@ use Illuminate\Validation\Rule;
 
 class VehicleTypeController extends Controller
 {
-    public function getVehicleType():JsonResponse
+    public function getVehicleType()
     {
         $vehicle_types = VehicleType::all();
-        $result = VehicleTypeResource::collection($vehicle_types);
-        return $this->success($result);
+     
+        return view('vehicle-type.index',compact('vehicle_types'));
     }
 
     public function addForm(){

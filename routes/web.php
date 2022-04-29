@@ -129,7 +129,7 @@ Route::middleware(['web','auth'])->group(function () {
         });
 
         Route::prefix('/bill-detail')->group(function () {
-            Route::get('/', [BillDetailController::class, 'getBillDetail'])->name('bill-detail');
+            Route::get('/', [BillDetailController::class, 'getBillDetail'])->name('bill-detail.index');
             Route::get('/add', [BillDetailController::class, 'addForm'])->name('bill-detail.add');
             Route::post('/add', [BillDetailController::class, 'saveAdd']);
             Route::get('/edit/{id}', [BillDetailController::class, 'editForm'])->name('bill-detail.edit');
@@ -176,7 +176,7 @@ Route::middleware(['web','auth'])->group(function () {
         });
 
         Route::prefix('/vehicle-type')->group(function () {
-            Route::get('/', [VehicleTypeController::class, 'getVehicleType'])->name('vehicle-type');
+            Route::get('/', [VehicleTypeController::class, 'getVehicleType'])->name('vehicle-type.index');
             Route::get('/add', [VehicleTypeController::class, 'addForm'])->name('vehicle-type.add');
             Route::post('/add', [VehicleTypeController::class, 'saveAdd']);
             Route::get('/edit/{id}', [VehicleTypeController::class, 'editForm'])->name('vehicle-type.edit');

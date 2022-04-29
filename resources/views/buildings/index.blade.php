@@ -23,10 +23,11 @@
 
     <div class="card">
         <div class="card-body">
-            <div class="d-flex align-items-center">
-                @if (Session::has('message'))
-                    <p class="text-danger">{{Session::get('message')}}</p>
+            @if (Session::has('message'))
+                    <p class="text-success">{{Session::get('message')}}</p>
                 @endif
+            <div class="d-flex align-items-center">
+                
                 <h5 class="mb-0">User Details</h5>
                 <form method="GET"  action="{{\Illuminate\Support\Facades\URL::current()}}" class="ms-auto position-relative d-flex">
                     <input class="form-control ps-5" type="text" name="keyword" placeholder="search"> &nbsp
