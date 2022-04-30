@@ -17,6 +17,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\Clients\HomeController;
+use App\Http\Controllers\Clients\LoginController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
@@ -46,6 +47,8 @@ Route::get('/', function () {
 Route::prefix('client')->group(function (){
     Route::get('/', [HomeController::class, 'index'])->name('home');
     
+    Route::get('/login', [LoginController::class, 'login'])->name('login-client');
+    Route::post('/login', [LoginController::class, 'postLogin']);
 });
 Route::prefix('user-manager')->group(function (){
     Route::get('/', [UserController::class, 'getUser'])->name('index');
