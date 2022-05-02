@@ -12,7 +12,7 @@
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <li class="scroll-to-section"><a href="#top" class="active">Trang chủ</a></li>
+                        <li class="scroll-to-section"><a href="{{route('logout')}}home" class="active">Trang chủ</a></li>
                         <li><a href="meetings.html">Giới thiệu</a></li>
                         <li class="scroll-to-section"><a href="#apply">Quản lý tòa nhà</a></li>
                         {{-- <li class="has-sub">
@@ -28,26 +28,24 @@
                         {{-- <li class="scroll-to-section"><a href="{{route('staff.index')}}">Login</a></li> --}}
 
                         @if (Route::has('login'))
+                        
                         @auth
                         <li class="has-sub">
                         <a href="" class="text-sm text-gray-700 dark:text-gray-500">{{Auth::user()->name}}</a>
                             <ul class="sub-menu btn-1">
                                 <li class="menu-label" ><a style=" color: white; text-decoration: none"
-                                    href="">Tài khoản</a></li>
+                                    href="{{route('profile')}}">Tài khoản</a></li>
                                 @if (Auth::check())
-                                <li class="menu-label " ><a style=" color: white; text-decoration: none"
+                                <li class="menu-label" ><a style="color: white; text-decoration: none"
                                         href="{{route('logout')}}">Đăng xuất</a></li>
                                 @endif
                             </ul>
                         </li>
                         @else
-                        <li class="scroll-to-section">
-                            <a href="{{ route('login-client') }}" class="text-sm text-gray-700 dark:text-gray-500 ">Đăng
+                        <li class="">
+                            <a href="{{ route('login-client')}}" class="text-sm text-gray-700 dark:text-gray-500 ">Đăng
                                 nhập</a>
                         </li>
-                         
-
-
                         @endauth
                       
                         {{-- <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">

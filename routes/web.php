@@ -18,6 +18,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\Clients\HomeController;
 use App\Http\Controllers\Clients\LoginController;
+use App\Http\Controllers\Clients\ProfileController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
@@ -49,6 +50,8 @@ Route::prefix('client')->group(function (){
     
     Route::get('/login', [LoginController::class, 'login'])->name('login-client');
     Route::post('/login', [LoginController::class, 'postLogin']);
+    Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
+    
 });
 Route::prefix('user-manager')->group(function (){
     Route::get('/', [UserController::class, 'getUser'])->name('index');
