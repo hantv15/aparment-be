@@ -55,28 +55,11 @@
                     <div class="d-flex align-items-center">
                       <div class="tab-icon"><i class='bx bx-home font-18 me-1'></i>
                       </div>
-                      <div class="tab-title">Hóa đơn</div>
+                      <div class="tab-title">Hóa đơn chi tiết</div>
                     </div>
                   </a>
                 </li>
-                <li class="nav-item" role="presentation">
-                  <a class="nav-link" data-bs-toggle="tab" href="#dangerprofile" role="tab" aria-selected="false">
-                    <div class="d-flex align-items-center">
-                      <div class="tab-icon"><i class='bx bx-user-pin font-18 me-1'></i>
-                      </div>
-                      <div class="tab-title">Dịch vụ</div>
-                    </div>
-                  </a>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <a class="nav-link" data-bs-toggle="tab" href="#dangercontact" role="tab" aria-selected="false">
-                    <div class="d-flex align-items-center">
-                      <div class="tab-icon"><i class='bx bx-microphone font-18 me-1'></i>
-                      </div>
-                      <div class="tab-title">Contact</div>
-                    </div>
-                  </a>
-                </li>
+       
               </ul>
               <div class="tab-content py-3">
                 <div class="tab-pane fade show active" id="dangerhome" role="tabpanel">
@@ -109,39 +92,35 @@
                                 <thead>
                                   <tr role="row">
                                     <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1"
-                                      colspan="1" style="width: 100.683px;" aria-sort="ascending"
+                                      colspan="1" style="width: 104.683px;" aria-sort="ascending"
                                       aria-label="Name: activate to sort column descending">Số thứ tự</th>
                                     <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1"
                                       colspan="1" style="width: 264.683px;" aria-sort="ascending"
-                                      aria-label="Name: activate to sort column descending">Tên hóa đơn</th>
+                                      aria-label="Name: activate to sort column descending">Hóa đơn</th>
                            
-                         
+                                    <th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1"
+                                      colspan="1" style="width: 264.683px;" aria-sort="ascending"
+                                      aria-label="Name: activate to sort column descending">Dịch vụ</th>
+                           
                                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1"
                                       style="width: 101.167px;" aria-label="Age: activate to sort column ascending">
                                       Số lượng
                                     </th>
-                                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1"
-                                      style="width: 251.15px;" aria-label="Salary: activate to sort column ascending">
-                                      phương thức thanh toán</th>
+                                  
                                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1"
                                       style="width: 193.05px;"
-                                      aria-label="Start date: activate to sort column ascending">Trạng thái</th>
+                                      aria-label="Start date: activate to sort column ascending">Tổng tiền</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  @foreach($bills as $key =>$bill)
+                                  @foreach($bill_details as $key =>$bill)
                                   <tr role="row" class="odd">
                                     <td class="sorting_1">{{++$key}}</td>
-                                    <td>{{$bill->name}}</td>
-                                    <td>{{$bill->amount}}</td>
-                                    <td>{{$bill->payment_method}}</td>
-                                    <td>{{$bill->status}}</td>
-                                    <td >
-                                      <a href="{{route('billDetail', ['id' => $bill->id])}}" class="text-primary " data-bs-toggle="tooltip"
-                                        data-bs-placement="bottom" title="" data-bs-original-title="Views"
-                                        aria-label="Views">
-                                        <i class="bi bi-eye-fill"></i></a>
-                                    </td>
+                                    <td>{{$bill->bill_name}}</td>
+                                    <td>{{$bill->service_name}}</td>
+                                    <td>{{$bill->quantity}}</td>
+                                    <td>{{$bill->total_price}}</td>
+                                  
                                   </tr>
                                   @endforeach
 
