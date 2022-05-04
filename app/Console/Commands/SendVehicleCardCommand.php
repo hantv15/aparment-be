@@ -1,24 +1,46 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Console\Commands;
 
-use App\Extensions\RestfulResourceTrait;
 use App\Models\Apartment;
 use App\Models\Bill;
 use App\Models\BillDetail;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
+use App\Models\Card;
+use App\Models\Service;
+use Illuminate\Console\Command;
 
-class Controller extends BaseController
+class SendVehicleCardCommand extends Command
 {
     /**
-     * @OA\Info(title="My First API", version="0.1")
+     * The name and signature of the console command.
+     *
+     * @var string
      */
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, RestfulResourceTrait;
+    protected $signature = 'send:vehiclecard';
 
-    public function test()
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Command description';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
     {
         $day = substr(date("d-m-Y"), 0, 2);
         $month = substr(date("d-m-Y"), 3, 2);
@@ -39,7 +61,6 @@ class Controller extends BaseController
             ->where('vehicles.vehicle_type_id', 1)
             ->groupBy('apartments.id', 'vehicles.apartment_id', 'apartments.apartment_id')
             ->get();
-            // dd($motorbike_card);
         foreach ($motorbike_card as $item) {
             $new_bill = new Bill();
             $new_bill->name = 'Tiền thẻ xe máy tháng ' . $month . '/' . $year . ' phòng ' . $item->apartment_id;
