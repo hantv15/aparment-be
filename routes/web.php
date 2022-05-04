@@ -51,7 +51,7 @@ Route::prefix('client')->group(function (){
     Route::get('/login', [LoginController::class, 'login'])->name('login-client');
     Route::post('/login', [LoginController::class, 'postLogin']);
     Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
-    
+    Route::get('/{id}/bill-detail', [ProfileController::class, 'getBillDetail'])->name('billDetail');
 });
 Route::prefix('user-manager')->group(function (){
     Route::get('/', [UserController::class, 'getUser'])->name('index');
