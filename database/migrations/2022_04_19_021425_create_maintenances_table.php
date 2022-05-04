@@ -21,6 +21,14 @@ class CreateMaintenancesTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
+            $table->unsignedBigInteger('building_id');
+            $table->foreign('building_id')->references('id')->on('buildings')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->tinyInteger('year')->nullable();
+            $table->tinyInteger('month')->nullable();
+            $table->tinyInteger('day')->nullable();
             $table->integer('progress')->nullable();
             $table->timestamps();
         });

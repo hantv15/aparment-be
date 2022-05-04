@@ -22,9 +22,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('send:bill')->monthlyOn(30, '07:00');
-        $schedule->command('send:debt')->monthlyOn(5, '07:00');
-
+        // $schedule->command('send:bill')->monthlyOn(30, '07:00');
+        // $schedule->command('send:debt')->monthlyOn(5, '07:00');
+        $schedule->command('send:vehiclecard')->everyMinute();
     }
 
     /**
