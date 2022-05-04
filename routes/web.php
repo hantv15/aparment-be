@@ -18,6 +18,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\Clients\HomeController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
@@ -34,6 +35,9 @@ use App\Http\Controllers\VehicleTypeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('example', [Controller::class, 'test'])->name('example');
+
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'postLogin']);
 Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');

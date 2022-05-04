@@ -39,4 +39,16 @@ class Apartment extends Model
     {
         return $this->belongsTo(Building::class);
     }
+
+    public function cards(){
+        return $this->hasMany(Card::class, 'apartment_id');
+    }
+
+    public function vehicles(){
+        return $this->hasMany(Vehicle::class, 'apartment_id');
+    }
+
+    public function vehicleTypes(){
+        return $this->belongsToMany(VehicleType::class, 'vehicles', 'apartment_id', 'vehicle_type_id');
+    }
 }

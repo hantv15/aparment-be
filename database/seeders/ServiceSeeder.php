@@ -20,6 +20,16 @@ class ServiceSeeder extends Seeder
                 'price' => 5973,
                 'status' => 1
             ],
+            [
+                'name' => 'Tiền vé xe máy',
+                'price' => 100000,
+                'status' => 1
+            ],
+            [
+                'name' => 'Tiền vé ô tô',
+                'price' => 1500000,
+                'status' => 1
+            ],
         ];
 
         DB::table('services')->insert($services_default);

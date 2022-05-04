@@ -20,12 +20,12 @@ class CreateVehiclesTable extends Migration
             $table->unsignedBigInteger('vehicle_type_id');
             $table->foreign('vehicle_type_id')->references('id')->on('vehicle_types')
                     ->onUpdate('cascade')
-                    ->onDelete('cascade');    
+                    ->onDelete('cascade');
             
-            $table->unsignedBigInteger('card_id');
-            $table->foreign('card_id')->references('id')->on('cards')
+            $table->unsignedBigInteger('apartment_id');
+            $table->foreign('apartment_id')->references('id')->on('apartments')
                     ->onUpdate('cascade')
-                    ->onDelete('cascade'); 
+                    ->onDelete('cascade');
 
             $table->tinyInteger('status')->default(0);
             $table->string('image', 255)->nullable();
