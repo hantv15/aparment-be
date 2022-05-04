@@ -13,7 +13,7 @@
         </div>
         <div class="ms-auto">
             <div class="btn-group">
-                <a href="{{route('department.add')}}" class="btn btn-success">Thêm </a>
+                <a href="{{route('vehicle.add')}}" class="btn btn-success">Thêm </a>
                 &nbsp  &nbsp  &nbsp
                 
             </div>

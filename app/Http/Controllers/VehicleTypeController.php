@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VehicleTypeRequest;
 use App\Http\Resources\VehicleTypeResource;
 use App\Models\VehicleType;
 
@@ -23,36 +24,23 @@ class VehicleTypeController extends Controller
         return view('vehicle-type.add');
     }
 
-    public function saveAdd(Request $request): JsonResponse
+    public function saveAdd(VehicleTypeRequest  $request)
     {
-        $validator = Validator::make($request->all(),
-        ['name' => 'required|string|unique:vehicle_types|regex:/A-Za-z/',
-        'price' => 'required|integer|min:1',],
-        [
-            'name.required'=> 'Tên Không được trống',
-            'name.string'=> 'Tên phải là chuỗi',
-            'name.unique'=>'Tên đã tồn tại',
-            'name.regex'=>'Tên không được chứa kí tự đặc biệt, số và phải là chữ',
-            'price.required'=>'Phí không được trống',
-            'price.integer'=>'Phí phải là số',
-            'price.min'=>'Phí nhỏ nhất là 1'
-
-        ]
-    );
-    if ($validator->fails()) {
-        return $this->failed($validator->messages());
-    }
-        
         $vehicle_type = new VehicleType();
         $vehicle_type->fill($request->all());
         $vehicle_type->save();
-        return $this->success($vehicle_type);
+        return redirect(route('vehicle-type.index'));
     }
-    public function saveEdit(Request $request, $id): JsonResponse
+   
+    public function editForm($id){
+        $model = VehicleType::find($id);
+        return view('vehicle-type.edit',compact('model'));
+    }
+    public function saveEdit(Request $request, $id)
     {
         $validator = Validator::make($request->all(),
         ['name' => [
-            'required', 'string','regex:[a-zA-Z]',
+            'required', 'string',
             Rule::unique('vehicle_types')->ignore($id)
         ],
         
@@ -68,13 +56,11 @@ class VehicleTypeController extends Controller
 
         ]
     );
-    if ($validator->fails()) {
-        return $this->failed($validator->messages());
-    }
+    
         
         $vehicle_type = VehicleType::find($id);
         $vehicle_type->fill($request->all());
         $vehicle_type->save();
-        return $this->success($vehicle_type);
+        return redirect(route('vehicle-type.index'));
     }
 }
