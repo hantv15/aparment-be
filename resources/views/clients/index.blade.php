@@ -304,35 +304,25 @@
         <div class="row">
           <div class="col-lg-12">
             <form id="contact" action="" method="post">
+              @csrf
               <div class="row">
                 <div class="col-lg-12">
                   <h2>Phản hồi</h2>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-12">
                   <fieldset>
-                    <input name="name" type="text" id="name" placeholder="YOURNAME...*" required="">
-                  </fieldset>
-                </div>
-                <div class="col-lg-4">
-                  <fieldset>
-                    <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="YOUR EMAIL..."
-                      required="">
-                  </fieldset>
-                </div>
-                <div class="col-lg-4">
-                  <fieldset>
-                    <input name="subject" type="text" id="subject" placeholder="SUBJECT...*" required="">
+                    <input name="subject" type="text" id="subject" placeholder="Tiều đề" required="Nhập tiêu đề">
                   </fieldset>
                 </div>
                 <div class="col-lg-12">
                   <fieldset>
-                    <textarea name="message" type="text" class="form-control" id="message" placeholder="YOUR MESSAGE..."
-                      required=""></textarea>
+                    <textarea name="message" type="text" class="form-control" id="message" placeholder="Nồi dung"
+                      required="Nhập nội dung"></textarea>
                   </fieldset>
                 </div>
                 <div class="col-lg-12">
                   <fieldset>
-                    <button type="submit" id="form-submit" class="button">SEND MESSAGE NOW</button>
+                    <button type="submit" id="form-submit" class="button">Gửi phản hồi</button>
                   </fieldset>
                 </div>
               </div>
