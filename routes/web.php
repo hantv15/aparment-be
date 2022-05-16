@@ -19,7 +19,11 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\Clients\HomeController;
+use App\Http\Controllers\Clients\LoginController;
+use App\Http\Controllers\Clients\ProfileController;
+
 use App\Http\Controllers\Controller;
+
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
@@ -51,13 +55,16 @@ Route::get('/', function () {
 });
 Route::prefix('client')->group(function (){
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    
+    Route::post('feedback', [HomeController::class, 'sendFeedback'])->name('feedbacks');
+    Route::get('/login', [LoginController::class, 'login'])->name('login-client');
+    Route::post('/login', [LoginController::class, 'postLogin']);
+    Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
+    Route::get('/{id}/bill-detail', [ProfileController::class, 'getBillDetail'])->name('billDetail');
 });
 Route::prefix('user-manager')->group(function (){
     Route::get('/', [UserController::class, 'getUser'])->name('index');
 });
 Route::middleware(['web','auth'])->group(function () {
-    Route::get('feedback', [FeedbackController::class, 'getFeedback'])->name('feedback.add');
     Route::get('feedback', [FeedbackController::class, 'getFeedback'])->name('feedback.add');
     Route::post('feedback', [FeedbackController::class, 'sendFeedback']);
     Route::get('listFeedback', [FeedbackController::class, 'listFeedback'])->name('feedback.list');
@@ -78,7 +85,7 @@ Route::middleware(['web','auth'])->group(function () {
             Route::get('add-user', [UserController::class, 'registerForm'])->name('register');
             Route::post('add-user', [UserController::class, 'saveUser']);
             Route::get('/edit-user/{id}', [UserController::class, 'formEditUser'])->name('edit');
-            Route::post('/edit-user/{id}', [UserController::class, 'formEditUser']);
+            Route::post('/edit-user/{id}', [UserController::class, 'saveEditUser']);
         });
 
         Route::prefix('service-manager')->name('service.')->group(function () {
@@ -120,8 +127,12 @@ Route::middleware(['web','auth'])->group(function () {
 
         Route::prefix('/bill')->group(function () {
             Route::get('/', [BillController::class, 'getBill'])->name('bill.index');
+            Route::get('/list-unpaid', [BillController::class, 'getUnpaidBill'])->name('bill.list-unpaid');
+            Route::get('/list-paid', [BillController::class, 'getPaidBill'])->name('bill.list-paid');
             Route::get('/add', [BillController::class, 'addForm'])->name('bill.add');
             Route::post('/add', [BillController::class, 'saveAdd']);
+            Route::get('/add-list', [BillController::class, 'addListForm'])->name('bill.add-list');
+            Route::post('/add-list', [BillController::class, 'saveAddList']);
             Route::get('/edit/{id}', [BillController::class, 'editForm'])->name('bill.edit');
             Route::post('/edit/{id}', [BillController::class, 'saveEdit']);
             Route::get('/edit/{id}/add-bill-detail', [BillController::class, 'editAddBillDetailForm'])->name('bill.add-bill-detail');

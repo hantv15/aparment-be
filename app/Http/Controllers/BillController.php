@@ -8,11 +8,15 @@ use App\Http\Resources\BillResource;
 use App\Models\Apartment;
 use App\Models\Bill;
 use App\Models\BillDetail;
+use App\Models\Building;
 use App\Models\Service;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
+
+use function Ramsey\Uuid\v1;
 use function Sodium\compare;
 
 class BillController extends Controller
@@ -29,6 +33,22 @@ class BillController extends Controller
         return view('bills.index', compact('bills'));
     }
 
+    public function getUnpaidBill(Request $request) {
+        $unpaid_bills = Bill::where('status', 0)->get();
+        if ($request->filled('page') && $request->filled('page_size')) {
+            $unpaid_bills = $unpaid_bills->skip(($request->page - 1) * $request->page_size)->take($request->page_size);
+        }
+        return view('bills.list-unpaid', compact('unpaid_bills'));
+    }
+
+    public function getPaidBill(Request $request) {
+        $paid_bills = Bill::where('status', 1)->get();
+        if ($request->filled('page') && $request->filled('page_size')) {
+            $paid_bills = $paid_bills->skip(($request->page - 1) * $request->page_size)->take($request->page_size);
+        }
+        return view('bills.list-paid', compact('paid_bills'));
+    }
+
     public function addForm()
     {
         $apartments = Apartment::all();
@@ -37,10 +57,44 @@ class BillController extends Controller
 
     public function saveAdd(BillRequest $request)
     {
+        dd($request->all());
         $bill = new Bill();
         $bill->fill($request->all());
         $bill->save();
         return redirect(route('bill.index'));
+    }
+
+    public function addListForm(){
+        $buildings = Building::all();
+        $services = Service::all();
+        return view('bills.add-list', compact('buildings', 'services'));
+    }
+
+    public function saveAddList(Request $request) {
+        $buildings = Building::all();
+        $array_building = [];
+        foreach ($buildings as $item) {
+            $array_building[$item->id] = $item->name;
+        }
+        if ($request->building_id == 'all') {
+            $apartments = Apartment::all();
+        } else if ($request->building_id == '') {
+            return redirect(route('bill.add-list'))->with('message', 'Hãy chọn tòa nhà');
+        } else {
+            $apartments = Apartment::where('building_id', $request->building_id)->get();
+        }
+        foreach ($apartments as $item) {
+            $bill = new Bill();
+
+            $bill->name = $request->name . ' phòng ' . $item->apartment_id . ' - ' . $array_building[$item->building_id];
+            $bill->status = $request->status;
+            $bill->fax = $request->fax;
+            $bill->apartment_id = $item->id;
+            $bill->receiver_id = $request->receiver_id;
+            $bill->notes = $request->notes;
+
+            $bill->save();
+        }
     }
 
     public function editForm($id)

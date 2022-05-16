@@ -58,7 +58,7 @@
                             <td>{{$user->phone_number}}</td>
                             <td>{{$user->email}}</td>
                             <td>{{$user->dob}}</td>
-                            <td>{{$user->apartment->apartment_id}}</td>
+                            <td>{{$array_building[$user->apartment_id]}}</td>
                             <td>
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6">
                                     <a href="javascript:;" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Views"><i class="bi bi-eye-fill"></i></a>

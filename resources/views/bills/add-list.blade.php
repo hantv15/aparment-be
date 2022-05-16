@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<h6 class="mb-0 text-uppercase">Thêm hóa đơn</h6>
+<h6 class="mb-0 text-uppercase">Thêm danh sách hóa đơn</h6>
 <hr>
 <div class="card">
     <div class="card-body">
@@ -42,11 +42,12 @@
                     <input type="text" class="form-control" name="fax" required="">
                 </div>
                 <div class="col-md-6">
-                    <label for="validationCustom02" class="form-label">Căn hộ</label>
-                    <select name="apartment_id" class="form-select discription" id="">
+                    <label for="validationCustom02" class="form-label">Tòa nhà</label>
+                    <select name="building_id" class="form-select discription" id="">
                         <option value="">Chọn căn hộ</option>
-                        @foreach ($apartments as $item)
-                            <option value="{{$item->id}}">{{$item->apartment_id}}</option>
+                        <option value="all">Tất cả các căn hộ</option>
+                        @foreach ($buildings as $item)
+                            <option value="{{$item->id}}">{{$item->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -61,7 +62,7 @@
                 <div class="col-md-12 mb-3">
                     <label for="validationTextarea" class="form-label">Mô tả</label>
                     <textarea class="form-control is-invalid" name="notes"
-                        placeholder="Required example textarea" required="" style="height: 97px;"></textarea>
+                        placeholder="Nhập mô tả" required="" style="height: 97px;"></textarea>
                 </div>
 
                 <div class="col-12">

@@ -18,8 +18,18 @@ class Apartment extends Model
     protected $table = 'apartments';
     protected $guarded = ['id'];
 
+    protected $fillable = [
+        'apartment_id',
+        'floor',
+        'status',
+        'description',
+        'square_meters',
+        'type_apartment',
+        'building_id',
+        'user_id',
+    ];
+
     protected $hidden = [
-        'password',
         'created_at',
         'updated_at'
     ];
@@ -40,15 +50,18 @@ class Apartment extends Model
         return $this->belongsTo(Building::class);
     }
 
-    public function cards(){
+    public function cards()
+    {
         return $this->hasMany(Card::class, 'apartment_id');
     }
 
-    public function vehicles(){
+    public function vehicles()
+    {
         return $this->hasMany(Vehicle::class, 'apartment_id');
     }
 
-    public function vehicleTypes(){
+    public function vehicleTypes()
+    {
         return $this->belongsToMany(VehicleType::class, 'vehicles', 'apartment_id', 'vehicle_type_id');
     }
 }
