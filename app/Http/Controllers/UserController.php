@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\RegisterResource;
 use App\Http\Requests\RegisterUserRequest;
 use App\Models\Apartment;
+use App\Models\Building;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
@@ -61,19 +62,30 @@ class UserController extends Controller
 
     public function getUser(Request $request)
     {
-        $users = User::with('apartment')->paginate(10);
+        $buildings = Building::all();
+        $array_building = [];
+        foreach ($buildings as $item) {
+            $array_building[$item->id] = $item->name;
+        }
+        $page_size = 10;
+        if ($request->filled('page_size')) {
+            $page_size = $request->page_size;
+        }
+        $users = User::where('role_id', User::CLIENT)->get();
+        $users = User::where('role_id', User::CLIENT)->paginate($page_size);
         if ($request->filled('keyword')) {
-            $users = User::where('name', 'like', '%' . $request->keyword . '%')->get();
+            $users = User::where('name', 'like', '%' . $request->keyword . '%')->andWhere('role_id', User::CLIENT)->get();
         }
         if ($request->filled('sort') && $request->sort == 1) {
-            $users = $users->sortByDesc('name');
+            $users = $users->andWhere('role_id', User::CLIENT)->sortByDesc('name');
         } else if ($request->filled('sort') && $request->sort == 2) {
-            $users = $users->sortBy('name');
+            $users = $users->andWhere('role_id', User::CLIENT)->sortBy('name');
         }
         if ($request->filled('page') && $request->filled('page_size')) {
-            $users = $users->skip(($request->page - 1) * $request->page_size)->take($request->page_size);
+            $users = $users->andWhere('role_id', User::CLIENT)->skip(($request->page - 1) * $request->page_size)->take($request->page_size);
         }
-        return view('users.index', compact('users'));
+        
+        return view('users.index', compact('users', 'array_building'));
     }
 
     public function registerForm()
@@ -89,7 +101,8 @@ class UserController extends Controller
     public function saveUser(RegisterUserRequest $request): RedirectResponse
     {
         $yearOld18 = Carbon::now();
-        $validator = Validator::make($request->all(),
+        $validator = Validator::make(
+            $request->all(),
             [
                 'email'        => 'required|email|unique:users',
                 'phone_number' => 'required|unique:users',
@@ -121,33 +134,18 @@ class UserController extends Controller
             $user->avatar = $imgPath;
         }
         $user->fill($request->all());
+        $user->role_id = 3;
         $user->save();
         $apartment = Apartment::where('id', $request->apartment_id)->first();
         $apartment->user_id = $user->id;
         $apartment->save();
-        event(new Registered($user));
-        $token = $user->createToken('authtoken')->plainTextToken;
-        $result = new RegisterResource($user);
-        return $this->success($result, 'Thêm mới tài khoản thành công!');
-           $user = new User();
-           $user->password = Hash::make('12345678');
-           if ($request->hasFile('avatar')) {
-               $imgPath = $request->file('avatar')->store('users');
-               $imgPath = str_replace('public/', '', $imgPath);
-               $user->avatar = $imgPath;
-           }
-           $user->fill($request->all());
-           $user->save();
-           $apartment = Apartment::where('id', $request->apartment_id)->first();
-           $apartment->user_id = $user->id;
-           $apartment->save();
-           return redirect()->route('user.index');
+        return redirect()->route('user.index')->with('message', 'Thêm tài khoản mới thành công!');
     }
 
     public function formEditUser($id)
     {
         $user = User::find($id);
-        if (! $user) {
+        if (!$user) {
             return $this->failed();
         }
         $apartments = Apartment::where('user_id', null)
@@ -156,11 +154,11 @@ class UserController extends Controller
         return view('users.edit', compact('user', 'apartments'));
     }
 
-    public function saveEditUser($id, RegisterUserRequest $request)
+    public function saveEditUser($id, Request $request)
     {
         $user = User::find($id);
-        if (! $user) {
-           abort(404);
+        if (!$user) {
+            abort(404);
         }
 
         if ($request->has('apartment_id')) {
@@ -185,7 +183,7 @@ class UserController extends Controller
     public function removeUser($id)
     {
         $user = User::find($id);
-        if (! $user) {
+        if (!$user) {
             return $this->failed();
         }
         $apartment = Apartment::where('user_id', $user->id)->first();

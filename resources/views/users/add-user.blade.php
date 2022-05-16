@@ -13,7 +13,7 @@
         </div>
         <div class="ms-auto">
             <div class="btn-group">
-                <a  href="{{route('user.index')}}" class="btn btn-success">Danh sách cư dân</a>
+                <a href="{{ route('user.index') }}" class="btn btn-success">Danh sách cư dân</a>
             </div>
         </div>
     </div>
@@ -22,63 +22,69 @@
         <div class="card-body">
             <div class="border p-3 rounded">
                 <h6 class="mb-0 text-uppercase">Thêm cư dân mới</h6>
-                <hr/>
-                <form class="row g-3" action="{{\Illuminate\Support\Facades\URL::current()}}" method="POST" enctype="multipart/form-data">
+                <hr />
+                <form class="row g-3" action="{{ \Illuminate\Support\Facades\URL::current() }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     <div class="col-6">
                         <label class="form-label">Họ và tên</label>
-                        <input type="text" class="form-control" name="name" placeholder="Nguyễn Anh Tuấn">
+                        <input type="text" class="form-control" name="name" placeholder="Nhập tên">
                         @error('name')
-                        <p class="alert-danger p-2 mt-2">{{$message}}</p>
+                            <p class="text-danger">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="col-6">
                         <label class="form-label">Số điện thoại</label>
-                        <input type="text" class="form-control" name="phone_number" placeholder="0987654321">
+                        <input type="text" class="form-control" name="phone_number" placeholder="Nhập số điện thoại">
                         @error('phone_number')
-                        <p class="alert-danger p-2 mt-2">{{$message}}</p>
+                            <p class="text-danger">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="col-6">
                         <label class="form-label">Ngày sinh</label>
                         <input type="date" class="form-control" name="dob">
                         @error('dob')
-                        <p class="alert-danger p-2 mt-2">{{$message}}</p>
+                            <p class="text-danger">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="col-6">
                         <label class="form-label">Số CMND/CCCD</label>
-                        <input type="text" class="form-control" name="number_card" placeholder="187756789">
+                        <input type="text" class="form-control" name="number_card" placeholder="Nhập số CMND/CCCD">
                         @error('number_card')
-                        <p class="alert-danger p-2 mt-2">{{$message}}</p>
+                            <p class="text-danger">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="col-6">
-                        <label class="form-label">Số CMND/CCCD</label>
-                        <input type="text" class="form-control" name="email" placeholder="josnguyentuan@gmail.com">
+                        <label class="form-label">Email</label>
+                        <input type="text" class="form-control" name="email" placeholder="Nhập Email">
                         @error('email')
-                        <p class="alert-danger p-2 mt-2">{{$message}}</p>
+                            <p class="text-danger">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="col-6">
                         <label class="form-label">Căn hộ</label>
                         <select name="apartment_id" class="form-select">
-                            @foreach($apartments as $apartment)
-                                <option class="form-control" value="{{$apartment->id}}">{{$apartment->apartment_id}}</option>
+                            <option value="">Chọn căn hộ</option>
+                            @foreach ($apartments as $apartment)
+                                <option class="form-control" value="{{ $apartment->id }}">
+                                    {{ $apartment->apartment_id }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-12">
+                    <div class="col-6">
                         <label class="form-label">Ảnh đại diện</label>
                         <input type="file" class="form-control" name="avatar">
                         @error('avatar')
-                        <p class="alert-danger p-2 mt-2">{{$message}}</p>
+                            <p class="text-danger">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="col-4 m-auto mt-3">
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Xác nhận</button>
-                        </div>
+                    <div class="col-6">
+
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Xác nhận</button>
+                        <a href="{{ route('user.index') }}" class="btn btn-primary">Quay lại</a>
                     </div>
                 </form>
             </div>

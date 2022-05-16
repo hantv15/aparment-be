@@ -14,9 +14,7 @@
         <div class="ms-auto">
             <div class="btn-group">
                 <a href="{{route('bill.add')}}" class="btn btn-success">Thêm hóa đơn</a>
-            </div>
-            <div class="btn-group">
-                <a href="{{route('bill.add-list')}}" class="btn btn-success">Thêm danh sách hóa đơn</a>
+                {{-- <a href="{{route('bill.add-list')}}" class="btn btn-success">Thêm danh sách hóa đơn</a> --}}
             </div>
         </div>
     </div>
@@ -51,7 +49,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($bills as $key =>$bill)
+                    @foreach($paid_bills as $key =>$bill)
                         <tr>
                             <td>{{++$key}}</td>
                             <td>
