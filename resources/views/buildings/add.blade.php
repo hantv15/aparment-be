@@ -21,7 +21,7 @@
                             </div>
                             <div class="mt-4">
                                 <button type="submit" class="btn btn-danger">Thêm</button>
-                                <a href="{{route('building')}}" class="btn btn-primary">Quay lại</a>
+                                <a href="{{route('building.index')}}" class="btn btn-primary">Quay lại</a>
                             </div>
                         </div>
                     </form>

@@ -40,7 +40,7 @@ class BillController extends Controller
         $bill = new Bill();
         $bill->fill($request->all());
         $bill->save();
-        return redirect('bill.index');
+        return redirect(route('bill.index'));
     }
 
     public function editForm($id)

@@ -43,13 +43,13 @@ class BuildingController extends Controller
         $building = new Building();
         $building->fill($request->all());
         $building->save();
-        return redirect(route('building'))->with('message', 'Thêm mới tòa nhà thành công!');
+        return redirect(route('building.index'))->with('message', 'Thêm mới tòa nhà thành công!');
     }
 
     public function editForm($id)
     {
         $building = Building::find($id);
-        return view('buildings.edit', compact('building'));
+        return view('building.edit', compact('building'));
     }
 
     public function saveEdit($id, Building $request)

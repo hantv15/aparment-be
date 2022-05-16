@@ -73,6 +73,13 @@ class User extends Authenticatable
     {
         return $this->hasOne(Apartment::class);
     }
+     /**
+     * @return HasOne
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 
     /**
      * @return HasOneThrough
