@@ -189,6 +189,7 @@ Route::middleware(['web','auth'])->group(function () {
             Route::post('/add', [VehicleController::class, 'saveAdd']);
             Route::get('/edit/{id}', [VehicleController::class, 'editForm'])->name('vehicle.edit');
             Route::post('/edit/{id}', [VehicleController::class, 'saveEdit']);
+            Route::get('/remove/{id}', [VehicleController::class, 'remove'])->name('vehicle.remove');
             Route::get('/{id}', [VehicleController::class, 'getVehicleById'])->name('vehicle.detail');
         });
 

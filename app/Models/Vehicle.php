@@ -24,4 +24,7 @@ class Vehicle extends Model
     public function category(){
         return $this->belongsTo(VehicleType::class,'vehicle_type_id');
     }
+    public function apartment(){
+        return $this->belongsTo(Apartment::class,'apartment_id');
+    }
 }

@@ -40,7 +40,7 @@
                         
                         <th>Biển số xe</th>
                         <th>Loại xe</th>
-                       
+                       <th>Căn hộ</th>
                         <th>Trạng thái</th>
                         <th></th>
                     </tr>
@@ -62,6 +62,9 @@
                                 {{$vehicle->category->name}}
                             </td>
                             <td>
+                                {{$vehicle->apartment->apartment_id}}
+                            </td>
+                            <td>
                                 @if ($vehicle->status==0)
                                 <p class="mb-0">Chưa kíc  hoạt</p>
                                 @endif
@@ -74,7 +77,7 @@
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6">
                                     <a href="{{route('vehicle.edit', ['id' => $vehicle->id])}}" class="text-warning" data-bs-toggle="tooltip"
                                         data-bs-placement="bottom" title="Edit"><i class="bi bi-pencil-fill"></i></a>
-                                        {{-- <a href="{{route('maintenance.remove',['id'=>$item->id  ])}}" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="bi bi-trash-fill"></i></a> --}}
+                                        <a href="{{route('vehicle.remove',['id'=>$vehicle->id  ])}}" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="bi bi-trash-fill"></i></a>
                                     {{-- <a href="javascript:;" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="bi bi-trash-fill"></i></a> --}}
                                 </div>
                             </td>
