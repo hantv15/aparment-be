@@ -1,21 +1,21 @@
 @extends('layouts.app')
 @section('content')
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Nhân viên</div>
+        <div class="breadcrumb-title pe-3">Loại phương tiện</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Danh sách nhân viên</li>
+                    <li class="breadcrumb-item active" aria-current="page">Danh sách phương tiện</li>
                 </ol>
             </nav>
         </div>
         <div class="ms-auto">
             <div class="btn-group">
-                <a href="{{route('vehicle-type.add')}}" class="btn btn-success">Thêm nhân viên</a>
+                <a href="{{route('vehicle-type.add')}}" class="btn btn-success">Thêm phương tiện</a>
                 &nbsp  &nbsp  &nbsp
-                <a href="#" class="btn btn-primary">Cài đặt</a>
+                
             </div>
         </div>
     </div>
@@ -40,7 +40,7 @@
                         
                         <th>Loại phương tiện</th>
                         <th>Phí</th>
-                        
+                        <th>Số lượng tối đa</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -50,14 +50,14 @@
                             <td>{{++$key}}</td>
                             <td>{{$item->name}}</td>
                            
-                            <td>{{$item->price}}</td>
-                            
+                            <td>{{number_format($item->price)}}</td>
+                            <td>{{$item->sl}}</td>
                             <td>
-                                {{-- <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                    <a href="{{route('staff.detail', ['id' => $staff->id])}}" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Views"><i class="bi bi-eye-fill"></i></a>
-                                    <a href="{{route('staff.edit', ['id' => $staff->id])}}" class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"><i class="bi bi-pencil-fill"></i></a>
-                                    <a href="{{route('staff.remove', ['id' => $staff->id])}}" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="bi bi-trash-fill"></i></a>
-                                </div> --}}
+                                <div class="table-actions d-flex align-items-center gap-3 fs-6">
+                                    {{-- <a href="{{route('staff.detail', ['id' => $staff->id])}}" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Views"><i class="bi bi-eye-fill"></i></a> --}}
+                                    <a href="{{route('vehicle-type.edit', ['id' => $item->id])}}" class="text-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"><i class="bi bi-pencil-fill"></i></a>
+                                    {{-- <a href="{{route('staff.remove', ['id' => $staff->id])}}" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="bi bi-trash-fill"></i></a> --}}
+                                </div>
                             </td>
                         </tr>
                     @endforeach

@@ -12,6 +12,7 @@ class VehicleType extends Model
     protected $fillable = [
         'name',
         'price',
+        'sl'
     ];
     protected $hidden = [
         'created_at',

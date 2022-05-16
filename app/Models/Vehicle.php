@@ -14,13 +14,14 @@ class Vehicle extends Model
         'vehicle_type_id',
         'card_id',
         'status',
-        'image'
+        'image',
+        'apartment_id'
     ];
     protected $hidden = [
         'created_at',
         'updated_at'
     ];
     public function category(){
-        return $this->belongsTo(Maintenancecategory::class,'vehicle_type_id');
+        return $this->belongsTo(VehicleType::class,'vehicle_type_id');
     }
 }

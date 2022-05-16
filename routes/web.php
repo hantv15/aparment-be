@@ -10,6 +10,7 @@ use App\Http\Controllers\BillController;
 use App\Http\Controllers\BillDetailController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\CateMaintenanceController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\FireNotificationController;
@@ -27,7 +28,7 @@ use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\VehicleTypeController;
-
+use App\Models\Maintenancecategory;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +67,8 @@ Route::prefix('user-manager')->group(function (){
 Route::middleware(['web','auth'])->group(function () {
     Route::get('feedback', [FeedbackController::class, 'getFeedback'])->name('feedback.add');
     Route::post('feedback', [HomeController::class, 'sendFeedback']);
+    Route::get('feedback', [FeedbackController::class, 'getFeedback'])->name('feedback.add');
+    Route::post('feedback', [FeedbackController::class, 'sendFeedback']);
     Route::get('listFeedback', [FeedbackController::class, 'listFeedback'])->name('feedback.list');
     Route::get('getFeedbackID/{id}', [FeedbackController::class, 'getFeedbackById'])->name('feedback.view');
     Route::get('remove-feedback/{id}', [FeedbackController::class, 'remove'])->name('feedback.remove');
@@ -203,6 +206,14 @@ Route::middleware(['web','auth'])->group(function () {
         Route::get('/edit/{id}',[MaintenanceController::class,'editForm'])->name('maintenance.edit');
         Route::post('/edit/{id}',[MaintenanceController::class,'saveEdit']);
         Route::get('/remove/{id}',[MaintenanceController::class,'remove'])->name('maintenance.remove');
+    });
+    Route::prefix('/category-maintenance')->group(function(){
+        Route::get('/',[CateMaintenanceController::class,'index'])->name('category-maintenance.index');
+        Route::get('/add',[CateMaintenanceController::class,'addForm'])->name('category-maintenance.add');
+        Route::post('/add',[CateMaintenanceController::class,'saveAdd']);
+        Route::get('/edit/{id}',[CateMaintenanceController::class,'editForm'])->name('category-maintenance.edit');
+        Route::post('/edit/{id}',[CateMaintenanceController::class,'saveEdit']);
+        Route::get('/remove/{id}',[CateMaintenanceController::class,'remove'])->name('category-maintenance.remove');
     });
     Route::prefix('/admin-technicians')->group(function(){
         Route::get('/',[AdminTechnicians::class,'get'])->name('admin-technicians.index');

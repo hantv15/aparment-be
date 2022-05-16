@@ -13,7 +13,7 @@
         </div>
         <div class="ms-auto">
             <div class="btn-group">
-                <a href="{{route('department.add')}}" class="btn btn-success">Thêm </a>
+                <a href="{{route('vehicle.add')}}" class="btn btn-success">Thêm </a>
                 &nbsp  &nbsp  &nbsp
                 
             </div>
@@ -37,18 +37,19 @@
                     <thead class="table-secondary">
                     <tr>
                         <th>#</th>
-                        <th>ID</th>
+                        
                         <th>Biển số xe</th>
                         <th>Loại xe</th>
-                        <th>Id thẻ</th>
+                       
                         <th>Trạng thái</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($vehicles as $key =>$vehicle)
                         <tr>
                             <td>{{++$key}}</td>
-                            <td>{{$vehicle->id}}</td>
+                           
                             <td>
                                 <div class="d-flex align-items-center gap-3 cursor-pointer">
                                    
@@ -57,7 +58,17 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>{{$vehicle->card_id}}</td>
+                            <td>
+                                {{$vehicle->category->name}}
+                            </td>
+                            <td>
+                                @if ($vehicle->status==0)
+                                <p class="mb-0">Chưa kíc  hoạt</p>
+                                @endif
+                                @if ($vehicle->status==1)
+                                <p class="mb-0">Đã kíc hoạt</p>
+                                @endif
+                            </td>
                             {{-- <td>{{count($department->staffs)}}</td> --}}
                             <td>
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6">
