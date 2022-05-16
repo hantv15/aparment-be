@@ -301,10 +301,13 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-9 align-self-center">
-        <div class="row">
+        <div class="row"> 
           <div class="col-lg-12">
-            <form id="contact" action="" method="post">
+            <form id="contact" action="{{route('feedbacks')}}" method="post">
               @csrf
+              @if (Session::has('msg'))
+                    <p class="text-danger">{{Session::get('msg')}}</p>
+                @endif
               <div class="row">
                 <div class="col-lg-12">
                   <h2>Phản hồi</h2>
@@ -316,13 +319,13 @@
                 </div>
                 <div class="col-lg-12">
                   <fieldset>
-                    <textarea name="message" type="text" class="form-control" id="message" placeholder="Nồi dung"
+                    <textarea name="content" type="text" class="form-control" id="message" placeholder="Nội dung"
                       required="Nhập nội dung"></textarea>
                   </fieldset>
                 </div>
-                <div class="col-lg-12">
+                  <div class="col-lg-12">
                   <fieldset>
-                    <button type="submit" id="form-submit" class="button">Gửi phản hồi</button>
+                    <button type="submit"  class="button">Gửi phản hồi</button>
                   </fieldset>
                 </div>
               </div>

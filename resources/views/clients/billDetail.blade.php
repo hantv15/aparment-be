@@ -120,7 +120,12 @@
                                     <td>{{$bill->service_name}}</td>
                                     <td>{{$bill->quantity}}</td>
                                     <td>{{$bill->total_price}}</td>
-                                  
+                                    <td >
+                                      <a href="{{route('billDetail', ['id' => $bill->id])}}" class="text-primary" data-bs-toggle="tooltip"
+                                        data-bs-placement="bottom" title="" data-bs-original-title="Thanh toán"
+                                        aria-label="Thanh toán">
+                                        <i class="bi bi-camera"></i></a>
+                                    </td>
                                   </tr>
                                   @endforeach
 

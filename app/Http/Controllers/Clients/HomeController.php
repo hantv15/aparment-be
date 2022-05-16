@@ -25,7 +25,7 @@ class HomeController extends Controller
         $uApart = Auth::user()->apartment_id;
         $building_id = User::join('apartments','users.apartment_id','apartments.id')
         ->join('buildings','apartments.building_id','buildings.id')
-        ->where('users.id',5)
+        ->where('users.id',Auth::user()->id)
         ->select('buildings.id')
         ->first()
         ;
@@ -46,5 +46,6 @@ class HomeController extends Controller
                 $message->subject($request->subject);
             });
         }
+       return redirect(route('home','#contact'))->with('msg','Phản hồi của bạn đã được gửi đi !');
     }
 }

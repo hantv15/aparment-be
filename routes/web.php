@@ -47,7 +47,7 @@ Route::get('/', function () {
 });
 Route::prefix('client')->group(function (){
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    
+    Route::post('feedback', [HomeController::class, 'sendFeedback'])->name('feedbacks');
     Route::get('/login', [LoginController::class, 'login'])->name('login-client');
     Route::post('/login', [LoginController::class, 'postLogin']);
     Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
@@ -58,7 +58,7 @@ Route::prefix('user-manager')->group(function (){
 });
 Route::middleware(['web','auth'])->group(function () {
     Route::get('feedback', [FeedbackController::class, 'getFeedback'])->name('feedback.add');
-    Route::post('feedback', [FeedbackController::class, 'sendFeedback']);
+    Route::post('feedback', [HomeController::class, 'sendFeedback']);
     Route::get('listFeedback', [FeedbackController::class, 'listFeedback'])->name('feedback.list');
     Route::get('getFeedbackID/{id}', [FeedbackController::class, 'getFeedbackById'])->name('feedback.view');
     Route::get('remove-feedback/{id}', [FeedbackController::class, 'remove'])->name('feedback.remove');
