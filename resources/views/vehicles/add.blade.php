@@ -7,6 +7,9 @@
     <div class="card-body">
         <div class="p-4 border rounded">
             <form class="row g-3 needs-validation" novalidate="" method="POST" enctype="multipart/form-data">
+                @if (Session::has('msg'))
+                <p class="text-danger">{{Session::get('msg')}}</p>
+            @endif
                 @csrf
                 <div class="col-md-6">
                     <label for="validationCustom01" class="form-label">Biển số xe</label>
