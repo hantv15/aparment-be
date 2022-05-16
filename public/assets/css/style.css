@@ -626,8 +626,6 @@ a {
 /* Page Content */
 
 .page-content {
-    margin-left: 260px;
-    margin-top: 60px;
     padding: 1.5rem;
     transition: all .2s;
 }
