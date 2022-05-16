@@ -66,8 +66,6 @@ Route::prefix('user-manager')->group(function (){
 });
 Route::middleware(['web','auth'])->group(function () {
     Route::get('feedback', [FeedbackController::class, 'getFeedback'])->name('feedback.add');
-    Route::post('feedback', [HomeController::class, 'sendFeedback']);
-    Route::get('feedback', [FeedbackController::class, 'getFeedback'])->name('feedback.add');
     Route::post('feedback', [FeedbackController::class, 'sendFeedback']);
     Route::get('listFeedback', [FeedbackController::class, 'listFeedback'])->name('feedback.list');
     Route::get('getFeedbackID/{id}', [FeedbackController::class, 'getFeedbackById'])->name('feedback.view');
