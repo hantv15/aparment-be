@@ -14,7 +14,9 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     const ADMIN = 1;
-    const CLIENT = 2;
+    const STAFF = 2;
+    const CLIENT = 3;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -69,10 +71,11 @@ class User extends Authenticatable
     /**
      * @return HasOne
      */
-    public function apartment(): HasOne
+    public function apartment()
     {
         return $this->hasOne(Apartment::class);
     }
+    
      /**
      * @return HasOne
      */
@@ -84,7 +87,7 @@ class User extends Authenticatable
     /**
      * @return HasOneThrough
      */
-    public function bill(): HasOneThrough
+    public function bill()
     {
         return $this->hasOneThrough(Bill::class, Apartment::class);
     }

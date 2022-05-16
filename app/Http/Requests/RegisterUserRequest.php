@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RegisterUserRequest extends FormRequest
 {
@@ -26,9 +27,18 @@ class RegisterUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'        => 'required|email|unique:users',
-            'phone_number' => 'required|unique:users',
-            'apartment_id' => 'required|unique:users',
+            'email'        => [
+                'required', 'email',
+                Rule::unique('users')->ignore($this->id)
+            ],
+            'phone_number' => [
+                'required',
+                Rule::unique('users')->ignore($this->id)
+            ],
+            'apartment_id' => [
+                'required',
+                Rule::unique('users')->ignore($this->id)
+            ],
             'dob'          => 'required|date_format:Y-m-d|before:' . Carbon::now(),
             'name'         => 'required',
             'number_card'  => 'required',

@@ -100,6 +100,10 @@
             <ul>
                 <li> <a href="{{route('bill.index')}}" ><i class="bi bi-circle"></i>Danh sách hóa đơn</a>
                 </li>
+                <li> <a href="{{route('bill.list-unpaid')}}" ><i class="bi bi-circle"></i>Danh sách hóa đơn chưa thanh toán</a>
+                </li>
+                <li> <a href="{{route('bill.list-paid')}}" ><i class="bi bi-circle"></i>Danh sách hóa đơn đã thanh toán</a>
+                </li>
                 <li> <a href="{{route('bill-detail.index')}}" ><i class="bi bi-circle"></i>Hóa đơn chi tiết</a>
                 </li>
             </ul>
