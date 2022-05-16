@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\VehicleEditRequest;
 use App\Http\Requests\VehicleRequest;
 use App\Http\Resources\VehicleResource;
+use App\Models\Apartment;
 use App\Models\Card;
 use App\Models\Vehicle;
 use App\Models\VehicleType;
@@ -17,23 +18,35 @@ class VehicleController extends Controller
     public function getVehicle()
     {
         $vehicles = Vehicle::all();
-        
+        $vehicles->load('category');
         return view('vehicles.index',compact('vehicles'));
     }
 
     public function addForm(){
         $vehicle_types = VehicleType::all();
-        $cards = Card::all();
-        return view('vehicles.add', compact('vehicle_types', 'cards'));
+        
+        $apartment = Apartment::all();
+        return view('vehicles.add', compact('vehicle_types','apartment'));
     }
 
     public function saveAdd(VehicleRequest $request)
     {
-      
-        
-        
-     
-   
+        $count = Apartment::join('vehicles','apartments.id','vehicles.apartment_id')
+        ->join('vehicle_types','vehicles.vehicle_type_id','vehicle_types.id')
+        ->where('vehicles.apartment_id',$request->apartment_id)
+        ->where('vehicles.vehicle_type_id',$request->vehicle_type_id)
+        ->count();
+        $checksl = Apartment::join('vehicles','apartments.id','vehicles.apartment_id')
+        ->join('vehicle_types','vehicles.vehicle_type_id','vehicle_types.id')
+        ->where('vehicles.apartment_id',$request->apartment_id)
+        ->where('vehicles.vehicle_type_id',$request->vehicle_type_id)
+        ->select('vehicle_types.sl')
+        ->first()
+        ;
+        if($checksl == $count){
+            dd(1);
+        };
+        // var_dump($checksl);die;
         
         $vehicle = new Vehicle();
         $vehicle->fill($request->all());
@@ -42,8 +55,9 @@ class VehicleController extends Controller
     }
     public function editForm($id)
     {
+        $vehicle_types = VehicleType::all();
         $vehicle = Vehicle::find($id);
-        return view('vehicle.edit', compact('vehicle'));
+        return view('vehicles.edit', compact('vehicle','vehicle_types'));
     }
     public function saveEdit(Request $request, $id):JsonResponse
     {       

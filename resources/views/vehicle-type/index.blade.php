@@ -40,7 +40,7 @@
                         
                         <th>Loại phương tiện</th>
                         <th>Phí</th>
-                        
+                        <th>Số lượng tối đa</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -51,7 +51,7 @@
                             <td>{{$item->name}}</td>
                            
                             <td>{{number_format($item->price)}}</td>
-                            
+                            <td>{{$item->sl}}</td>
                             <td>
                                 <div class="table-actions d-flex align-items-center gap-3 fs-6">
                                     {{-- <a href="{{route('staff.detail', ['id' => $staff->id])}}" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Views"><i class="bi bi-eye-fill"></i></a> --}}

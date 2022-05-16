@@ -22,8 +22,14 @@
                     <p class="text-danger">{{$message}}</p>
                     @enderror
                 </div>
+                <div class="col-md-6">
+                    <label for="validationCustom02" class="form-label">Số lượng tối đa</label>
+                    <input type="number" class="form-control" name="sl" required="">
+                    {{-- @error('price')
+                    <p class="text-danger">{{$message}}</p>
+                    @enderror --}}
+                </div>
                
-
                 
                
 

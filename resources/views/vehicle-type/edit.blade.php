@@ -16,7 +16,10 @@
                     <label for="validationCustom02" class="form-label">Giá</label>
                     <input type="number" class="form-control" value="{{$model->price}}" name="price" required="">
                 </div>
-               
+                <div class="col-md-6">
+                    <label for="validationCustom02" class="form-label">Số lượng tối đa</label>
+                    <input type="number" class="form-control" value="{{$model->sl}}" name="sl" required="">
+                </div>
 
                 
                

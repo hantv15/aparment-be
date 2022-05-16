@@ -26,7 +26,8 @@ class VehicleRequest extends FormRequest
         return [
             'plate_number' => ['required',
             'string',
-            'regex:/^(?!1|2|3|4|5|6|7|8|9|10|13|42|44|45|46|80)[0-9]{2}[a-zA-Z]{1}[1-9]?-[0-9]{4,5}$/'],
+            // 'regex:/^(?!1|2|3|4|5|6|7|8|9|10|13|42|44|45|46|80)[0-9]{2}[a-zA-Z]{1}[1-9]?-?[0-9]{4,5}$/'
+        ],
         'vehicle_type_id'=>'required|integer'
         ];
     }
@@ -36,7 +37,7 @@ class VehicleRequest extends FormRequest
 
             'plate_number.required'=> 'Biển số Không được trống',
             'plate_number.string'=> 'Biển số phải là chuỗi',
-            'plate_number.regex'=>'Biển số không đúng',
+            // 'plate_number.regex'=>'Biển số không đúng',
             'vehicle_type_id.required'=>'Loại xe không được trống',
             'vehicle_type_id.integer'=> 'Loại xe không đúng định dạng'
         ];
