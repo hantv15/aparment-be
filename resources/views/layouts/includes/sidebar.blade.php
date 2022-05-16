@@ -113,6 +113,8 @@
             <ul>
                 <li> <a href="{{route('vehicle-type.index')}}"><i class="bi bi-circle"></i>Danh sách loại xe</a>
                 </li>
+                <li> <a href="{{route('vehicle.index')}}"><i class="bi bi-circle"></i>Danh sách Thẻ xe</a>
+                </li>
             </ul>
         </li>
         <li class="menu-label">Mục khác</li>

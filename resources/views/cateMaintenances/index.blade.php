@@ -5,15 +5,15 @@
     <div class="ps-3">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0 p-0">
-                <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                <li class="breadcrumb-item"><a href=""><i class="bx bx-home-alt"></i></a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Bảo trì</li>
+                <li class="breadcrumb-item active" aria-current="page">Danh mục bảo trì</li>
             </ol>
         </nav>
     </div>
     <div class="ms-auto">
         <div class="btn-group">
-            <a href="{{route('maintenance.add')}}" class="btn btn-success">Thêm hạng mục bảo trì</a>
+            <a href="{{route('category-maintenance.add')}}" class="btn btn-success">Thêm hạng mục bảo trì</a>
             &nbsp &nbsp &nbsp
             <a href="#" class="btn btn-primary">Settings</a>
         </div>
@@ -21,10 +21,13 @@
 </div>
 <!--end breadcrumb-->
 
-<div class="card">
+<div class="card">  
+    @if(Session::has('msg'))
+    <p class="login-box-msg text-danger">{{Session::get('msg')}}</p>      
+@endif
     <div class="card-body">
         <div class="d-flex align-items-center">
-            <h5 class="mb-0">Dịch vụ</h5>
+            <h5 class="mb-0">Danh mục bảo trì</h5>
             <form method="GET" action="{{\Illuminate\Support\Facades\URL::current()}}"
                 class="ms-auto position-relative d-flex">
                 <input class="form-control ps-5" type="text" name="keyword" placeholder="search"> &nbsp;
@@ -33,16 +36,15 @@
 
         </div>
         <div class="table-responsive mt-3">
-          
+            @if(Session::has('msg'))
+            <p class="login-box-msg text-danger">{{Session::get('msg')}}</p>      
+        @endif
             <table class="table align-middle">
                
                 <thead class="table-secondary">
                     <tr>
                         <th>STT</th>
-                        <th>Hạng mục</th>
-                        <th>Tòa</th>
-                        <th>Tiến độ</th>
-                        <th>Thời gian bắt đầu</th>
+                        <th>Tên</th>
                         <th></th>
                       
                     </tr>
@@ -52,26 +54,13 @@
                     
                     <tr class="tr_color">
                         <td>{{++$key}}</td>
-                        <td >{{$item->category->name}}</td>
-                        <td >
-                            @foreach ($buildings as $bui)
-                            @if ($bui->id==$item->building_id)
-                                {{ $bui->name }}
-                            @endif
-                        @endforeach
-                        </td>
-                        
-                        <td >
-                        {{$item->progress}} %</td>
-                        <td >
-                            {{$item->day}}-{{$item->month}}-{{$item->year}} 
-                        
-                        </td>
+                        <td >{{$item->name}}</td>
+                      
                         <td>
                             <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                                <a href="{{route('maintenance.edit', ['id' => $item->id])}}" class="text-warning" data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom" title="Edit"><i class="bi bi-pencil-fill"></i></a>
-                                    <a href="{{route('maintenance.remove',['id'=>$item->id  ])}}" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="bi bi-trash-fill"></i> Xóa</a>
+                                <a href="{{route('category-maintenance.edit', ['id' => $item->id])}}" class="text-warning" data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom" title="Edit"><i class="bi bi-pencil-fill"></i>Sửa </a>
+                                    <a href="{{route('category-maintenance.remove',['id'=>$item->id  ])}}" class="text-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="bi bi-trash-fill"></i></a>
                             </div>
                         </td>
                     </tr>
