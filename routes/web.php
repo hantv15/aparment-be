@@ -19,7 +19,11 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\Clients\HomeController;
+use App\Http\Controllers\Clients\LoginController;
+use App\Http\Controllers\Clients\ProfileController;
+
 use App\Http\Controllers\Controller;
+
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
@@ -51,13 +55,18 @@ Route::get('/', function () {
 });
 Route::prefix('client')->group(function (){
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    
+    Route::post('feedback', [HomeController::class, 'sendFeedback'])->name('feedbacks');
+    Route::get('/login', [LoginController::class, 'login'])->name('login-client');
+    Route::post('/login', [LoginController::class, 'postLogin']);
+    Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
+    Route::get('/{id}/bill-detail', [ProfileController::class, 'getBillDetail'])->name('billDetail');
 });
 Route::prefix('user-manager')->group(function (){
     Route::get('/', [UserController::class, 'getUser'])->name('index');
 });
 Route::middleware(['web','auth'])->group(function () {
     Route::get('feedback', [FeedbackController::class, 'getFeedback'])->name('feedback.add');
+    Route::post('feedback', [HomeController::class, 'sendFeedback']);
     Route::get('feedback', [FeedbackController::class, 'getFeedback'])->name('feedback.add');
     Route::post('feedback', [FeedbackController::class, 'sendFeedback']);
     Route::get('listFeedback', [FeedbackController::class, 'listFeedback'])->name('feedback.list');
